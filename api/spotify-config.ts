@@ -1,13 +1,12 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 /*
- * Public Spotify app settings for the explorer and the season puller.
+ * Public Spotify app settings for the season puller.
  *
- * Both pages sign in with PKCE, so only the client ID is needed here (never
- * the secret). Each page needs its own redirect URI, and both must be listed
- * exactly in the Spotify app's dashboard (Settings → Redirect URIs):
+ * It signs in with PKCE, so only the client ID is needed here (never the
+ * secret). Its redirect URI must be listed exactly in the Spotify app's
+ * dashboard (Settings → Redirect URIs):
  *
- *   https://www.jackslisteningto.com/explorer/
  *   https://www.jackslisteningto.com/season-puller.html
  *
  * The apex domain redirects to www on Vercel, so www is the origin that
@@ -39,7 +38,6 @@ export default function handler(req: IncomingMessage, res: ServerResponse): void
   res.end(
     JSON.stringify({
       clientId,
-      redirectUri: `${SITE_ORIGIN}/explorer/`,
       pullerRedirectUri: `${SITE_ORIGIN}/season-puller.html`,
     }),
   );

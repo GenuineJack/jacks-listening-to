@@ -10,12 +10,13 @@ import type { IncomingMessage, ServerResponse } from "node:http";
  *
  *  - Refresh tokens rotate. Every refresh returns a new refresh token and
  *    invalidates the one just used, so the new value has to be written back
- *    somewhere durable. A token pasted into an env var alone works exactly
- *    once and then dies — the env var is only the bootstrap value.
+ *    somewhere durable (Airtable, below). A token pasted into an env var alone
+ *    works exactly once and then dies; the env var is only a bootstrap value.
  *  - Since 20 July 2026 refresh tokens also expire six months after the
  *    original authorization, and refreshing does not extend that. When it
  *    lapses Spotify answers `invalid_grant`, which is not retryable: the
- *    only fix is signing in again on /season-puller.html.
+ *    only fix is signing in again on /season-puller.html and pasting the new
+ *    token into Airtable.
  */
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
@@ -54,94 +55,171 @@ async function getJson(url: string, init: RequestInit = {}): Promise<Response> {
   }
 }
 
-/* ---- token store ----
-   Optional but strongly recommended: without it the rotated token cannot be
-   kept and the widget stops working after the first refresh. Any Postgres
-   reachable over PostgREST works; the table is one row.  */
-const storeUrl = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
-const storeKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
-const STORE_TABLE = "spotify_tokens";
-const STORE_ID = "now-playing";
-const storeConfigured = Boolean(storeUrl && storeKey);
+/* ---- token store: one row in Airtable ----
+   Base JKLOL, table "Jacks Listening To", the row whose Name is
+   spotify-now-playing. Airtable's API has a monthly call budget, so this
+   touches it as little as possible: one read when a server instance first
+   needs a token or is about to refresh one, and one write each time Spotify
+   issues a new token (about hourly, and only while people are visiting).
+   In between, tokens are served from memory.  */
+const AIRTABLE_API = "https://api.airtable.com/v0";
+const airtableToken = process.env.AIRTABLE_TOKEN?.trim();
+const airtableBase = process.env.AIRTABLE_BASE_ID?.trim();
+const airtableTable = process.env.AIRTABLE_TABLE_ID?.trim();
+const ROW_NAME = "spotify-now-playing";
+const storeConfigured = Boolean(airtableToken && airtableBase && airtableTable);
 
-/* Works with either Supabase key style. A legacy service_role key is a JWT and
-   goes in both headers. A newer secret key (sb_secret_...) is not a JWT: it
-   belongs in `apikey` only, and sending it as a Bearer token is rejected. */
-function storeHeaders(): Record<string, string> {
-  const headers: Record<string, string> = {
-    apikey: storeKey as string,
-    "Content-Type": "application/json",
+/* Refresh a minute early so a token never expires mid-request. */
+const EARLY_MS = 60_000;
+
+interface Tokens {
+  recordId: string | null;
+  refreshToken: string | null;
+  accessToken: string | null;
+  accessExpires: number;
+}
+
+const NO_TOKENS: Tokens = { recordId: null, refreshToken: null, accessToken: null, accessExpires: 0 };
+
+/* Lives as long as this server instance does. */
+let memory: Tokens | null = null;
+let memoryReadAt = 0;
+let refreshing: Promise<string> | null = null;
+
+function airtableHeaders(): Record<string, string> {
+  return { Authorization: `Bearer ${airtableToken}`, "Content-Type": "application/json" };
+}
+
+function tableUrl(): string {
+  return `${AIRTABLE_API}/${encodeURIComponent(airtableBase as string)}/${encodeURIComponent(airtableTable as string)}`;
+}
+
+function cell(value: unknown): string | null {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+async function readStore(): Promise<Tokens> {
+  if (!storeConfigured) return { ...NO_TOKENS };
+  const params = new URLSearchParams({ filterByFormula: `{Name}='${ROW_NAME}'`, maxRecords: "1" });
+  const response = await getJson(`${tableUrl()}?${params}`, { headers: airtableHeaders() });
+  if (!response.ok) throw new Error(`Airtable read failed (${response.status})`);
+  const data = (await response.json()) as { records?: Array<{ id: string; fields?: Record<string, unknown> }> };
+  const row = data.records?.[0];
+  if (!row) return { ...NO_TOKENS };
+  const fields = row.fields ?? {};
+  const expires = Date.parse(String(fields["Access Expires"] ?? ""));
+  return {
+    recordId: row.id,
+    refreshToken: cell(fields["Refresh Token"]),
+    accessToken: cell(fields["Access Token"]),
+    accessExpires: Number.isFinite(expires) ? expires : 0,
   };
-  if (storeKey?.startsWith("eyJ")) headers.Authorization = `Bearer ${storeKey}`;
-  return headers;
 }
 
-async function readStoredToken(): Promise<string | null> {
-  if (!storeConfigured) return null;
+/* Returns the row's id (it is created on first write if it is missing). */
+async function writeStore(tokens: Tokens): Promise<string | null> {
+  if (!storeConfigured) return tokens.recordId;
+  const fields = {
+    Name: ROW_NAME,
+    "Refresh Token": tokens.refreshToken ?? "",
+    "Access Token": tokens.accessToken ?? "",
+    "Access Expires": tokens.accessExpires ? new Date(tokens.accessExpires).toISOString() : null,
+  };
   try {
-    const response = await getJson(
-      `${storeUrl}/rest/v1/${STORE_TABLE}?id=eq.${STORE_ID}&select=refresh_token`,
-      { headers: storeHeaders() },
-    );
-    if (!response.ok) return null;
-    const rows = (await response.json()) as Array<{ refresh_token?: string }>;
-    return rows?.[0]?.refresh_token?.trim() || null;
-  } catch {
-    return null;
-  }
-}
-
-async function writeStoredToken(refreshToken: string): Promise<void> {
-  if (!storeConfigured) return;
-  try {
-    await getJson(`${storeUrl}/rest/v1/${STORE_TABLE}`, {
-      method: "POST",
-      headers: { ...storeHeaders(), Prefer: "resolution=merge-duplicates" },
-      body: JSON.stringify({
-        id: STORE_ID,
-        refresh_token: refreshToken,
-        updated_at: new Date().toISOString(),
-      }),
-    });
-  } catch {
-    /* A failed write means the next refresh uses a stale token and needs
-       re-auth. Nothing useful to do here beyond not breaking this response. */
+    const response = tokens.recordId
+      ? await getJson(`${tableUrl()}/${tokens.recordId}`, { method: "PATCH", headers: airtableHeaders(), body: JSON.stringify({ fields }) })
+      : await getJson(tableUrl(), { method: "POST", headers: airtableHeaders(), body: JSON.stringify({ fields }) });
+    if (!response.ok) {
+      /* A lost write means the next refresh may use a token Spotify has
+         already replaced, which ends in needs-auth. Say so in the logs. */
+      console.error(`now-playing: Airtable write failed (${response.status})`);
+      return tokens.recordId;
+    }
+    const data = (await response.json()) as { id?: string };
+    return data.id ?? tokens.recordId;
+  } catch (error) {
+    console.error("now-playing: Airtable write failed", error);
+    return tokens.recordId;
   }
 }
 
 class NeedsAuth extends Error {}
+class NoToken extends Error {}
 
-async function accessToken(): Promise<string> {
-  const clientId = process.env.SPOTIFY_CLIENT_ID?.trim();
-  if (!clientId) throw new Error("SPOTIFY_CLIENT_ID is not set");
+/* The usable access token, or null if there is none or it is about to expire. */
+function usable(tokens: Tokens | null): string | null {
+  return tokens?.accessToken && tokens.accessExpires - EARLY_MS > Date.now() ? tokens.accessToken : null;
+}
 
-  const refreshToken = (await readStoredToken()) || process.env.SPOTIFY_REFRESH_TOKEN?.trim();
-  if (!refreshToken) throw new Error("No refresh token stored or configured");
+async function refresh(clientId: string, rejected: string | null): Promise<string> {
+  /* Re-read first (unless this instance just did): another server instance may
+     have refreshed already, and Spotify only honours the newest refresh token. */
+  const justRead = memory && Date.now() - memoryReadAt < 5_000;
+  const stored: Tokens = storeConfigured && !justRead ? await readStore() : memory ?? { ...NO_TOKENS };
+  if (stored !== memory) { memory = stored; memoryReadAt = Date.now(); }
+  /* Take a stored access token only if it isn't the one Spotify just refused. */
+  const ready = usable(stored);
+  if (ready && ready !== rejected) return ready;
+
+  const refreshToken = stored.refreshToken || process.env.SPOTIFY_REFRESH_TOKEN?.trim();
+  if (!refreshToken) throw new NoToken();
 
   const response = await getJson(TOKEN_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-      client_id: clientId,
-    }),
+    body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshToken, client_id: clientId }),
   });
-
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
-    /* invalid_grant is terminal — retrying burns nothing but time. */
+    /* invalid_grant is terminal: retrying burns nothing but time. */
     if (response.status === 400 && detail.includes("invalid_grant")) throw new NeedsAuth();
     throw new Error(`Token refresh failed (${response.status})`);
   }
 
-  const data = (await response.json()) as { access_token?: string; refresh_token?: string };
+  const data = (await response.json()) as { access_token?: string; refresh_token?: string; expires_in?: number };
   if (!data.access_token) throw new Error("Token refresh returned no access token");
-  /* Persist the rotated token before anything else can fail. */
-  if (data.refresh_token && data.refresh_token !== refreshToken) {
-    await writeStoredToken(data.refresh_token);
+
+  const next: Tokens = {
+    recordId: stored.recordId,
+    refreshToken: data.refresh_token || refreshToken,
+    accessToken: data.access_token,
+    accessExpires: Date.now() + (data.expires_in ?? 3600) * 1000,
+  };
+  memory = next;
+  memoryReadAt = 0;
+  /* Persist before using it, so a rotated refresh token is never lost. */
+  next.recordId = await writeStore(next);
+  return next.accessToken as string;
+}
+
+async function accessToken(force = false): Promise<string> {
+  const clientId = process.env.SPOTIFY_CLIENT_ID?.trim();
+  if (!clientId) throw new Error("SPOTIFY_CLIENT_ID is not set");
+
+  if (!force) {
+    const cached = usable(memory);
+    if (cached) return cached;
+    if (!memory && storeConfigured) {
+      memory = await readStore();
+      memoryReadAt = Date.now();
+      const stored = usable(memory);
+      if (stored) return stored;
+    }
   }
-  return data.access_token;
+
+  /* One refresh at a time per instance; concurrent requests share it. */
+  const rejected = force ? memory?.accessToken ?? null : null;
+  if (!refreshing) refreshing = refresh(clientId, rejected).finally(() => { refreshing = null; });
+  return refreshing;
+}
+
+/* GET from Spotify, refreshing once if the cached token was rejected. */
+async function spotifyGet(path: string): Promise<Response> {
+  let response = await getJson(`${API}${path}`, { headers: { Authorization: `Bearer ${await accessToken()}` } });
+  if (response.status === 401) {
+    response = await getJson(`${API}${path}`, { headers: { Authorization: `Bearer ${await accessToken(true)}` } });
+  }
+  return response;
 }
 
 interface SpotifyTrack {
@@ -183,10 +261,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   }
 
   try {
-    const token = await accessToken();
-    const auth = { Authorization: `Bearer ${token}` };
-
-    const current = await getJson(`${API}/me/player/currently-playing`, { headers: auth });
+    const current = await spotifyGet("/me/player/currently-playing");
     /* 204 means the player is idle rather than absent. */
     if (current.status === 200) {
       const data = (await current.json()) as { item?: SpotifyTrack; is_playing?: boolean; progress_ms?: number };
@@ -207,7 +282,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
       }
     }
 
-    const recent = await getJson(`${API}/me/player/recently-played?limit=1`, { headers: auth });
+    const recent = await spotifyGet("/me/player/recently-played?limit=1");
     if (recent.ok) {
       const data = (await recent.json()) as { items?: Array<{ track?: SpotifyTrack; played_at?: string }> };
       const item = data.items?.[0];
@@ -224,6 +299,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
     send(res, 200, { state: "idle" }, "public, max-age=30, s-maxage=60");
   } catch (error) {
+    if (error instanceof NoToken) {
+      send(res, 200, { state: "unconfigured" }, "public, max-age=60");
+      return;
+    }
     if (error instanceof NeedsAuth) {
       send(
         res,

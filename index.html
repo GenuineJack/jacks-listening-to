@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jack’s Listening To</title>
 
-    <meta name="description" content="A new playlist every season since fall 2011, and never a gap. Pull one from the crates and press play.">
+    <meta name="description" content="A new playlist every season since fall 2011, and never a gap. Pull one off the shelf and press play.">
     <link rel="canonical" href="https://www.jackslisteningto.com/">
     <meta name="theme-color" content="#130d09">
     <meta name="color-scheme" content="dark">
@@ -199,7 +199,7 @@
         .search::placeholder { color: var(--text-faint); }
         .search:focus { outline: none; border-color: var(--amber); }
 
-        /* ---------- The crates (archive matrix) ---------- */
+        /* ---------- The seasons (archive matrix) ---------- */
         .matrix {
             position: relative; overflow: hidden;
             display: grid; grid-template-columns: 52px repeat(4, minmax(0, 1fr)); gap: 16px 10px;
@@ -352,7 +352,7 @@
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
     <div id="fatal-error" class="hidden" role="alert"></div>
-    <noscript><div id="noscript-error">JavaScript is off for this site. The player, the crates and the stats all need it. Turn it on in your browser’s site settings for jackslisteningto.com and reload.</div></noscript>
+    <noscript><div id="noscript-error">JavaScript is off for this site. The player, the seasons and the stats all need it. Turn it on in your browser’s site settings for jackslisteningto.com and reload.</div></noscript>
 
     <nav class="site-nav" aria-label="Main">
         <div class="container">
@@ -361,9 +361,8 @@
                 <span>Jack’s <em>Listening</em> To</span>
             </a>
             <div class="nav-links">
-                <a href="#archive" class="nav-optional">The crates</a>
-                <a href="#in-data" class="nav-optional">By the numbers</a>
-                <a href="/explorer/">Explore yours</a>
+                <a href="/" aria-current="page">The Season</a>
+                <a href="/crate/">The Crate</a>
             </div>
         </div>
     </nav>
@@ -374,7 +373,7 @@
                 <div>
                     <p class="eyebrow" id="hero-eyebrow">Seasonal playlists · since fall 2011</p>
                     <h1 class="hero-title display">Every season,<br><em>on the record.</em></h1>
-                    <p class="hero-sub">One every quarter since the leaves turned in 2011, and I’ve never skipped one. Pull a season from the crates and press play.</p>
+                    <p class="hero-sub">One every quarter since the leaves turned in 2011, and I’ve never skipped one. Pull a season off the shelf and press play.</p>
 
                     <a class="now hidden" id="np-card" href="#" target="_blank" rel="noopener">
                         <span class="now-art" id="np-art" aria-hidden="true"></span>
@@ -387,7 +386,7 @@
 
                     <div class="hero-actions">
                         <a class="btn btn-primary" href="#listen" id="hero-play">▶&nbsp; Play the latest</a>
-                        <a class="btn" href="#archive">Browse the crates</a>
+                        <a class="btn" href="#archive">Browse the seasons</a>
                     </div>
 
                     <div class="stats" id="stats"></div>
@@ -459,7 +458,7 @@
             <div class="container">
                 <div class="section-head">
                     <div>
-                        <p class="eyebrow">The crates</p>
+                        <p class="eyebrow">The seasons</p>
                         <h2 class="section-title display" id="archive-title">Every season, <em>oldest to newest</em></h2>
                     </div>
                     <div class="filters">
@@ -486,7 +485,7 @@
 
                 <div class="data-grid">
                     <div class="panel wide">
-                        <h3 class="panel-h">Nostalgia drift: how far back the crates reach</h3>
+                        <h3 class="panel-h">Nostalgia drift: how far back the seasons reach</h3>
                         <p class="panel-cap">Each point is a season, oldest to newest. Higher means the music skews older than the season it lived in.</p>
                         <div id="drift-chart"></div>
                     </div>
@@ -501,7 +500,7 @@
                         <div id="repeat-songs"></div>
                     </div>
                     <div class="panel wide">
-                        <h3 class="panel-h">How vintage the crates get</h3>
+                        <h3 class="panel-h">How vintage the playlists get</h3>
                         <p class="panel-cap">Every track, bucketed by the decade it came out.</p>
                         <div id="decade-mix"></div>
                     </div>
@@ -529,7 +528,7 @@
     <footer class="site-footer">
         <div class="container">
             <p class="sign-off">© <span id="year"></span> Jack’s Listening To · still going</p>
-            <p><a href="/explorer/">Find your own seasons →</a><span id="bpm-credit" class="hidden"> · tempo &amp; key data by <a href="https://getsongbpm.com" target="_blank" rel="noopener">GetSongBPM</a></span></p>
+            <p><a href="/crate/">Flip through the crate →</a><span id="bpm-credit" class="hidden"> · tempo &amp; key data by <a href="https://getsongbpm.com" target="_blank" rel="noopener">GetSongBPM</a></span></p>
         </div>
     </footer>
 
@@ -751,7 +750,7 @@
         if (dataUnavailable) {
             renderStats(null);
             banner.classList.remove('hidden');
-            banner.innerHTML = '<strong>The track data didn’t load.</strong> The player and the crates still work. <button type="button" onclick="location.reload()">Reload to try again</button>.';
+            banner.innerHTML = '<strong>The track data didn’t load.</strong> The player and the seasons still work. <button type="button" onclick="location.reload()">Reload to try again</button>.';
             $('deep-stats').innerHTML = statHtml(['hours of music', 'different artists', 'years of nostalgia drift', 'songs per season'].map(l => ({ num: '—', label: l })));
             renderDrift([]);
             renderBars('top-artists', []);
@@ -958,7 +957,7 @@
         renderMatrix();
     });
 
-    /* ---- the crates ---- */
+    /* ---- the seasons grid ---- */
     function matches(season, year) {
         if (seasonFilter && season !== seasonFilter) return false;
         if (searchTerm && !`${season} ${year}`.toLowerCase().includes(searchTerm)) return false;
@@ -1024,7 +1023,7 @@
 
     /* ---- cover art ----
        /api/covers resolves every playlist's cover server-side (cached for a
-       day). If it's unavailable the crates keep their plain record sleeves. */
+       day). If it's unavailable the seasons grid keeps its plain record sleeves. */
     async function loadCovers() {
         try {
             const response = await fetch(`/api/covers?ids=${PLAYLISTS.map(p => p.id).join(',')}`);

@@ -82,7 +82,7 @@ button:disabled { cursor:default; opacity:.5; }
 <div id="server-token-box" class="hidden">
 <button type="button" id="reveal-token" class="linkish">copy server token for /api/now-playing →</button>
 <div id="server-token-detail" class="hidden">
-<p class="toggle-hint" style="margin:10px 0 6px 0">This is a credential for your Spotify account. Paste it into <code>db/spotify_tokens.sql</code>'s seed statement, or set it as <code>SPOTIFY_REFRESH_TOKEN</code>. Spotify replaces it on first use, so the widget needs the store to keep working.</p>
+<p class="toggle-hint" style="margin:10px 0 6px 0">This is a credential for your Spotify account. Paste it into the <b>Refresh Token</b> cell of the <code>spotify-now-playing</code> row in Airtable (JKLOL → Jacks Listening To), then close this tab without running a pull: Spotify replaces the token each time it is used, so this page and the site can’t share one.</p>
 <textarea id="server-token" readonly rows="2"></textarea>
 <button type="button" id="copy-token">copy to clipboard</button>
 <span class="status" id="copy-status" style="margin-left:10px"></span>
@@ -143,7 +143,7 @@ const byId = id => document.getElementById(id);
 function setStatus(message, className = '') { const status = byId('status'); status.textContent = message; status.className = `status ${className}`; }
 
 /* ---- auth ----
-   Mirrors the PKCE flow the explorer page already uses, because a pasted
+   Uses Spotify's PKCE sign-in, because a pasted
    console token expires in about an hour and cannot be renewed — too short
    for a full archive pull now that genres are fetched per artist. A signed-in
    session carries a refresh token and renews itself mid-run. */

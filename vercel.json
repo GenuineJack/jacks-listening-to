@@ -3,8 +3,12 @@
   "redirects": [
     { "source": "/seasons", "destination": "/", "permanent": true },
     { "source": "/seasons/", "destination": "/", "permanent": true },
-    { "source": "/seasons/explorer", "destination": "/explorer/", "permanent": true },
-    { "source": "/seasons/explorer/", "destination": "/explorer/", "permanent": true },
+    { "source": "/seasons/explorer", "destination": "/", "permanent": true },
+    { "source": "/seasons/explorer/", "destination": "/", "permanent": true },
+    { "source": "/explorer", "destination": "/", "permanent": false },
+    { "source": "/explorer/", "destination": "/", "permanent": false },
+    { "source": "/collection", "destination": "/crate/", "permanent": true },
+    { "source": "/collection/", "destination": "/crate/", "permanent": true },
     { "source": "/seasons/season-puller.html", "destination": "/season-puller.html", "permanent": true }
   ],
   "headers": [
