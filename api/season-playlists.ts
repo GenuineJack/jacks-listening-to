@@ -67,6 +67,7 @@ export const SEASON_PLAYLISTS: readonly SeasonPlaylist[] = [
   { season: "Winter", year: 2025, id: "2xsb8t6f9Zbl9k1ZkqCSSg" },
   { season: "Spring", year: 2026, id: "0Q0vYgP2PyBtqLq2EonVS0" },
   { season: "Summer", year: 2026, id: "2H7WgezNfuDizPqDX7lmMb" },
+  { season: "Fall", year: 2026, id: "2w3QJpOhUv0K28TsMM1WnG" },
 ];
 
 export default function handler(_req: IncomingMessage, res: ServerResponse): void {
