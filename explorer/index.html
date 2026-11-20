@@ -6,7 +6,7 @@
 <title>Find Your Seasons · Jack’s Listening To</title>
 <meta name="description" content="Connect Spotify and explore the artists, eras and songs running through your own seasonal playlists.">
 <link rel="canonical" href="https://www.jackslisteningto.com/explorer/">
-<meta name="theme-color" content="#120d0a">
+<meta name="theme-color" content="#130d09">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -24,7 +24,7 @@ main { padding: 64px 0 24px; }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 56px; align-items: end; padding-bottom: 52px; border-bottom: 1px solid var(--line); }
 h1 { font-size: clamp(2.8rem, 7vw, 5.6rem); line-height: 0.95; margin: 16px 0 22px; }
 .hero-copy { max-width: 46ch; color: var(--text-soft); font-size: 1.08rem; }
-.connect-panel { padding: 26px; border-radius: var(--radius-lg); background: rgba(31, 23, 19, 0.85); border: 1px solid var(--line); }
+.connect-panel { padding: 26px; border-radius: var(--radius-lg); --text-dim: #b9c4ae; --line: rgba(214, 236, 214, 0.1); --line-strong: rgba(214, 236, 214, 0.22); background: radial-gradient(ellipse 70% 60% at 15% 0%, rgba(116, 171, 131, 0.16), transparent 60%), linear-gradient(180deg, #1f3a29, #13241a); border: 1px solid rgba(201, 164, 99, 0.3); box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(214, 236, 214, 0.08); }
 .connect-panel p { margin-bottom: 18px; color: var(--text-soft); font-size: 0.92rem; }
 .connect-panel .btn { width: 100%; min-height: 48px; }
 .privacy { margin-top: 12px; font-size: 0.78rem; color: var(--text-dim) !important; margin-bottom: 0 !important; }
@@ -49,7 +49,7 @@ h1 { font-size: clamp(2.8rem, 7vw, 5.6rem); line-height: 0.95; margin: 16px 0 22
 .playlist strong { display: block; font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.1rem; }
 .playlist span { color: var(--text-soft); font-size: 0.78rem; }
 .playlist:has(input:checked) { outline: 2px solid var(--amber); outline-offset: -2px; }
-.action-rail { position: sticky; top: 88px; padding: 22px; border-radius: var(--radius-lg); background: rgba(31, 23, 19, 0.85); border: 1px solid var(--line); }
+.action-rail { position: sticky; top: 88px; padding: 22px; border-radius: var(--radius-lg); --text-dim: #b9c4ae; --line: rgba(214, 236, 214, 0.1); --line-strong: rgba(214, 236, 214, 0.22); background: radial-gradient(ellipse 70% 60% at 15% 0%, rgba(116, 171, 131, 0.16), transparent 60%), linear-gradient(180deg, #1f3a29, #13241a); border: 1px solid rgba(201, 164, 99, 0.3); box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(214, 236, 214, 0.08); }
 .action-rail .count { font-family: var(--serif); font-size: 2.6rem; line-height: 1; color: var(--amber); }
 .action-rail p { margin: 8px 0 18px; color: var(--text-soft); font-size: 0.88rem; }
 .action-rail .btn { width: 100%; }
@@ -62,13 +62,13 @@ h1 { font-size: clamp(2.8rem, 7vw, 5.6rem); line-height: 0.95; margin: 16px 0 22
 .stat strong { display: block; font-family: var(--serif); font-weight: 500; font-size: 2rem; line-height: 1.1; color: var(--text); }
 .stat span { font-size: 0.78rem; color: var(--text-dim); }
 .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.panel { padding: 26px; border-radius: var(--radius-lg); background: rgba(26, 19, 16, 0.75); border: 1px solid var(--line); }
+.panel { padding: 26px; border-radius: var(--radius-lg); background: linear-gradient(180deg, rgba(38, 24, 15, 0.88), rgba(24, 16, 10, 0.88)); border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(201, 164, 99, 0.16), 0 24px 50px -30px rgba(0, 0, 0, 0.8); }
 .panel h3 { font-family: var(--serif); font-weight: 500; font-size: 1.3rem; }
 .caption { margin: 4px 0 18px; color: var(--text-dim); font-size: 0.86rem; }
 .bar { display: grid; grid-template-columns: minmax(0, 140px) minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-bottom: 10px; }
 .bar-label { overflow: hidden; color: var(--text-soft); font-size: 0.86rem; text-overflow: ellipsis; white-space: nowrap; }
 .bar-track { height: 8px; overflow: hidden; border-radius: 4px; background: rgba(240, 214, 170, 0.06); }
-.bar-fill { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #b97c33, var(--amber-bright)); }
+.bar-fill { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--red), var(--amber), var(--amber-bright)); }
 .bar-tail { color: var(--text-dim); font-size: 0.8rem; text-align: right; white-space: nowrap; }
 .repeat { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--line); color: var(--text-soft); font-size: 0.88rem; }
 .repeat b { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--amber); flex-shrink: 0; }

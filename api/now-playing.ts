@@ -64,12 +64,16 @@ const STORE_TABLE = "spotify_tokens";
 const STORE_ID = "now-playing";
 const storeConfigured = Boolean(storeUrl && storeKey);
 
+/* Works with either Supabase key style. A legacy service_role key is a JWT and
+   goes in both headers. A newer secret key (sb_secret_...) is not a JWT: it
+   belongs in `apikey` only, and sending it as a Bearer token is rejected. */
 function storeHeaders(): Record<string, string> {
-  return {
+  const headers: Record<string, string> = {
     apikey: storeKey as string,
-    Authorization: `Bearer ${storeKey}`,
     "Content-Type": "application/json",
   };
+  if (storeKey?.startsWith("eyJ")) headers.Authorization = `Bearer ${storeKey}`;
+  return headers;
 }
 
 async function readStoredToken(): Promise<string | null> {

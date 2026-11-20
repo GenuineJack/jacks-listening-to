@@ -1,5 +1,7 @@
 /* ============================================================
-   Jack's Listening To: shared lounge styles.
+   Jack's Listening To: shared listening-bar styles.
+   A vinyl bar after dark: walnut shelving, hunter-green felt, brass trim,
+   tube-amp orange and a red neon sign over the door.
    Tokens, type, background, nav, buttons and footer used by every page.
    Page-specific layout lives inline in each page.
    ============================================================ */
@@ -29,32 +31,53 @@
 :root {
     color-scheme: dark;
 
-    /* Room: espresso walls, low lamp light */
-    --bg: #120d0a;
-    --bg-raised: #1a1310;
-    --bg-panel: #1f1713;
-    --bg-sunk: #0d0907;
-    --line: rgba(240, 214, 170, 0.09);
-    --line-strong: rgba(240, 214, 170, 0.2);
+    /* Room: walnut panelling, low lamp light */
+    --bg: #130d09;
+    --bg-raised: #1c130d;
+    --bg-panel: #22170f;
+    --bg-sunk: #0c0806;
+    --line: rgba(244, 214, 168, 0.09);
+    --line-strong: rgba(244, 214, 168, 0.2);
+
+    /* Hardwood: shelving, plinth, trim */
+    --walnut: #3d2516;
+    --walnut-deep: #26170e;
+    --teak: #74441f;
+    --teak-deep: #4c2b14;
+    /* Long-grain figure, laid over any wood fill */
+    --grain:
+        repeating-linear-gradient(178deg, transparent 0 5px, rgba(0, 0, 0, 0.09) 5px 6px, transparent 6px 13px),
+        repeating-linear-gradient(181.5deg, transparent 0 9px, rgba(255, 214, 160, 0.035) 9px 10px, transparent 10px 27px),
+        repeating-linear-gradient(176deg, transparent 0 31px, rgba(0, 0, 0, 0.11) 31px 33px, transparent 33px 71px);
+
+    /* Felt, leather and brass */
+    --hunter: #2c5238;
+    --hunter-deep: #172a1e;
+    --hunter-bright: #74ab83;
+    --oxblood: #6e1c17;
+    --red: #c8372b;
+    --neon: #ff6a45;
+    --brass: #c9a463;
+    --brass-dim: rgba(201, 164, 99, 0.32);
 
     /* Paper and ink */
-    --text: #f3e9d8;
-    --text-soft: #cdbca3;
-    --text-dim: #9a8a74;
-    --text-faint: #6b5d4d;
+    --text: #f5e9d6;
+    --text-soft: #d5c1a3;
+    --text-dim: #a48f74;
+    --text-faint: #6f5d4b;
 
-    /* Lamp brass, and the red of a record label */
-    --amber: #e9a84c;
-    --amber-bright: #f6c27a;
-    --amber-glow: rgba(233, 168, 76, 0.16);
-    --ember: #c8553d;
-    --on-amber: #1a1008;
+    /* Tube-amp orange: the main accent (kept under its old name so every page follows) */
+    --amber: #ee8236;
+    --amber-bright: #f7a35c;
+    --amber-glow: rgba(238, 130, 54, 0.16);
+    --ember: #c8372b;
+    --on-amber: #1a0d05;
 
-    /* Seasons, warmed to sit in the room */
-    --spring: #a9c48f;
-    --summer: #f0c35b;
-    --fall: #dc7a3e;
-    --winter: #8fb3d1;
+    /* Seasons, tuned to sit in the room */
+    --spring: #8cc07a;
+    --summer: #f3a83f;
+    --fall: #e0583a;
+    --winter: #a6bcc2;
 
     /* Follows whichever season is on the turntable */
     --now: var(--amber);
@@ -84,9 +107,11 @@ body {
     color: var(--text);
     background-color: var(--bg);
     background-image:
-        radial-gradient(ellipse 70% 55% at 12% -8%, rgba(233, 168, 76, 0.15), transparent 62%),
-        radial-gradient(ellipse 60% 45% at 105% 28%, rgba(168, 62, 44, 0.13), transparent 60%),
-        radial-gradient(ellipse 80% 50% at 50% 110%, rgba(233, 168, 76, 0.07), transparent 60%);
+        radial-gradient(ellipse 70% 55% at 10% -8%, rgba(238, 130, 54, 0.17), transparent 62%),
+        radial-gradient(ellipse 55% 45% at 106% 22%, rgba(200, 55, 43, 0.16), transparent 60%),
+        radial-gradient(ellipse 60% 50% at -6% 88%, rgba(44, 82, 56, 0.26), transparent 62%),
+        radial-gradient(ellipse 80% 45% at 60% 112%, rgba(238, 130, 54, 0.07), transparent 60%),
+        repeating-linear-gradient(90deg, transparent 0 95px, rgba(0, 0, 0, 0.16) 95px 96px, rgba(255, 220, 170, 0.012) 96px 97px);
     background-attachment: fixed;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -123,10 +148,12 @@ img { max-width: 100%; display: block; }
 /* ---- Nav ---- */
 .site-nav {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(18, 13, 10, 0.78);
+    background-color: rgba(30, 19, 12, 0.86);
+    background-image: var(--grain);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
     backdrop-filter: blur(14px) saturate(1.2);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--brass-dim);
+    box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.9);
 }
 .site-nav .container {
     display: flex; align-items: center; justify-content: space-between;
@@ -148,40 +175,49 @@ img { max-width: 100%; display: block; }
     font-size: 0.85rem; color: var(--text-soft); text-decoration: none;
     transition: color var(--fast), background var(--fast);
 }
-.nav-links a:hover { color: var(--text); background: rgba(240, 214, 170, 0.06); }
+.nav-links a:hover { color: var(--text); background: rgba(201, 164, 99, 0.1); }
 .nav-links a[aria-current="page"] { color: var(--amber); }
 
 /* ---- Type helpers ---- */
 .eyebrow {
     font-family: var(--sans); font-size: 0.72rem; font-weight: 600;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--neon);
+    text-shadow: 0 0 8px rgba(255, 90, 60, 0.55), 0 0 22px rgba(232, 70, 50, 0.3);
 }
 .display {
     font-family: var(--serif); font-weight: 500; letter-spacing: -0.02em;
     font-variation-settings: 'opsz' 144;
 }
-.display em { font-style: italic; font-weight: 400; color: var(--amber); }
+.display em { font-style: italic; font-weight: 400; color: var(--amber); text-shadow: 0 0 34px rgba(238, 130, 54, 0.28); }
 
 /* ---- Buttons ---- */
 .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     min-height: 40px; padding: 8px 18px; border-radius: 999px;
-    border: 1px solid var(--line-strong); background: rgba(240, 214, 170, 0.03);
+    border: 1px solid var(--line-strong); background: rgba(244, 214, 168, 0.03);
     color: var(--text-soft); font-size: 0.88rem; font-weight: 500;
     text-decoration: none; cursor: pointer; white-space: nowrap;
     transition: color var(--fast), background var(--fast), border-color var(--fast), transform var(--fast);
 }
-.btn:hover:not(:disabled) { color: var(--text); border-color: var(--amber); background: var(--amber-glow); }
+.btn:hover:not(:disabled) { color: var(--text); border-color: var(--brass); background: rgba(201, 164, 99, 0.1); }
 .btn:active:not(:disabled) { transform: translateY(1px); }
 .btn:disabled { opacity: 0.35; cursor: default; }
-.btn-primary { background: var(--amber); border-color: var(--amber); color: var(--on-amber); font-weight: 600; }
-.btn-primary:hover:not(:disabled) { background: var(--amber-bright); border-color: var(--amber-bright); color: var(--on-amber); }
+.btn-primary {
+    background: linear-gradient(180deg, #f5944a, #e2692a); border-color: #e2692a; color: var(--on-amber); font-weight: 600;
+    box-shadow: 0 10px 26px -12px rgba(238, 120, 50, 0.75), inset 0 1px 0 rgba(255, 224, 186, 0.4);
+}
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(180deg, #f9aa66, #ec7b38); border-color: #ec7b38; color: var(--on-amber);
+    box-shadow: 0 12px 32px -10px rgba(238, 120, 50, 0.9), inset 0 1px 0 rgba(255, 224, 186, 0.5);
+}
 .btn-icon { width: 40px; padding: 0; font-size: 1rem; }
 
 /* ---- Footer ---- */
 .site-footer {
     margin-top: 96px; padding: 40px 0 56px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--brass-dim);
+    background-color: rgba(30, 19, 12, 0.55);
+    background-image: var(--grain);
     color: var(--text-dim); font-size: 0.85rem;
 }
 .site-footer .container { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: baseline; }

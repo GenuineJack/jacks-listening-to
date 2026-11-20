@@ -7,7 +7,7 @@
 
     <meta name="description" content="A new playlist every season since fall 2011, and never a gap. Pull one from the crates and press play.">
     <link rel="canonical" href="https://www.jackslisteningto.com/">
-    <meta name="theme-color" content="#120d0a">
+    <meta name="theme-color" content="#130d09">
     <meta name="color-scheme" content="dark">
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -83,21 +83,24 @@
         .deck { position: relative; width: min(430px, 100%); aspect-ratio: 1; }
         .plinth {
             position: absolute; inset: 0; border-radius: 28px;
-            background: linear-gradient(145deg, #2a1d15 0%, #1a120d 55%, #140e0a 100%);
-            box-shadow: 0 50px 90px -30px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 230, 190, 0.08), inset 0 0 0 1px rgba(240, 214, 170, 0.06);
+            background-color: var(--teak-deep);
+            background-image: var(--grain), linear-gradient(150deg, #7c4a23 0%, #5a3418 48%, #3d2210 100%);
+            box-shadow: 0 50px 90px -30px rgba(0, 0, 0, 0.9), 0 0 120px -40px rgba(238, 130, 54, 0.35),
+                inset 0 1px 0 rgba(255, 220, 170, 0.22), inset 0 0 0 1px rgba(201, 164, 99, 0.25), inset 0 -18px 40px rgba(0, 0, 0, 0.35);
         }
-        .plinth::after { /* wood-grain whisper */
-            content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0.35;
-            background: repeating-linear-gradient(100deg, transparent 0 14px, rgba(255, 220, 170, 0.025) 14px 15px, transparent 15px 31px);
+        .plinth::after { /* lamp sheen across the lacquer */
+            content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+            background: radial-gradient(ellipse 70% 50% at 25% 12%, rgba(255, 214, 160, 0.14), transparent 60%);
         }
         .platter {
             position: absolute; left: 7%; top: 7%; width: 76%; aspect-ratio: 1; border-radius: 50%;
-            background: #0a0706;
-            box-shadow: 0 0 0 6px #16100c, 0 0 0 7px rgba(240, 214, 170, 0.08), 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 90px color-mix(in srgb, var(--now) 22%, transparent);
+            background: radial-gradient(circle at 40% 35%, #2f5a3e, var(--hunter-deep) 75%);
+            box-shadow: 0 0 0 5px #17110d, 0 0 0 6px var(--brass-dim), 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 90px color-mix(in srgb, var(--now) 26%, transparent);
             transition: box-shadow var(--base);
         }
         .disc {
-            position: absolute; inset: 1.5%; border-radius: 50%;
+            position: absolute; inset: 3.5%; border-radius: 50%;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
             background:
                 repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(255, 240, 220, 0.035) 2.5px 3px),
                 radial-gradient(circle at 50% 50%, #1d1714 0 33%, #0f0b09 33.6% 97%, #1d1714 98% 100%);
@@ -118,7 +121,7 @@
         }
         .disc-label.has-cover .disc-label-text { display: none; }
         .sheen {
-            position: absolute; inset: 1.5%; border-radius: 50%; pointer-events: none;
+            position: absolute; inset: 3.5%; border-radius: 50%; pointer-events: none;
             background: conic-gradient(from 210deg, transparent 0 6%, rgba(255, 238, 210, 0.10) 12%, transparent 20% 52%, rgba(255, 238, 210, 0.07) 60%, transparent 68%);
         }
         .spindle {
@@ -126,10 +129,10 @@
             transform: translate(-50%, -50%); background: #d8c7ab; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         }
         .tonearm { position: absolute; right: 2%; top: 3%; width: 30%; height: 82%; overflow: visible; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.55)); }
-        .knob { position: absolute; width: 7%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #4a3a2e, #1e1611); box-shadow: inset 0 0 0 1px rgba(240, 214, 170, 0.15); }
+        .knob { position: absolute; width: 7%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f0d49a, #b48a4a 55%, #6a4c22); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.3); }
         .knob.k1 { right: 8%; bottom: 7%; }
         .knob.k2 { right: 18%; bottom: 7%; }
-        .pilot { position: absolute; left: 7%; bottom: 8.5%; width: 1.6%; aspect-ratio: 1; border-radius: 50%; background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+        .pilot { position: absolute; left: 7%; bottom: 8.5%; width: 1.8%; aspect-ratio: 1; border-radius: 50%; background: var(--neon); box-shadow: 0 0 6px var(--neon), 0 0 16px rgba(255, 90, 60, 0.7); }
         .deck-caption { font-size: 0.9rem; color: var(--text-dim); text-align: center; }
         .deck-caption strong { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.05rem; color: var(--text); }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -137,16 +140,19 @@
         /* ---------- Player ---------- */
         .listen { padding: 24px 0 8px; }
         .player {
-            padding: 28px; border-radius: var(--radius-lg);
-            background: linear-gradient(180deg, rgba(31, 23, 19, 0.92), rgba(22, 16, 13, 0.92));
-            border: 1px solid var(--line);
-            box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 0, 0, 0.3);
+            --text-dim: #b9c4ae; --text-faint: #8fa08c; --line: rgba(214, 236, 214, 0.1); --line-strong: rgba(214, 236, 214, 0.22);
+            position: relative; padding: 28px; border-radius: var(--radius-lg);
+            background:
+                radial-gradient(ellipse 70% 60% at 15% 0%, rgba(116, 171, 131, 0.16), transparent 60%),
+                linear-gradient(180deg, #1f3a29, #13241a);
+            border: 1px solid rgba(201, 164, 99, 0.3);
+            box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(214, 236, 214, 0.08);
         }
         .player-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; margin-bottom: 20px; }
         .player-title { font-size: clamp(2rem, 4.6vw, 3rem); line-height: 1; margin-top: 8px; }
         .player-title em { color: var(--now); transition: color var(--base); }
         .player-controls { display: flex; flex-wrap: wrap; gap: 8px; }
-        .embed-wrap { border-radius: 14px; overflow: hidden; background: var(--bg-sunk); min-height: 352px; }
+        .embed-wrap { border-radius: 14px; overflow: hidden; background: var(--bg-sunk); min-height: 352px; box-shadow: 0 16px 30px -16px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 0, 0, 0.35); }
         .embed-wrap iframe { display: block; width: 100%; border: 0; }
 
         .dig {
@@ -161,10 +167,10 @@
         .dig-top { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; }
         .dig-label { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--text); white-space: nowrap; }
         .tm-range { width: 100%; height: 22px; margin: 4px 0 2px; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; }
-        .tm-range::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--line-strong), var(--amber)); }
-        .tm-range::-moz-range-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--line-strong), var(--amber)); }
-        .tm-range::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -7px; border-radius: 50%; background: var(--amber-bright); border: 3px solid var(--bg-panel); box-shadow: 0 0 0 1px var(--amber); }
-        .tm-range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--amber-bright); border: 3px solid var(--bg-panel); box-shadow: 0 0 0 1px var(--amber); }
+        .tm-range::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--line-strong), var(--brass), var(--amber)); }
+        .tm-range::-moz-range-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--line-strong), var(--brass), var(--amber)); }
+        .tm-range::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -7px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f0d49a, #b48a4a 60%, #6a4c22); border: 0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.3); }
+        .tm-range::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f0d49a, #b48a4a 60%, #6a4c22); border: 0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.3); }
         .tm-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-faint); }
 
         /* ---------- Sections ---------- */
@@ -194,26 +200,42 @@
         .search:focus { outline: none; border-color: var(--amber); }
 
         /* ---------- The crates (archive matrix) ---------- */
-        .matrix { display: grid; grid-template-columns: 52px repeat(4, minmax(0, 1fr)); gap: 8px; }
+        .matrix {
+            position: relative; overflow: hidden;
+            display: grid; grid-template-columns: 52px repeat(4, minmax(0, 1fr)); gap: 16px 10px;
+            padding: 20px 20px 24px; border-radius: var(--radius-lg);
+            background-color: var(--walnut);
+            background-image: var(--grain), linear-gradient(180deg, #432918, #2c1a0f);
+            border: 1px solid rgba(0, 0, 0, 0.45);
+            box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 214, 160, 0.1), inset 0 0 0 1px rgba(201, 164, 99, 0.18), inset 0 -40px 80px rgba(0, 0, 0, 0.3);
+        }
+        /* Shelf plank under each year's row */
+        .year-label { position: relative; }
+        .year-label::after {
+            content: ''; position: absolute; left: -20px; bottom: -11px; width: 3000px; height: 6px; pointer-events: none;
+            background-image: var(--grain), linear-gradient(180deg, #8a5630, #5b3519 60%, #3a2110);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 214, 160, 0.25);
+        }
         .matrix-colhead {
             display: flex; align-items: center; gap: 8px; padding: 0 4px 4px;
-            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim);
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-soft);
         }
         .matrix-colhead::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
         .year-label {
             display: flex; align-items: center; justify-content: flex-end; padding-right: 6px;
-            font-family: var(--serif); font-size: 1rem; color: var(--text-dim); font-variant-numeric: lining-nums tabular-nums;
+            font-family: var(--serif); font-size: 1rem; color: var(--brass); font-variant-numeric: lining-nums tabular-nums;
         }
         .cell {
             position: relative; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px;
-            border-radius: 12px; border: 1px solid var(--line); background: rgba(240, 214, 170, 0.02);
+            border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.35); background: rgba(12, 8, 6, 0.42);
+            box-shadow: inset 0 1px 0 rgba(255, 214, 160, 0.05);
             text-align: left; transition: transform var(--fast), border-color var(--fast), background var(--fast), opacity var(--base);
         }
-        .cell.empty { border-style: dashed; border-color: rgba(240, 214, 170, 0.06); background: transparent; }
+        .cell.empty { border-style: dashed; border-color: rgba(244, 214, 168, 0.1); background: rgba(12, 8, 6, 0.18); box-shadow: none; }
         .cell.filled { cursor: pointer; }
-        .cell.filled:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 70%, transparent); background: rgba(240, 214, 170, 0.05); }
+        .cell.filled:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 70%, transparent); background: rgba(12, 8, 6, 0.6); }
         .cell.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: inset 0 0 0 1px var(--accent); }
-        .cell.dim { opacity: 0.22; }
+        .cell.dim { opacity: 0.25; }
         .sleeve {
             width: 46px; aspect-ratio: 1; flex-shrink: 0; border-radius: 6px;
             background-image: var(--cover, none), radial-gradient(circle at 50% 50%, #0d0907 0 5%, var(--accent) 6% 27%, #15100d 28% 70%, #1d1714 71% 100%);
@@ -238,15 +260,29 @@
         .data-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
         .panel {
             padding: 26px; border-radius: var(--radius-lg);
-            background: rgba(26, 19, 16, 0.75); border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(38, 24, 15, 0.88), rgba(24, 16, 10, 0.88));
+            border: 1px solid var(--line);
+            box-shadow: inset 0 1px 0 rgba(201, 164, 99, 0.16), 0 24px 50px -30px rgba(0, 0, 0, 0.8);
         }
         .panel.wide { grid-column: 1 / -1; }
+        /* Booth upholstery: green felt and oxblood leather */
+        .panel-felt {
+            --text-dim: #b9c4ae; --line: rgba(214, 236, 214, 0.1);
+            background: radial-gradient(ellipse 80% 60% at 0% 0%, rgba(116, 171, 131, 0.15), transparent 60%), linear-gradient(180deg, #1f3a29, #13241a);
+            border-color: rgba(201, 164, 99, 0.26);
+        }
+        .panel-leather {
+            --text-dim: #cfaa9a; --line: rgba(255, 205, 185, 0.1);
+            background: radial-gradient(ellipse 80% 60% at 100% 0%, rgba(255, 120, 90, 0.13), transparent 60%), linear-gradient(180deg, #4a1814, #2a0d0b);
+            border-color: rgba(201, 164, 99, 0.26);
+        }
+        .panel-leather .list-tail { color: var(--amber-bright); }
         .panel-h { font-family: var(--serif); font-size: 1.35rem; font-weight: 500; line-height: 1.2; color: var(--text); font-variation-settings: 'opsz' 36; }
         .panel-cap { margin: 6px 0 20px; font-size: 0.88rem; color: var(--text-dim); }
         .data-empty { font-size: 0.9rem; color: var(--text-dim); }
 
         .drift-svg { width: 100%; height: auto; display: block; }
-        .drift-svg .grid { stroke: rgba(240, 214, 170, 0.07); stroke-width: 1; }
+        .drift-svg .grid { stroke: rgba(244, 214, 168, 0.07); stroke-width: 1; }
         .drift-svg .axis { fill: var(--text-faint); font-family: var(--sans); font-size: 13px; }
         .drift-svg .area { fill: url(#drift-fill); }
         .drift-svg .line { fill: none; stroke: var(--amber); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
@@ -255,8 +291,8 @@
 
         .bar-row { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 72px; align-items: center; gap: 14px; margin-bottom: 10px; }
         .bar-label { font-size: 0.88rem; color: var(--text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .bar-track { height: 8px; border-radius: 4px; overflow: hidden; background: rgba(240, 214, 170, 0.06); }
-        .bar-fill { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #b97c33, var(--amber-bright)); transition: width 0.6s var(--ease); }
+        .bar-track { height: 8px; border-radius: 4px; overflow: hidden; background: rgba(244, 214, 168, 0.06); }
+        .bar-fill { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--red), var(--amber), var(--amber-bright)); box-shadow: 0 0 12px rgba(238, 130, 54, 0.35); transition: width 0.6s var(--ease); }
         .bar-tail { font-size: 0.8rem; color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
         .list-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--line); }
@@ -270,7 +306,7 @@
         .genre-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
         .stack-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
         .stack-year { width: 40px; flex-shrink: 0; font-size: 0.8rem; color: var(--text-dim); }
-        .stack-track { display: flex; flex: 1; height: 14px; border-radius: 4px; overflow: hidden; background: rgba(240, 214, 170, 0.05); }
+        .stack-track { display: flex; flex: 1; height: 14px; border-radius: 4px; overflow: hidden; background: rgba(244, 214, 168, 0.05); }
         .stack-seg { height: 100%; }
 
         #fatal-error, #noscript-error {
@@ -300,7 +336,8 @@
             .dig .btn { grid-column: 1 / -1; }
             section.block { padding-top: 64px; }
             .filters, .search { width: 100%; }
-            .matrix { grid-template-columns: 34px repeat(4, minmax(0, 1fr)); gap: 6px; }
+            .matrix { grid-template-columns: 34px repeat(4, minmax(0, 1fr)); gap: 12px 6px; padding: 12px 10px 16px; border-radius: var(--radius); }
+            .year-label::after { left: -10px; bottom: -8px; height: 4px; }
             .matrix-colhead { font-size: 0.62rem; letter-spacing: 0.08em; gap: 5px; padding: 0 0 2px; }
             .year-label { font-size: 0.78rem; padding-right: 2px; }
             .cell { padding: 4px; min-height: 0; border-radius: 9px; }
@@ -367,10 +404,10 @@
                             <div class="spindle"></div>
                         </div>
                         <svg class="tonearm" viewBox="0 0 100 280" preserveAspectRatio="xMidYMin meet">
-                            <rect x="60" y="2" width="20" height="22" rx="4" fill="#3a2d24" stroke="rgba(240,214,170,.18)"/>
+                            <rect x="60" y="2" width="20" height="22" rx="4" fill="#2a1a10" stroke="rgba(201,164,99,.45)"/>
                             <line x1="70" y1="20" x2="70" y2="40" stroke="#b9a68a" stroke-width="4"/>
-                            <circle cx="70" cy="46" r="19" fill="#241a14" stroke="rgba(240,214,170,.18)"/>
-                            <circle cx="70" cy="46" r="8" fill="#3a2d24" stroke="rgba(240,214,170,.3)"/>
+                            <circle cx="70" cy="46" r="19" fill="#20140d" stroke="rgba(201,164,99,.45)"/>
+                            <circle cx="70" cy="46" r="8" fill="#b48a4a" stroke="rgba(0,0,0,.35)"/>
                             <path d="M70 46 L66 178 Q64 204 45 226" fill="none" stroke="#d8c7ab" stroke-width="4" stroke-linecap="round"/>
                             <rect x="30" y="218" width="20" height="32" rx="3" transform="rotate(42 40 234)" fill="#d8c7ab"/>
                             <circle cx="70" cy="46" r="2.6" style="fill:var(--amber)"/>
@@ -453,12 +490,12 @@
                         <p class="panel-cap">Each point is a season, oldest to newest. Higher means the music skews older than the season it lived in.</p>
                         <div id="drift-chart"></div>
                     </div>
-                    <div class="panel">
+                    <div class="panel panel-felt">
                         <h3 class="panel-h">Who follows me the whole way</h3>
                         <p class="panel-cap">Artists ranked by how many different seasons they turn up in.</p>
                         <div id="top-artists"></div>
                     </div>
-                    <div class="panel">
+                    <div class="panel panel-leather">
                         <h3 class="panel-h">Songs that keep coming back</h3>
                         <p class="panel-cap">Tracks that showed up in more than one season.</p>
                         <div id="repeat-songs"></div>
@@ -810,12 +847,12 @@
         const dots = points.map((point, index) =>
             `<circle cx="${point[0].toFixed(1)}" cy="${point[1].toFixed(1)}" r="3.5" class="dot"><title>${escapeHtml(drift[index].label)}: ${drift[index].avg.toFixed(1)} ${tooltipSuffix}</title></circle>`
         ).join('');
-        const gradient = `<defs><linearGradient id="drift-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a84c" stop-opacity=".28"/><stop offset="1" stop-color="#e9a84c" stop-opacity="0"/></linearGradient></defs>`;
+        const gradient = `<defs><linearGradient id="drift-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ee8236" stop-opacity=".32"/><stop offset="1" stop-color="#c8372b" stop-opacity="0"/></linearGradient></defs>`;
         element.innerHTML = `<svg viewBox="0 0 ${width} ${height}" class="drift-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${options.ariaLabel || 'Nostalgia drift over time'}">${gradient}${grid}<path d="${area}" class="area"/><path d="${line}" class="line"/>${dots}${labels}</svg>`;
     }
 
     /* Categorical palette tuned for the warm dark background. */
-    const GENRE_COLORS = ['#e9a84c', '#c8553d', '#a9c48f', '#8fb3d1', '#d9a3c7', '#f0c35b', '#6fb7a8', '#b08ad8'];
+    const GENRE_COLORS = ['#ee8236', '#c8372b', '#74ab83', '#a6bcc2', '#e0b65e', '#c97a8c', '#5f9c95', '#e8d9bd'];
     const OTHER_COLOR = '#5c4f43';
     const genreColor = (name, stackGenres) => {
         const index = stackGenres.indexOf(name);
