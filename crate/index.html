@@ -214,7 +214,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="dividers" id="dividers" role="group" aria-label="Filter by genre"></div>
+                <div class="dividers" id="dividers" role="group" aria-label="Filter by style"></div>
                 <div class="bin">
                     <p class="result-note" id="note" aria-live="polite"></p>
                     <div class="records" id="records"></div>
@@ -290,7 +290,9 @@
 
         function renderDividers() {
             const counts = new Map();
-            all.forEach(i => (i.genres || []).forEach(g => counts.set(g, (counts.get(g) || 0) + 1)));
+            /* Styles (Punk, Emo, Indie Rock…) split the crate far better than
+               Discogs' broad genres, where nearly everything is "Rock". */
+            all.forEach(i => (i.styles || []).forEach(g => counts.set(g, (counts.get(g) || 0) + 1)));
             const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 7);
             if (top.length < 2) { $('dividers').innerHTML = ''; return; }
             const tab = (value, name, count) => `<button type="button" class="divider" data-genre="${esc(value)}" aria-pressed="${genre === value}">${esc(name)}${count ? `<small>${count}</small>` : ''}</button>`;
@@ -299,7 +301,7 @@
 
         function filterAndSort() {
             const needle = $('search').value.trim().toLowerCase();
-            let list = all.filter(i => !genre || (i.genres || []).includes(genre));
+            let list = all.filter(i => !genre || (i.styles || []).includes(genre));
             if (needle) {
                 list = list.filter(i => [i.artist, i.title, i.catno, ...(i.labels || []), ...(i.genres || []), ...(i.styles || []), i.year]
                     .some(v => String(v ?? '').toLowerCase().includes(needle)));
@@ -315,7 +317,7 @@
 
         function card(item) {
             const cover = safeUrl(item.cover);
-            const meta = [item.year, formatLine(item)].filter(Boolean).join(' · ');
+            const meta = [item.year, formatLine(item), item.copies > 1 ? `×${item.copies}` : ''].filter(Boolean).join(' · ');
             const sleeve = cover
                 ? `<img src="${esc(cover)}" alt="" loading="lazy" decoding="async">`
                 : `<span class="sleeve-blank"><b>${esc(item.title)}</b><i>${esc(item.artist)}</i></span>`;

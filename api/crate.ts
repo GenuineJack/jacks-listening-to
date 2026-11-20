@@ -46,6 +46,7 @@ interface Item {
   thumb: string | null;
   url: string;
   added: string | null;
+  copies: number;
 }
 
 interface Crate {
@@ -185,6 +186,7 @@ function normalize(raw: RawRelease): Item | null {
     thumb: realImage(basic.thumb),
     url: `${DISCOGS_SITE}/release/${id}`,
     added: text(raw.date_added),
+    copies: 1,
   };
 }
 
@@ -206,6 +208,9 @@ async function loadCrate(token: string): Promise<Crate> {
   const raw = Number.parseInt(process.env.DISCOGS_FOLDER_ID?.trim() ?? "", 10);
   const folder = Number.isFinite(raw) && raw >= 0 ? raw : 0;
 
+  /* Owning a record twice shouldn't put it in the bin twice: keep the newest
+     copy's spot and count the rest. */
+  const byId = new Map<number, Item>();
   const items: Item[] = [];
   let total = 0;
   for (let page = 1; page <= MAX_PAGES; page++) {
@@ -216,14 +221,18 @@ async function loadCrate(token: string): Promise<Crate> {
     );
     for (const release of data.releases ?? []) {
       const item = normalize(release);
-      if (item) items.push(item);
+      if (!item) continue;
+      const seen = byId.get(item.id);
+      if (seen) { seen.copies += 1; continue; }
+      byId.set(item.id, item);
+      items.push(item);
     }
     total = Number(data.pagination?.items) || items.length;
     const pages = Number(data.pagination?.pages) || 1;
     if (page >= pages) break;
   }
 
-  return { items, total, updatedAt: new Date().toISOString() };
+  return { items, total: items.length, updatedAt: new Date().toISOString() };
 }
 
 export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
