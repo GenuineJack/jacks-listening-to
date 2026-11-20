@@ -3,7 +3,10 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 /*
  * The crate: Jack's record collection, read from Discogs.
  *
- * GET /api/crate → { items, total, username, updatedAt }
+ * GET /api/crate → { items, total, updatedAt }
+ *
+ * The Discogs username is used to fetch but never returned: the site stays
+ * anonymous, so nothing here should point back to a Discogs profile.
  *
  * Read-only and public. The page needs the whole collection to filter and
  * sort it in the browser, so this walks every page server-side and returns one
@@ -48,7 +51,6 @@ interface Item {
 interface Crate {
   items: Item[];
   total: number;
-  username: string;
   updatedAt: string;
 }
 
@@ -221,7 +223,7 @@ async function loadCrate(token: string): Promise<Crate> {
     if (page >= pages) break;
   }
 
-  return { items, total, username: user, updatedAt: new Date().toISOString() };
+  return { items, total, updatedAt: new Date().toISOString() };
 }
 
 export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {

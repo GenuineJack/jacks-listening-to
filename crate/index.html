@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Crate · Jack’s Listening To</title>
 
-    <meta name="description" content="Every record on Jack’s shelf, pulled live from his Discogs collection.">
+    <meta name="description" content="Every record on my shelf. Synced from Discogs.">
     <link rel="canonical" href="https://www.jackslisteningto.com/crate/">
-    <meta name="theme-color" content="#130d09">
+    <meta name="theme-color" content="#14100c">
     <meta name="color-scheme" content="dark">
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -17,173 +17,161 @@
 
     <meta property="og:site_name" content="Jack’s Listening To">
     <meta property="og:title" content="The Crate · Jack’s Listening To">
-    <meta property="og:description" content="Every record on the shelf, pulled live from Discogs.">
+    <meta property="og:description" content="Every record on my shelf. Synced from Discogs.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.jackslisteningto.com/crate/">
     <meta property="og:image" content="https://www.jackslisteningto.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:creator" content="@GenuineJack">
 
-    <link rel="preload" href="/assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/assets/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/big-shoulders-display.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/assets/lounge.css">
     <style>
-        main { padding-bottom: 8px; }
-
         /* ---------- Hero ---------- */
-        .hero { padding: 72px 0 48px; }
-        .hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 56px; align-items: center; }
-        .hero-title { font-size: clamp(3rem, 7.4vw, 6rem); line-height: 0.95; margin: 18px 0 24px; }
-        .hero-sub { font-size: 1.12rem; color: var(--text-soft); max-width: 40ch; margin-bottom: 36px; }
+        .hero { padding: 56px 0 76px; }
+        .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: end; }
+        .hero-title { font-size: clamp(4.4rem, 12vw, 10.5rem); margin: 20px 0 22px; }
+        .hero-title .neon { display: inline-block; }
+        .hero-sub { font-size: 1.12rem; color: var(--cream-soft); max-width: 44ch; margin-bottom: 28px; }
+        .receipt { display: flex; flex-wrap: wrap; min-height: 38px; font: 700 0.76rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--cream-soft); }
+        .receipt span { padding: 9px 12px; border: 2px dashed var(--rule-strong); margin: 0 -2px -2px 0; }
+        .receipt b { color: var(--cream); }
 
-        .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-        .stat { padding: 18px 16px 4px 0; }
-        .stat + .stat { padding-left: 16px; border-left: 1px solid var(--line); }
-        .stat-num {
-            font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 500; line-height: 1.1;
-            color: var(--text); font-variant-numeric: lining-nums tabular-nums; font-variation-settings: 'opsz' 72;
+        /* Latest pickups, standing on a ledge */
+        .pickups { position: relative; }
+        .pickups-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; padding: 0 14px; align-items: end; }
+        .pickup {
+            position: relative; display: block; aspect-ratio: 1; text-decoration: none;
+            background: var(--accent, var(--ink-3)) var(--cover, none) center/cover no-repeat;
+            box-shadow: 0 14px 18px -8px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+            transform: rotate(var(--tilt, 0deg)); transform-origin: bottom center; transition: transform var(--base);
         }
-        .stat-label { margin-top: 4px; font-size: 0.78rem; color: var(--text-dim); }
-
-        /* The latest records, leaning in a crate */
-        .lean { display: flex; flex-direction: column; align-items: center; gap: 18px; }
-        .lean-box {
-            position: relative; width: min(440px, 100%); aspect-ratio: 1.12; border-radius: 22px; overflow: hidden;
-            background-color: var(--teak-deep);
-            background-image: var(--grain), linear-gradient(150deg, #7c4a23 0%, #5a3418 48%, #3d2210 100%);
-            box-shadow: 0 50px 90px -30px rgba(0, 0, 0, 0.9), 0 0 120px -40px rgba(238, 130, 54, 0.35),
-                inset 0 1px 0 rgba(255, 220, 170, 0.22), inset 0 0 0 1px rgba(201, 164, 99, 0.25);
-        }
-        .lean-box::after { /* front lip of the crate */
-            content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 26%; z-index: 5;
-            background-image: var(--grain), linear-gradient(180deg, #8a5630, #5b3519 60%, #3a2110);
-            box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 214, 160, 0.3);
-        }
-        .lean-sleeve {
-            position: absolute; bottom: 12%; width: 48%; aspect-ratio: 1; border-radius: 4px;
-            background: var(--bg-sunk) center/cover no-repeat;
-            box-shadow: -10px 10px 24px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-            transform-origin: bottom center;
-        }
-        .lean-sleeve:nth-child(1) { left: 6%;  transform: rotate(-9deg); z-index: 1; }
-        .lean-sleeve:nth-child(2) { left: 18%; transform: rotate(-4deg); z-index: 2; }
-        .lean-sleeve:nth-child(3) { left: 30%; transform: rotate(1deg);  z-index: 3; }
-        .lean-sleeve:nth-child(4) { left: 44%; transform: rotate(6deg);  z-index: 4; }
-        .lean-caption { font-size: 0.9rem; color: var(--text-dim); text-align: center; min-height: 1.4em; }
-        .lean-caption strong { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.05rem; color: var(--text); }
-
-        /* ---------- Controls ---------- */
-        .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px 24px; flex-wrap: wrap; margin-bottom: 22px; }
-        .section-title { font-size: clamp(2rem, 4.4vw, 3.1rem); line-height: 1.02; margin-top: 10px; }
-        .controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        .search, .sort {
-            padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-strong);
-            background: rgba(13, 9, 7, 0.6); color: var(--text); font-size: 0.88rem;
-        }
-        .search { width: 260px; max-width: 100%; }
-        .search::placeholder { color: var(--text-faint); }
-        .search:focus, .sort:focus { outline: none; border-color: var(--amber); }
-        .sort { appearance: none; -webkit-appearance: none; padding-right: 34px; cursor: pointer;
-            background-image: linear-gradient(45deg, transparent 50%, var(--text-dim) 50%), linear-gradient(135deg, var(--text-dim) 50%, transparent 50%);
-            background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
-        .sort option { background: var(--bg-panel); color: var(--text); }
-        .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
-        .chip {
-            padding: 6px 14px; border-radius: 999px; cursor: pointer;
-            border: 1px solid var(--line-strong); background: transparent;
-            font-size: 0.84rem; color: var(--text-soft); transition: all var(--fast);
-        }
-        .chip:hover { color: var(--text); border-color: var(--brass); }
-        .chip[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--on-amber); }
-        .chip small { margin-left: 4px; color: inherit; opacity: 0.6; font-size: 0.75em; }
-        .result-note { min-height: 1.4em; margin: -6px 0 14px; font-size: 0.85rem; color: var(--text-dim); }
+        .pickup:nth-child(1) { --tilt: -2deg; }
+        .pickup:nth-child(2) { --tilt: 1deg; }
+        .pickup:nth-child(3) { --tilt: -0.8deg; }
+        .pickup:nth-child(4) { --tilt: 1.6deg; }
+        .pickup:hover, .pickup:focus-visible { transform: translateY(-8px) rotate(0deg); }
+        .pickup.blank { background: var(--ink-3); box-shadow: inset 0 0 0 2px var(--rule); }
+        .pickups-tag { position: absolute; top: -18px; left: 4px; z-index: 2; transform: rotate(-7deg); }
+        .pickups-caption { margin-top: 14px; font: 700 0.72rem/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--cream-dim); min-height: 1.4em; }
+        .pickups-caption b { color: var(--cream); }
 
         /* ---------- The bin ---------- */
-        .bin {
-            position: relative; padding: 24px; border-radius: var(--radius-lg);
-            background-color: var(--walnut);
-            background-image: var(--grain), linear-gradient(180deg, #432918, #2c1a0f);
-            border: 1px solid rgba(0, 0, 0, 0.45);
-            box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 214, 160, 0.1),
-                inset 0 0 0 1px rgba(201, 164, 99, 0.18), inset 0 -40px 80px rgba(0, 0, 0, 0.3);
+        .dig { padding: 0 0 100px; }
+        .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px 32px; flex-wrap: wrap; margin-bottom: 22px; }
+        .section-title { font-size: clamp(3rem, 7vw, 5.6rem); margin-top: 14px; }
+        .controls { display: flex; gap: 12px; flex-wrap: wrap; }
+        .search, .sort {
+            padding: 10px 14px; border: 2px solid #000; background: var(--cream); color: var(--ink);
+            font: 700 0.78rem var(--mono); letter-spacing: 0.03em; box-shadow: var(--hard); border-radius: 0;
         }
-        .records { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 26px 18px; }
-        .record { position: relative; display: block; text-decoration: none; color: inherit; }
+        .search { width: 290px; max-width: 100%; }
+        .search::placeholder { color: #7a6a55; }
+        .search:focus, .sort:focus { outline: 3px solid var(--mustard); outline-offset: 2px; }
+        .sort { appearance: none; -webkit-appearance: none; padding-right: 34px; cursor: pointer;
+            background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+            background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+
+        /* Genre dividers, like the tabs in a record bin */
+        .dividers { display: flex; flex-wrap: wrap; gap: 0; margin: 0 0 -3px; padding-left: 14px; position: relative; z-index: 1; }
+        .divider {
+            margin-right: -2px; padding: 9px 14px 11px; cursor: pointer;
+            background: var(--ink-3); color: var(--cream-soft); border: 2px solid #000; border-bottom: 0;
+            font: 700 0.72rem/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .divider small { margin-left: 6px; opacity: 0.6; font-size: 0.9em; }
+        .divider:hover { color: var(--cream); }
+        .divider[aria-pressed="true"] { background: var(--paper); color: var(--paper-ink); padding-top: 13px; margin-top: -4px; }
+
+        .bin {
+            position: relative; padding: 26px 22px 30px; border: 3px solid #000; box-shadow: var(--hard-lg);
+            background-color: var(--walnut); background-image: var(--grain), linear-gradient(180deg, #4a2c17, #2c190d);
+        }
+        .result-note { min-height: 1.4em; margin-bottom: 16px; font: 700 0.72rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--cream-dim); }
+        .records { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 28px 20px; }
+        .record { position: relative; display: block; color: inherit; text-decoration: none; }
+        .record:hover, .record:focus-visible { z-index: 2; }
         .sleeve-wrap { position: relative; display: block; aspect-ratio: 1; }
-        .sleeve-wrap::before { /* the record inside, slides out on hover */
+        .sleeve-wrap::before { /* the record inside slides out on hover */
             content: ''; position: absolute; top: 4%; left: 4%; width: 92%; aspect-ratio: 1; border-radius: 50%;
             background:
-                radial-gradient(circle at 50% 50%, #0b0806 0 3%, var(--accent, var(--amber)) 3.5% 17%, transparent 17.5%),
-                repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(255, 240, 220, 0.04) 2.5px 3px),
+                radial-gradient(circle at 50% 50%, #0b0806 0 3%, var(--accent, var(--red)) 3.5% 17%, transparent 17.5%),
+                repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(255, 240, 220, 0.05) 2.5px 3px),
                 radial-gradient(circle at 50% 50%, #1d1714 0 30%, #0f0b09 31% 100%);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
             transition: transform var(--base);
         }
         .sleeve {
-            position: relative; display: block; width: 100%; height: 100%; border-radius: 4px; overflow: hidden;
-            background: var(--bg-sunk);
-            box-shadow: 0 14px 26px -10px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative; display: block; width: 100%; height: 100%; overflow: hidden;
+            background: var(--ink-3); border: 2px solid #000; box-shadow: 4px 4px 0 #000;
             transition: transform var(--base), box-shadow var(--base);
         }
         .sleeve img { display: block; width: 100%; height: 100%; object-fit: cover; }
-        .sleeve-empty {
-            position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; padding: 14px;
-            background: linear-gradient(160deg, color-mix(in srgb, var(--accent, var(--amber)) 38%, #1a110b), #120c08);
+        .sleeve-blank {
+            position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; padding: 12px;
+            background: var(--accent, var(--red)); color: var(--ink);
         }
-        .sleeve-empty b { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.05rem; line-height: 1.1; color: var(--text); }
-        .sleeve-empty i { font-style: normal; font-size: 0.75rem; color: var(--text-soft); }
-        .record:hover .sleeve, .record:focus-visible .sleeve { transform: translateY(-6px); box-shadow: 0 22px 30px -12px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
-        .record:hover .sleeve-wrap::before, .record:focus-visible .sleeve-wrap::before { transform: translate(26%, -6px) rotate(40deg); }
-        .record:hover, .record:focus-visible { z-index: 2; }
-        .record:focus-visible { outline-offset: 6px; }
-        .cap { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; min-width: 0; line-height: 1.3; }
-        .r-title { display: block; font-weight: 600; font-size: 0.92rem; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .r-artist { display: block; font-size: 0.85rem; color: var(--text-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .r-meta { display: block; font-size: 0.75rem; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sleeve-blank b { font: 800 1.35rem/0.9 var(--display); text-transform: uppercase; }
+        .sleeve-blank i { font: 700 0.66rem var(--mono); font-style: normal; letter-spacing: 0.06em; text-transform: uppercase; }
+        .record:hover .sleeve, .record:focus-visible .sleeve { transform: translate(-3px, -6px); box-shadow: 7px 9px 0 #000; }
+        .record:hover .sleeve-wrap::before, .record:focus-visible .sleeve-wrap::before { transform: translate(28%, -6px) rotate(40deg); }
+        .cap { display: block; margin-top: 12px; line-height: 1.3; }
+        .r-title { display: block; overflow: hidden; font-weight: 700; color: var(--cream); text-overflow: ellipsis; white-space: nowrap; }
+        .r-artist { display: block; overflow: hidden; font-size: 0.9rem; color: var(--cream-soft); text-overflow: ellipsis; white-space: nowrap; }
+        .r-meta { display: block; margin-top: 4px; overflow: hidden; font: 700 0.66rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream-dim); text-overflow: ellipsis; white-space: nowrap; }
 
-        .skeleton .sleeve { background: linear-gradient(100deg, rgba(255, 220, 170, 0.04) 30%, rgba(255, 220, 170, 0.09) 50%, rgba(255, 220, 170, 0.04) 70%); background-size: 300% 100%; animation: shimmer 1.4s linear infinite; }
+        .skeleton .sleeve { background: linear-gradient(100deg, rgba(255, 220, 170, 0.04) 30%, rgba(255, 220, 170, 0.1) 50%, rgba(255, 220, 170, 0.04) 70%) 0 0 / 300% 100%; animation: shimmer 1.4s linear infinite; }
         .skeleton .sleeve-wrap::before { display: none; }
-        .skeleton .r-title, .skeleton .r-artist { height: 0.8em; width: 70%; border-radius: 4px; background: rgba(255, 220, 170, 0.06); }
+        .skeleton .r-title, .skeleton .r-artist { height: 0.8em; width: 70%; margin-top: 6px; background: rgba(255, 220, 170, 0.07); }
         .skeleton .r-artist { width: 45%; }
         @keyframes shimmer { to { background-position: -100% 0; } }
 
-        .bin-message { padding: 48px 12px; text-align: center; color: var(--text-soft); }
-        .bin-message strong { display: block; margin-bottom: 6px; font-family: var(--serif); font-size: 1.4rem; font-weight: 500; color: var(--text); }
-        .bin-message .btn { margin-top: 16px; }
-        .more-row { display: flex; justify-content: center; margin-top: 28px; }
+        /* A paper sign taped inside the bin, for empty and error states */
+        .sign {
+            grid-column: 1 / -1; justify-self: center; position: relative; max-width: 520px; margin: 34px auto 26px; padding: 30px 30px 26px; text-align: center;
+            color: var(--paper-ink); border: 2px solid #000; box-shadow: var(--hard-lg); transform: rotate(-1.2deg);
+        }
+        .sign::before, .sign::after { content: ''; position: absolute; top: -12px; width: 86px; height: 24px; background: rgba(233, 214, 160, 0.75); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); }
+        .sign::before { left: 18px; transform: rotate(-6deg); }
+        .sign::after { right: 18px; transform: rotate(5deg); }
+        .sign .sign-title { margin: 0; font: 800 clamp(2.6rem, 6vw, 3.6rem)/0.9 var(--display); text-transform: uppercase; color: var(--paper-ink); }
+        .sign p { margin-top: 12px; font-size: 1rem; color: #4d3f2f; }
+        .sign .btn { margin-top: 18px; }
+        .more-row { display: flex; justify-content: center; margin-top: 30px; }
 
-        /* ---------- Responsive ---------- */
-        @media (max-width: 900px) {
-            .hero { padding-top: 40px; }
-            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-            .lean-box { width: min(340px, 86%); }
+        @media (max-width: 960px) {
+            .hero { padding-top: 36px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+            .pickups { width: min(560px, 100%); }
         }
         @media (max-width: 640px) {
-            .hero-title { font-size: clamp(2.6rem, 13vw, 3.4rem); }
+            .hero-title { font-size: clamp(4rem, 24vw, 6rem); }
             .hero-sub { font-size: 1.02rem; }
-            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .stat:nth-child(3) { padding-left: 0; border-left: 0; }
-            .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+            .pickups-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 0 8px; }
+            .pickup:nth-child(4) { display: none; }
+            .dig { padding-bottom: 72px; }
             .controls, .search, .sort { width: 100%; }
-            .bin { padding: 14px; border-radius: var(--radius); }
-            .records { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; }
+            .dividers { padding-left: 8px; }
+            .divider { padding: 8px 10px 10px; font-size: 0.64rem; }
+            .bin { padding: 18px 12px 22px; }
+            .records { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; }
             .record:hover .sleeve-wrap::before { transform: translate(14%, -6px) rotate(40deg); }
+            .sign { padding: 26px 18px 22px; }
         }
     </style>
 </head>
 <body>
-    <a href="#main" class="skip-link">Skip to main content</a>
+    <a href="#main" class="skip-link">Skip to the records</a>
     <nav class="site-nav" aria-label="Main">
         <div class="container">
             <a href="/" class="wordmark" aria-label="Jack’s Listening To, home">
-                <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#0d0907" stroke="rgba(240,214,170,.28)"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="rgba(240,214,170,.12)"/><circle cx="16" cy="16" r="9" fill="none" stroke="rgba(240,214,170,.1)"/><circle cx="16" cy="16" r="5.6" style="fill:var(--amber)"/><circle cx="16" cy="16" r="1.3" fill="#120d0a"/></svg>
-                <span>Jack’s <em>Listening</em> To</span>
+                <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#0c0907" stroke="#000" stroke-width="1.5"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="rgba(243,231,207,.14)"/><circle cx="16" cy="16" r="9" fill="none" stroke="rgba(243,231,207,.1)"/><circle cx="16" cy="16" r="5.6" fill="#d63a26"/><circle cx="16" cy="16" r="1.3" fill="#0c0907"/></svg>
+                <span>Jack’s Listening To</span>
             </a>
             <div class="nav-links">
-                <a href="/">The Season</a>
-                <a href="/crate/" aria-current="page">The Crate</a>
+                <a href="/"><span class="nav-the">The </span>Seasons</a>
+                <a href="/crate/" aria-current="page"><span class="nav-the">The </span>Crate</a>
             </div>
         </div>
     </nav>
@@ -192,41 +180,45 @@
         <header class="hero">
             <div class="container hero-grid">
                 <div>
-                    <p class="eyebrow">The crate · records on the shelf</p>
-                    <h1 class="hero-title display">Every record,<br><em>on the shelf.</em></h1>
-                    <p class="hero-sub">The seasons are what I stream. This is what I keep: every record I own, pulled straight from my Discogs collection.</p>
-                    <div class="stats" id="stats" aria-live="polite"></div>
+                    <p class="kicker">Records on the shelf</p>
+                    <h1 class="hero-title display">The<br><span class="neon">Crate.</span></h1>
+                    <p class="hero-sub">The seasons are what I stream. This is the stuff I actually own: every record on my shelf, synced from my Discogs, so new pickups show up here on their own.</p>
+                    <p class="receipt" id="stats" aria-live="polite"></p>
                 </div>
-                <div class="lean" aria-hidden="true">
-                    <div class="lean-box" id="lean"></div>
-                    <p class="lean-caption" id="lean-caption"></p>
+                <div class="pickups" id="pickups-block" aria-label="Latest pickups">
+                    <span class="sticker pickups-tag">Just in</span>
+                    <div class="pickups-row" id="pickups">
+                        <span class="pickup blank"></span><span class="pickup blank"></span><span class="pickup blank"></span><span class="pickup blank"></span>
+                    </div>
+                    <div class="ledge"></div>
+                    <p class="pickups-caption" id="pickups-caption"></p>
                 </div>
             </div>
         </header>
 
-        <section aria-labelledby="bin-title">
+        <section class="dig" aria-labelledby="dig-title">
             <div class="container">
                 <div class="section-head">
                     <div>
-                        <p class="eyebrow">Flip through</p>
-                        <h2 class="section-title display" id="bin-title">The <em>bin</em></h2>
+                        <p class="kicker">Flip through</p>
+                        <h2 class="section-title display" id="dig-title">Dig in</h2>
                     </div>
                     <div class="controls">
-                        <input class="search" id="search" type="search" autocomplete="off" placeholder="Artist, title, label…" aria-label="Search the crate">
+                        <input class="search" id="search" type="search" autocomplete="off" placeholder="Artist, album, label…" aria-label="Search the crate">
                         <select class="sort" id="sort" aria-label="Sort the crate">
-                            <option value="added">Newest additions</option>
+                            <option value="added">Newest pickups</option>
                             <option value="artist">Artist A–Z</option>
-                            <option value="title">Title A–Z</option>
-                            <option value="year-desc">Release year, newest</option>
-                            <option value="year-asc">Release year, oldest</option>
+                            <option value="title">Album A–Z</option>
+                            <option value="year-desc">Newest releases</option>
+                            <option value="year-asc">Oldest releases</option>
                         </select>
                     </div>
                 </div>
-                <div class="chips" id="chips" role="group" aria-label="Filter by genre"></div>
-                <p class="result-note" id="note" aria-live="polite"></p>
+                <div class="dividers" id="dividers" role="group" aria-label="Filter by genre"></div>
                 <div class="bin">
+                    <p class="result-note" id="note" aria-live="polite"></p>
                     <div class="records" id="records"></div>
-                    <div class="more-row hidden" id="more-row"><button class="btn" id="more" type="button">Show more records</button></div>
+                    <div class="more-row hidden" id="more-row"><button class="btn" id="more" type="button">Keep digging</button></div>
                 </div>
             </div>
         </section>
@@ -234,8 +226,9 @@
 
     <footer class="site-footer">
         <div class="container">
-            <p class="sign-off">© <span id="year"></span> Jack’s Listening To · still digging</p>
-            <p>Collection data from <a id="discogs-link" href="https://www.discogs.com" target="_blank" rel="noopener">Discogs</a> · <a href="/">The seasons →</a></p>
+            <p class="sign-off">Jack’s Listening To</p>
+            <p>Collection via <a href="https://www.discogs.com" target="_blank" rel="noopener">Discogs</a> · <a href="/">The seasons →</a></p>
+            <p>© <span id="year"></span></p>
         </div>
     </footer>
 
@@ -244,7 +237,7 @@
         'use strict';
         const $ = id => document.getElementById(id);
         const CHUNK = 96;
-        const ACCENTS = ['var(--amber)', 'var(--red)', 'var(--hunter-bright)', 'var(--brass)', 'var(--summer)', 'var(--fall)'];
+        const ACCENTS = ['var(--red)', 'var(--mustard)', 'var(--orange)', 'var(--winter)', 'var(--spring)', 'var(--cream-soft)'];
 
         let all = [];
         let view = [];
@@ -256,49 +249,52 @@
         const sortKey = text => String(text || '').toLowerCase().replace(/^the\s+/, '');
         const hash = text => { let h = 0; for (const c of String(text)) h = (h * 31 + c.charCodeAt(0)) | 0; return Math.abs(h); };
         const accent = item => ACCENTS[hash(item.artist + item.title) % ACCENTS.length];
-        const firstFormat = item => (item.formats || []).slice(0, 2).join(' ');
+        const formatLine = item => (item.formats || []).slice(0, 2).join(' ');
 
         $('year').textContent = new Date().getFullYear();
 
         function renderSkeleton() {
             $('records').innerHTML = Array.from({ length: 12 }, () =>
-                '<div class="record skeleton" aria-hidden="true"><div class="sleeve-wrap"><div class="sleeve"></div></div><div class="cap"><span class="r-title"></span><span class="r-artist"></span></div></div>'
+                '<div class="record skeleton" aria-hidden="true"><span class="sleeve-wrap"><span class="sleeve"></span></span><span class="cap"><span class="r-title"></span><span class="r-artist"></span></span></div>'
             ).join('');
         }
 
-        function message(title, body, retry) {
-            $('records').innerHTML = `<div class="bin-message" style="grid-column:1/-1"><strong>${esc(title)}</strong>${esc(body)}${retry ? '<br><button class="btn" type="button" id="retry">Try again</button>' : ''}</div>`;
+        function sign(title, body, retry) {
+            $('records').innerHTML = `<div class="sign paper"><p class="sign-title">${esc(title)}</p><p>${esc(body)}</p>${retry ? '<button class="btn btn-primary" type="button" id="retry">Try again</button>' : ''}</div>`;
             if (retry) $('retry').addEventListener('click', load);
+            $('more-row').classList.add('hidden');
         }
 
         function renderStats() {
             const artists = new Set(all.map(i => i.artist.toLowerCase()).filter(Boolean));
             const labels = new Set(all.flatMap(i => i.labels || []).map(l => l.toLowerCase()));
             const years = all.map(i => i.year).filter(Boolean);
-            const oldest = years.length ? String(Math.min(...years)) : '—';
-            const stats = [
-                { num: all.length.toLocaleString(), label: 'records on the shelf' },
-                { num: artists.size.toLocaleString(), label: 'different artists' },
-                { num: labels.size.toLocaleString(), label: 'labels' },
-                { num: oldest, label: 'oldest record' },
+            const parts = [
+                `<span><b>${all.length.toLocaleString()}</b> records</span>`,
+                `<span><b>${artists.size.toLocaleString()}</b> artists</span>`,
+                `<span><b>${labels.size.toLocaleString()}</b> labels</span>`,
             ];
-            $('stats').innerHTML = stats.map(s => `<div class="stat"><div class="stat-num">${esc(s.num)}</div><div class="stat-label">${esc(s.label)}</div></div>`).join('');
+            if (years.length) parts.push(`<span>Oldest <b>${Math.min(...years)}</b></span>`);
+            $('stats').innerHTML = parts.join('');
         }
 
-        function renderLean() {
-            const withCovers = all.filter(i => safeUrl(i.cover)).slice(0, 4);
-            $('lean').innerHTML = withCovers.map(i => `<span class="lean-sleeve" style="background-image:url(&quot;${esc(safeUrl(i.cover))}&quot;)"></span>`).join('');
-            const latest = all[0];
-            $('lean-caption').innerHTML = latest ? `latest in · <strong>${esc(latest.title)}</strong>` : '';
+        function renderPickups() {
+            const latest = all.slice(0, 4);
+            $('pickups').innerHTML = latest.map(i => {
+                const cover = safeUrl(i.cover);
+                const style = `--accent:${accent(i)}${cover ? `;--cover:url(&quot;${esc(cover)}&quot;)` : ''}`;
+                return `<a class="pickup" href="${esc(safeUrl(i.url) || '#')}" target="_blank" rel="noopener" style="${style}" aria-label="${esc(`${i.title} by ${i.artist}`)}"></a>`;
+            }).join('');
+            if (all[0]) $('pickups-caption').innerHTML = `Latest: <b>${esc(all[0].title)}</b> · ${esc(all[0].artist)}`;
         }
 
-        function renderChips() {
+        function renderDividers() {
             const counts = new Map();
             all.forEach(i => (i.genres || []).forEach(g => counts.set(g, (counts.get(g) || 0) + 1)));
-            const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
-            if (top.length < 2) { $('chips').innerHTML = ''; return; }
-            const chip = (value, name, count) => `<button type="button" class="chip" data-genre="${esc(value)}" aria-pressed="${genre === value}">${esc(name)}${count ? `<small>${count}</small>` : ''}</button>`;
-            $('chips').innerHTML = chip('', 'All', 0) + top.map(([g, n]) => chip(g, g, n)).join('');
+            const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 7);
+            if (top.length < 2) { $('dividers').innerHTML = ''; return; }
+            const tab = (value, name, count) => `<button type="button" class="divider" data-genre="${esc(value)}" aria-pressed="${genre === value}">${esc(name)}${count ? `<small>${count}</small>` : ''}</button>`;
+            $('dividers').innerHTML = tab('', 'All', 0) + top.map(([g, n]) => tab(g, g, n)).join('');
         }
 
         function filterAndSort() {
@@ -313,27 +309,26 @@
             else if (by === 'title') list.sort((a, b) => sortKey(a.title).localeCompare(sortKey(b.title)));
             else if (by === 'year-desc') list.sort((a, b) => (b.year || 0) - (a.year || 0));
             else if (by === 'year-asc') list.sort((a, b) => (a.year || 9999) - (b.year || 9999));
-            /* "added" keeps Discogs' order: newest additions first. */
+            /* "added" keeps Discogs' order: newest pickups first. */
             return list;
         }
 
         function card(item) {
             const cover = safeUrl(item.cover);
-            const meta = [item.year, firstFormat(item)].filter(Boolean).join(' · ');
+            const meta = [item.year, formatLine(item)].filter(Boolean).join(' · ');
             const sleeve = cover
                 ? `<img src="${esc(cover)}" alt="" loading="lazy" decoding="async">`
-                : `<span class="sleeve-empty"><b>${esc(item.title)}</b><i>${esc(item.artist)}</i></span>`;
-            return `<a class="record" href="${esc(safeUrl(item.url) || '#')}" target="_blank" rel="noopener" style="--accent:${accent(item)}" aria-label="${esc(`${item.title} by ${item.artist}${item.year ? `, ${item.year}` : ''} on Discogs`)}">` +
-                `<span class="sleeve-wrap"><span class="sleeve">${sleeve}</span></span>` +
-                `<span class="cap"><span class="r-title">${esc(item.title)}</span><span class="r-artist">${esc(item.artist || 'Unknown artist')}</span><span class="r-meta">${esc(meta)}</span></span></a>`;
+                : `<span class="sleeve-blank"><b>${esc(item.title)}</b><i>${esc(item.artist)}</i></span>`;
+            return `<a class="record" href="${esc(safeUrl(item.url) || '#')}" target="_blank" rel="noopener" style="--accent:${accent(item)}" aria-label="${esc(`${item.title} by ${item.artist}${item.year ? `, ${item.year}` : ''}, on Discogs`)}">`
+                + `<span class="sleeve-wrap"><span class="sleeve">${sleeve}</span></span>`
+                + `<span class="cap"><span class="r-title">${esc(item.title)}</span><span class="r-artist">${esc(item.artist || 'Unknown artist')}</span><span class="r-meta">${esc(meta)}</span></span></a>`;
         }
 
         function render() {
             view = filterAndSort();
             shown = Math.min(CHUNK, view.length);
-            const filtered = view.length !== all.length;
-            $('note').textContent = filtered ? `${view.length.toLocaleString()} of ${all.length.toLocaleString()} records` : '';
-            if (!view.length) { message('Nothing in the bin matches.', 'Try an artist, a label or a genre.'); $('more-row').classList.add('hidden'); return; }
+            $('note').textContent = view.length === all.length ? `${all.length.toLocaleString()} records` : `${view.length.toLocaleString()} of ${all.length.toLocaleString()} records`;
+            if (!view.length) { sign('Nothing here', 'No records match that. Try an artist or a label.'); return; }
             $('records').innerHTML = view.slice(0, shown).map(card).join('');
             $('more-row').classList.toggle('hidden', shown >= view.length);
         }
@@ -347,31 +342,31 @@
 
         async function load() {
             renderSkeleton();
+            $('note').textContent = '';
             try {
                 const response = await fetch('/api/crate');
                 const data = await response.json().catch(() => ({}));
-                if (response.status === 503) { message('The crate is still being wired up.', 'Records show up here as soon as the Discogs connection is set.'); return; }
+                if (response.status === 503) { $('pickups-block').classList.add('hidden'); sign('Back in a bit', 'The crate’s getting restocked. Check back soon.'); return; }
                 if (!response.ok) throw new Error(data.error || 'The crate didn’t load.');
                 all = Array.isArray(data.items) ? data.items : [];
-                if (data.username) $('discogs-link').href = `https://www.discogs.com/user/${encodeURIComponent(data.username)}/collection`;
+                if (!all.length) { sign('Empty crate', 'Nothing on the shelf yet.'); return; }
                 renderStats();
-                renderLean();
-                renderChips();
-                if (!all.length) { message('The crate is empty.', 'Nothing in the Discogs collection yet.'); return; }
+                renderPickups();
+                renderDividers();
                 render();
             } catch (error) {
-                message('The crate didn’t load.', error.message || 'Discogs couldn’t be reached.', true);
+                sign('Couldn’t reach Discogs', error.message || 'Give it another try in a minute.', true);
             }
         }
 
         let searchTimer;
         $('search').addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(render, 120); });
         $('sort').addEventListener('change', render);
-        $('chips').addEventListener('click', event => {
-            const button = event.target.closest('.chip');
-            if (!button) return;
-            genre = button.dataset.genre || '';
-            $('chips').querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === button)));
+        $('dividers').addEventListener('click', event => {
+            const tab = event.target.closest('.divider');
+            if (!tab) return;
+            genre = tab.dataset.genre || '';
+            $('dividers').querySelectorAll('.divider').forEach(t => t.setAttribute('aria-pressed', String(t === tab)));
             render();
         });
         $('more').addEventListener('click', showMore);

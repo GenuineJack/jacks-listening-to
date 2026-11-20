@@ -13,7 +13,7 @@ Static pages on Vercel, plus a few small serverless functions in `api/`.
 | `songs_data.csv` | Track-level data behind the “by the numbers” section |
 | `assets/` | Shared listening-bar stylesheet and self-hosted fonts (Fraunces, DM Sans; OFL) |
 
-Old genuinejack.xyz-style paths redirect: `/seasons/…` → `/`, `/collection` → `/crate/`, `/explorer` → `/`.
+Old paths redirect: `/seasons/…` → `/`, `/collection` → `/crate/`, `/explorer` → `/`.
 
 ## Adding a new season
 
