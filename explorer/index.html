@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Seasons · Genuine Jack</title>
+<meta name="description" content="Connect Spotify and explore the artists, eras, and songs running through your own seasonal playlists.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --orange:#ff6d0e; --orange-hover:#ff8534; --black:#0a0a0a; --dark:#111; --darker:#0d0d0d; --gray:#888; --gray-light:#aaa; --light:#f5f5f5; --green:#4ade80; --red:#f87171; --line:rgba(255,109,14,.18); }
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { min-height:100vh; overflow-x:hidden; background:var(--black); color:var(--light); font-family:'IBM Plex Sans',sans-serif; line-height:1.6; }
+body::before { content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; background-image:linear-gradient(rgba(255,109,14,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,109,14,.03) 1px,transparent 1px); background-size:50px 50px; }
+button { font:inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline:2px solid var(--orange); outline-offset:3px; }
+.container { width:min(1120px,calc(100% - 40px)); margin:0 auto; }
+nav { border-bottom:1px solid rgba(255,109,14,.1); background:rgba(10,10,10,.94); }
+nav .container { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.logo { color:var(--light); font:700 1rem 'JetBrains Mono',monospace; text-decoration:none; }
+.logo span, .eyebrow, .accent { color:var(--orange); }
+.nav-links { display:flex; gap:20px; }
+.nav-links a { color:var(--gray-light); font:.72rem 'JetBrains Mono',monospace; text-decoration:none; }
+.nav-links a:hover { color:var(--orange); }
+main { padding:64px 0 88px; }
+.hero { display:grid; grid-template-columns:minmax(0,1fr) 310px; gap:64px; align-items:end; padding-bottom:52px; border-bottom:1px solid var(--line); }
+.eyebrow { margin-bottom:14px; font:.72rem 'JetBrains Mono',monospace; letter-spacing:1px; }
+h1 { max-width:720px; font:800 clamp(2.8rem,8vw,6.3rem)/.92 'JetBrains Mono',monospace; letter-spacing:0; }
+.hero-copy { margin-top:24px; max-width:630px; color:var(--gray-light); font-size:1.05rem; }
+.connect-panel { padding-left:28px; border-left:2px solid var(--orange); }
+.connect-panel p { margin-bottom:18px; color:var(--gray-light); font-size:.88rem; }
+.primary, .secondary, .text-btn { cursor:pointer; border:0; font:700 .75rem 'JetBrains Mono',monospace; letter-spacing:.4px; }
+.primary { width:100%; min-height:46px; padding:12px 18px; border-radius:4px; background:var(--orange); color:var(--black); }
+.primary:hover { background:var(--orange-hover); }
+.primary:disabled { cursor:default; opacity:.45; }
+.secondary { min-height:42px; padding:10px 16px; border:1px solid rgba(255,109,14,.4); background:transparent; color:var(--orange); }
+.secondary:hover { background:var(--orange); color:var(--black); }
+.text-btn { padding:8px 0; background:none; color:var(--gray); }
+.text-btn:hover { color:var(--orange); }
+.privacy { margin-top:12px; color:var(--gray); font:.65rem 'JetBrains Mono',monospace; }
+.status { min-height:24px; margin-top:16px; color:var(--gray-light); font:.76rem 'JetBrains Mono',monospace; }
+.status.error { color:var(--red); }
+.status.ok { color:var(--green); }
+.hidden { display:none !important; }
+.workspace { padding-top:46px; }
+.workspace-head { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:26px; }
+.workspace h2 { font:700 clamp(1.7rem,4vw,2.7rem) 'JetBrains Mono',monospace; letter-spacing:0; }
+.profile { display:flex; align-items:center; gap:12px; color:var(--gray-light); font:.74rem 'JetBrains Mono',monospace; }
+.profile img { width:38px; height:38px; object-fit:cover; border-radius:50%; border:1px solid var(--line); }
+.profile strong { display:block; color:var(--light); }
+.scan-layout { display:grid; grid-template-columns:1fr 260px; gap:34px; align-items:start; }
+.playlists { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.playlist { position:relative; min-height:150px; overflow:hidden; cursor:pointer; border:1px solid rgba(255,255,255,.08); border-radius:6px; background:var(--dark) center/cover no-repeat; }
+.playlist::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.9)); }
+.playlist input { position:absolute; top:12px; right:12px; z-index:3; width:18px; height:18px; accent-color:var(--orange); }
+.playlist-copy { position:absolute; z-index:2; right:12px; bottom:10px; left:12px; }
+.playlist strong { display:block; font:600 .78rem 'JetBrains Mono',monospace; }
+.playlist span { color:#ccc; font:.67rem 'JetBrains Mono',monospace; }
+.playlist:has(input:checked) { outline:2px solid var(--orange); outline-offset:-2px; }
+.action-rail { position:sticky; top:24px; padding:20px; border-top:2px solid var(--orange); background:var(--darker); }
+.action-rail .count { margin-bottom:14px; font:700 2rem 'JetBrains Mono',monospace; color:var(--orange); }
+.action-rail p { margin-bottom:18px; color:var(--gray-light); font-size:.82rem; }
+.progress { height:5px; margin:16px 0; overflow:hidden; background:#222; }
+.progress span { display:block; width:0; height:100%; background:var(--orange); transition:width .25s ease; }
+.results { padding-top:58px; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:24px 0 52px; }
+.stat { min-height:112px; padding:20px; border:1px solid var(--line); background:var(--dark); }
+.stat strong { display:block; color:var(--orange); font:700 1.8rem 'JetBrains Mono',monospace; }
+.stat span { color:var(--gray); font:.66rem 'JetBrains Mono',monospace; }
+.result-grid { display:grid; grid-template-columns:1fr 1fr; gap:54px; }
+.result-block { margin-bottom:50px; }
+.result-block h3 { margin-bottom:4px; font:600 1rem 'JetBrains Mono',monospace; }
+.caption { margin-bottom:18px; color:var(--gray); font:.72rem 'JetBrains Mono',monospace; }
+.bar { display:grid; grid-template-columns:130px 1fr 56px; align-items:center; gap:12px; margin-bottom:9px; }
+.bar-label { overflow:hidden; color:var(--gray-light); font:.74rem 'JetBrains Mono',monospace; text-overflow:ellipsis; white-space:nowrap; }
+.bar-track { height:9px; overflow:hidden; background:#1d1d1d; }
+.bar-fill { display:block; height:100%; background:var(--orange); }
+.bar-tail { color:var(--gray); font:.68rem 'JetBrains Mono',monospace; text-align:right; }
+.repeat { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.06); color:var(--gray-light); font:.74rem 'JetBrains Mono',monospace; }
+.repeat b { color:var(--orange); }
+.empty { color:var(--gray); font:.78rem 'JetBrains Mono',monospace; }
+.export-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; }
+@media (max-width:800px) { .hero { grid-template-columns:1fr; gap:34px; } .connect-panel { padding:20px 0 0; border-top:2px solid var(--orange); border-left:0; } .scan-layout { grid-template-columns:1fr; } .action-rail { position:static; } .playlists { grid-template-columns:repeat(2,minmax(0,1fr)); } .stats { grid-template-columns:repeat(2,1fr); } .result-grid { grid-template-columns:1fr; gap:0; } }
+@media (max-width:480px) { .container { width:min(100% - 28px,1120px); } nav .container { align-items:flex-start; padding:14px 0; } .nav-links { flex-direction:column; align-items:flex-end; gap:4px; } main { padding-top:42px; } .hero { padding-bottom:40px; } .workspace-head { align-items:flex-start; flex-direction:column; } .playlists { grid-template-columns:1fr; } .playlist { min-height:130px; } .bar { grid-template-columns:100px 1fr 48px; gap:8px; } }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<nav><div class="container"><a class="logo" href="/">GENUINE<span>JACK</span></a><div class="nav-links"><a href="/seasons/">my archive</a><a href="/">home</a></div></div></nav>
+<main class="container">
+<section class="hero">
+<div><p class="eyebrow">// your listening history, by season</p><h1>FIND YOUR<br><span class="accent">SEASONS</span></h1><p class="hero-copy">Connect Spotify to surface the artists, eras, and songs that keep returning across playlists named Spring, Summer, Fall, or Winter.</p></div>
+<div class="connect-panel" id="connect-panel"><p>Spotify opens for permission, then sends you straight back here.</p><button class="primary" id="connect">connect Spotify</button><div class="status" id="auth-status" aria-live="polite"></div><p class="privacy">Session only · nothing is saved to this site</p></div>
+</section>
+<section class="workspace hidden" id="workspace">
+<div class="workspace-head"><div><p class="eyebrow">// seasonal playlists found</p><h2>Choose the run to analyze</h2></div><div class="profile"><img id="avatar" alt=""><div><strong id="display-name"></strong><button class="text-btn" id="disconnect">disconnect</button></div></div></div>
+<div class="scan-layout"><div class="playlists" id="playlists"></div><aside class="action-rail"><div class="count" id="selected-count">0</div><p>selected playlists. Track details are fetched only after you start the analysis.</p><button class="primary" id="analyze">analyze selected</button><div class="progress hidden" id="progress"><span></span></div><div class="status" id="scan-status" aria-live="polite"></div></aside></div>
+</section>
+<section class="results hidden" id="results">
+<p class="eyebrow">// the shape of your seasons</p><h2>Your archive knows things</h2>
+<div class="stats" id="stats"></div>
+<div class="result-grid"><div><div class="result-block"><h3>who follows you through time</h3><p class="caption">artists ranked by distinct seasonal playlists</p><div id="artists"></div></div><div class="result-block"><h3>songs that return</h3><p class="caption">tracks appearing in more than one selected season</p><div id="repeats"></div></div></div><div><div class="result-block"><h3>the decades in your crates</h3><p class="caption">release years grouped by decade</p><div id="decades"></div></div><div class="result-block"><h3>take it with you</h3><p class="caption">your export is generated here and never uploaded</p><div class="export-row"><button class="secondary" id="download">↓ songs_data.csv</button><button class="secondary" id="start-over">choose again</button></div></div></div></div>
+</section>
+</main>
+<script>
+const SEASON_RE = /^\s*(Spring|Summer|Fall|Autumn|Winter)\s+(\d{4})\s*$/i;
+const ORDER = { Spring:0, Summer:1, Fall:2, Winter:3 };
+const STORAGE = { verifier:'spotify_pkce_verifier', state:'spotify_oauth_state', token:'spotify_session' };
+const byId = id => document.getElementById(id);
+let config = null;
+let session = null;
+let seasonalPlaylists = [];
+let songRows = [];
+
+function setStatus(id, message, type = '') { const element = byId(id); element.textContent = message; element.className = `status ${type}`; }
+function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char])); }
+function normalizeSeason(value) { const lower = value.toLowerCase(); return lower === 'autumn' ? 'Fall' : lower[0].toUpperCase() + lower.slice(1); }
+function randomString(length = 64) { const bytes = crypto.getRandomValues(new Uint8Array(length)); return Array.from(bytes, byte => (byte % 36).toString(36)).join(''); }
+function base64Url(buffer) { return btoa(String.fromCharCode(...new Uint8Array(buffer))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+async function challenge(verifier) { return base64Url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))); }
+
+async function loadConfig() {
+    const response = await fetch('/api/spotify-config');
+    if (!response.ok) throw new Error('Spotify connection is not configured yet.');
+    config = await response.json();
+}
+
+async function connect() {
+    if (location.origin !== 'https://genuinejack.xyz') {
+        setStatus('auth-status', 'Sign-in is available on the deployed genuinejack.xyz page.', 'error');
+        return;
+    }
+    const verifier = randomString();
+    const state = randomString(32);
+    sessionStorage.setItem(STORAGE.verifier, verifier);
+    sessionStorage.setItem(STORAGE.state, state);
+    const params = new URLSearchParams({ client_id:config.clientId, response_type:'code', redirect_uri:config.redirectUri, scope:'playlist-read-private playlist-read-collaborative user-read-private', code_challenge_method:'S256', code_challenge:await challenge(verifier), state });
+    location.assign(`https://accounts.spotify.com/authorize?${params}`);
+}
+
+async function exchangeCode(code, returnedState) {
+    const verifier = sessionStorage.getItem(STORAGE.verifier);
+    const expectedState = sessionStorage.getItem(STORAGE.state);
+    if (!verifier || !expectedState || returnedState !== expectedState) throw new Error('Spotify sign-in state could not be verified. Please reconnect.');
+    const body = new URLSearchParams({ client_id:config.clientId, grant_type:'authorization_code', code, redirect_uri:config.redirectUri, code_verifier:verifier });
+    const response = await fetch('https://accounts.spotify.com/api/token', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body });
+    if (!response.ok) throw new Error('Spotify could not complete sign-in. Please reconnect.');
+    const data = await response.json();
+    saveSession(data);
+    sessionStorage.removeItem(STORAGE.verifier);
+    sessionStorage.removeItem(STORAGE.state);
+}
+
+function saveSession(data) {
+    session = { accessToken:data.access_token, refreshToken:data.refresh_token || session?.refreshToken || '', expiresAt:Date.now() + data.expires_in * 1000 };
+    sessionStorage.setItem(STORAGE.token, JSON.stringify(session));
+}
+
+async function refreshSession() {
+    if (!session?.refreshToken) throw new Error('Your Spotify session expired. Please reconnect.');
+    const body = new URLSearchParams({ client_id:config.clientId, grant_type:'refresh_token', refresh_token:session.refreshToken });
+    const response = await fetch('https://accounts.spotify.com/api/token', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body });
+    if (!response.ok) throw new Error('Your Spotify session expired. Please reconnect.');
+    saveSession(await response.json());
+}
+
+async function spotifyFetch(url, retry = true) {
+    if (Date.now() > session.expiresAt - 60000) await refreshSession();
+    const response = await fetch(url, { headers:{ Authorization:`Bearer ${session.accessToken}` } });
+    if (response.status === 401 && retry) { await refreshSession(); return spotifyFetch(url, false); }
+    if (response.status === 429 && retry) { const seconds = Number(response.headers.get('retry-after')) || 2; await new Promise(resolve => setTimeout(resolve, seconds * 1000)); return spotifyFetch(url, false); }
+    if (!response.ok) throw new Error(`Spotify returned ${response.status}.`);
+    return response.json();
+}
+
+async function fetchAll(url) {
+    const items = [];
+    while (url) { const page = await spotifyFetch(url); items.push(...(page.items || [])); url = page.next; }
+    return items;
+}
+
+async function loadLibrary() {
+    setStatus('auth-status', 'Looking for seasonal playlists…');
+    const [profile, playlists] = await Promise.all([spotifyFetch('https://api.spotify.com/v1/me'), fetchAll('https://api.spotify.com/v1/me/playlists?limit=50')]);
+    byId('display-name').textContent = profile.display_name || profile.id;
+    const image = profile.images?.[0]?.url;
+    byId('avatar').src = image || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    byId('avatar').classList.toggle('hidden', !image);
+    seasonalPlaylists = playlists.flatMap(playlist => {
+        const match = playlist.name.match(SEASON_RE);
+        if (!match) return [];
+        const season = normalizeSeason(match[1]);
+        return [{ ...playlist, season, year:Number(match[2]), label:`${season} ${match[2]}` }];
+    }).sort((a,b) => a.year * 10 + ORDER[a.season] - (b.year * 10 + ORDER[b.season]));
+    renderPlaylists();
+    byId('connect-panel').classList.add('hidden');
+    byId('workspace').classList.remove('hidden');
+    setStatus('auth-status', '');
+}
+
+function renderPlaylists() {
+    if (!seasonalPlaylists.length) {
+        byId('playlists').innerHTML = '<p class="empty">No playlists named like “Summer 2024” were found.</p>';
+        byId('analyze').disabled = true;
+        updateSelection();
+        return;
+    }
+    byId('playlists').innerHTML = seasonalPlaylists.map((playlist,index) => `<label class="playlist" data-index="${index}"><input type="checkbox" data-index="${index}" checked><span class="playlist-copy"><strong>${escapeHtml(playlist.label)}</strong><span>${Number(playlist.tracks?.total || 0).toLocaleString()} tracks</span></span></label>`).join('');
+    byId('playlists').querySelectorAll('.playlist').forEach(element => {
+        const imageUrl = seasonalPlaylists[Number(element.dataset.index)].images?.[0]?.url;
+        if (imageUrl) element.style.backgroundImage = `url("${imageUrl}")`;
+    });
+    byId('playlists').querySelectorAll('input').forEach(input => input.addEventListener('change', updateSelection));
+    updateSelection();
+}
+
+function selectedPlaylists() { return [...byId('playlists').querySelectorAll('input:checked')].map(input => seasonalPlaylists[Number(input.dataset.index)]); }
+function updateSelection() { const count = selectedPlaylists().length; byId('selected-count').textContent = count; byId('analyze').disabled = count === 0; }
+
+async function analyze() {
+    const selected = selectedPlaylists();
+    songRows = [];
+    byId('analyze').disabled = true;
+    byId('progress').classList.remove('hidden');
+    try {
+        for (let playlistIndex = 0; playlistIndex < selected.length; playlistIndex++) {
+            const playlist = selected[playlistIndex];
+            setStatus('scan-status', `Reading ${playlist.label} · ${playlistIndex + 1}/${selected.length}`);
+            byId('progress').firstElementChild.style.width = `${playlistIndex / selected.length * 100}%`;
+            const fields = 'items(added_at,item(type,name,duration_ms,is_local,artists(name),album(name,release_date))),next,offset,total';
+            const items = await fetchAll(`https://api.spotify.com/v1/playlists/${playlist.id}/items?limit=50&fields=${encodeURIComponent(fields)}`);
+            items.forEach((entry,position) => {
+                const track = entry.item;
+                if (!track || track.type === 'episode' || track.is_local) return;
+                const artists = (track.artists || []).map(artist => artist.name);
+                const releaseDate = track.album?.release_date || '';
+                songRows.push({ label:playlist.label, season:playlist.season, year:playlist.year, position:position+1, song:track.name || '', artist:artists[0] || '', allArtists:artists.join(', '), album:track.album?.name || '', releaseDate, releaseYear:/^\d{4}/.test(releaseDate) ? Number(releaseDate.slice(0,4)) : null, durationSec:Math.round((track.duration_ms || 0)/1000), addedAt:entry.added_at || '' });
+            });
+        }
+        byId('progress').firstElementChild.style.width = '100%';
+        renderResults(selected);
+        setStatus('scan-status', `${songRows.length.toLocaleString()} tracks analyzed`, 'ok');
+        byId('results').classList.remove('hidden');
+        byId('results').scrollIntoView({ behavior:'smooth' });
+    } catch (error) {
+        setStatus('scan-status', error.message || 'Analysis failed.', 'error');
+    } finally { byId('analyze').disabled = false; }
+}
+
+function metrics() {
+    const artistSeasons = {}, songSeasons = {}, decades = {};
+    let duration = 0, ageTotal = 0, ageCount = 0;
+    songRows.forEach(row => {
+        duration += row.durationSec;
+        (artistSeasons[row.artist] ||= new Set()).add(row.label);
+        (songSeasons[`${row.song} — ${row.artist}`] ||= new Set()).add(row.label);
+        if (row.releaseYear) { const decade = Math.floor(row.releaseYear/10)*10; decades[decade] = (decades[decade] || 0) + 1; ageTotal += row.year-row.releaseYear; ageCount++; }
+    });
+    const artists = Object.entries(artistSeasons).map(([label,set]) => ({label,value:set.size,tail:`${set.size} seasons`})).sort((a,b)=>b.value-a.value).slice(0,10);
+    const repeats = Object.entries(songSeasons).map(([label,set]) => ({label,value:set.size})).filter(item=>item.value>1).sort((a,b)=>b.value-a.value).slice(0,10);
+    const decadeList = Object.entries(decades).map(([label,value]) => ({label:`${label}s`,value,tail:String(value)})).sort((a,b)=>Number(a.label.slice(0,4))-Number(b.label.slice(0,4)));
+    return { artists,repeats,decades:decadeList,duration,uniqueArtists:Object.keys(artistSeasons).length,avgAge:ageCount ? ageTotal/ageCount : 0 };
+}
+
+function renderBars(id, items) { const max = Math.max(0,...items.map(item=>item.value)); byId(id).innerHTML = items.length ? items.map(item=>`<div class="bar"><span class="bar-label">${escapeHtml(item.label)}</span><span class="bar-track"><span class="bar-fill" style="width:${max ? item.value/max*100 : 0}%"></span></span><span class="bar-tail">${escapeHtml(item.tail)}</span></div>`).join('') : '<p class="empty">Nothing here yet.</p>'; }
+function renderResults(selected) {
+    const data = metrics();
+    const stats = [{value:songRows.length.toLocaleString(),label:'tracks analyzed'},{value:selected.length,label:'seasonal playlists'},{value:data.uniqueArtists.toLocaleString(),label:'different artists'},{value:data.avgAge.toFixed(1)+' yrs',label:'nostalgia drift'}];
+    byId('stats').innerHTML = stats.map(stat=>`<div class="stat"><strong>${stat.value}</strong><span>${stat.label}</span></div>`).join('');
+    renderBars('artists',data.artists); renderBars('decades',data.decades);
+    byId('repeats').innerHTML = data.repeats.length ? data.repeats.map(item=>`<div class="repeat"><span>${escapeHtml(item.label)}</span><b>${item.value}×</b></div>`).join('') : '<p class="empty">Every song appears only once.</p>';
+}
+
+function csvCell(value) { return `"${String(value ?? '').replace(/"/g,'""')}"`; }
+function downloadCsv() {
+    const headers = ['Season Label','Season','Year','Position','Song','Artist','All Artists','Album','Release Date','Release Year','Duration (sec)','Added At'];
+    const rows = songRows.map(row=>[row.label,row.season,row.year,row.position,row.song,row.artist,row.allArtists,row.album,row.releaseDate,row.releaseYear,row.durationSec,row.addedAt]);
+    const csv = [headers,...rows].map(row=>row.map(csvCell).join(',')).join('\r\n');
+    const link = document.createElement('a'); link.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); link.download='songs_data.csv'; link.click(); URL.revokeObjectURL(link.href);
+}
+
+function disconnect() { Object.values(STORAGE).forEach(key=>sessionStorage.removeItem(key)); location.replace('/seasons/explorer/'); }
+
+async function init() {
+    byId('connect').disabled = true;
+    try {
+        await loadConfig();
+        const params = new URLSearchParams(location.search);
+        if (params.get('error')) throw new Error(`Spotify authorization was declined: ${params.get('error')}`);
+        if (params.get('code')) { setStatus('auth-status','Completing Spotify sign-in…'); await exchangeCode(params.get('code'),params.get('state')); history.replaceState({},'',location.pathname); }
+        const stored = sessionStorage.getItem(STORAGE.token); if (!session && stored) session=JSON.parse(stored);
+        if (session) await loadLibrary();
+        else { byId('connect').disabled=false; if (location.origin !== 'https://genuinejack.xyz') setStatus('auth-status','Production sign-in becomes available after deployment.'); }
+    } catch (error) { setStatus('auth-status',error.message || 'Spotify could not be initialized.','error'); byId('connect').disabled=false; }
+}
+
+byId('connect').addEventListener('click',connect);
+byId('disconnect').addEventListener('click',disconnect);
+byId('analyze').addEventListener('click',analyze);
+byId('download').addEventListener('click',downloadCsv);
+byId('start-over').addEventListener('click',()=>{ byId('results').classList.add('hidden'); byId('workspace').scrollIntoView({behavior:'smooth'}); });
+init();
+</script>
+</body>
+</html>

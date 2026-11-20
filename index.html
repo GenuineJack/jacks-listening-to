@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seasons · Genuine Jack</title>
+
+    <meta name="description" content="A new playlist every season since fall 2011. Sixty so far, never a gap. Press play on any of them.">
+    <meta property="og:title" content="Seasons · Genuine Jack">
+    <meta property="og:description" content="A new playlist every season since fall 2011. Sixty so far, never a gap.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://genuinejack.xyz/seasons">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@GenuineJack">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --orange: #ff6d0e;
+            --orange-hover: #ff8534;
+            --orange-glow: rgba(255, 109, 14, 0.3);
+            --black: #0a0a0a;
+            --dark: #111111;
+            --darker: #0d0d0d;
+            --gray: #888888;
+            --gray-light: #a0a0a0;
+            --light: #f5f5f5;
+            --green: #4ade80;
+            --purple: #a78bfa;
+
+            /* Per-season accents */
+            --spring: #4ade80;
+            --summer: #ff6d0e;
+            --fall: #f59e0b;
+            --winter: #60a5fa;
+
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 120px;
+
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.3s ease;
+            --transition-slow: 0.4s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .hidden { display: none !important; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--black);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+        a:focus:not(:focus-visible) { outline: none; }
+        ::selection { background: var(--orange); color: var(--black); }
+
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 109, 14, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 109, 14, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px; pointer-events: none; z-index: -1;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+        .skip-link {
+            position: absolute; top: -100%; left: 50%; transform: translateX(-50%);
+            background: var(--orange); color: var(--black);
+            padding: var(--space-sm) var(--space-md);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+            text-decoration: none; z-index: 200; border-radius: 4px;
+        }
+        .skip-link:focus { top: var(--space-md); }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; padding: var(--space-md) 0;
+            background: rgba(10, 10, 10, 0.95);
+            -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+            z-index: 100; border-bottom: 1px solid rgba(255, 109, 14, 0.1);
+            transition: padding var(--transition-base), background var(--transition-base);
+        }
+        nav.scrolled { padding: var(--space-sm) 0; background: rgba(10, 10, 10, 0.98); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .nav-actions { display: flex; align-items: center; gap: var(--space-lg); }
+        .logo {
+            font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem;
+            color: var(--light); text-decoration: none; letter-spacing: -0.5px;
+            transition: color var(--transition-fast);
+        }
+        .logo:hover { color: var(--orange); }
+        .logo span { color: var(--orange); }
+        .nav-back {
+            font-family: 'JetBrains Mono', monospace; color: var(--gray);
+            text-decoration: none; font-size: 0.75rem; text-transform: lowercase;
+            letter-spacing: 0.5px; transition: color var(--transition-fast);
+        }
+        .nav-back:hover { color: var(--orange); }
+
+        /* Hero */
+        .hero { padding-top: 140px; padding-bottom: var(--space-2xl); }
+        .hero-tagline {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+            color: var(--orange); letter-spacing: 1px; margin-bottom: var(--space-lg);
+        }
+        .hero-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(3rem, 11vw, 7rem); font-weight: 800; line-height: 0.9;
+            margin-bottom: var(--space-xl); letter-spacing: -4px;
+        }
+        .hero-title span { color: var(--orange); }
+        .hero-sub {
+            font-size: 1.15rem; color: var(--gray-light);
+            max-width: 620px; margin-bottom: var(--space-2xl);
+        }
+
+        /* Stats strip */
+        .stats {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md); margin-bottom: var(--space-2xl);
+        }
+        .stat {
+            background: var(--dark); border: 1px solid rgba(255, 109, 14, 0.15);
+            padding: var(--space-lg); transition: border-color var(--transition-base);
+        }
+        .stat:hover { border-color: rgba(255, 109, 14, 0.4); }
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace; font-size: 2rem;
+            font-weight: 700; color: var(--orange); letter-spacing: -1px; line-height: 1;
+        }
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: lowercase; letter-spacing: 1px; color: var(--gray);
+            margin-top: var(--space-sm);
+        }
+
+        /* Player */
+        .player {
+            background: var(--darker); border: 1px solid rgba(255, 109, 14, 0.2);
+            border-radius: 12px; padding: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+        .player-head {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: var(--space-md); gap: var(--space-md); flex-wrap: wrap;
+        }
+        .player-now {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gray);
+        }
+        .player-now strong { color: var(--light); }
+        .player-now .dot {
+            display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+            background: var(--orange); margin-right: var(--space-sm);
+            animation: pulse 2s infinite; vertical-align: middle;
+        }
+        .shuffle-btn {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            background: none; border: 1px solid rgba(255, 109, 14, 0.3);
+            color: var(--orange); padding: var(--space-sm) var(--space-md);
+            cursor: pointer; transition: all var(--transition-fast); letter-spacing: 0.5px;
+        }
+        .shuffle-btn:hover { background: var(--orange); color: var(--black); border-color: var(--orange); }
+        .player iframe { display: block; border-radius: 10px; }
+
+        /* Filters */
+        .filters {
+            display: flex; align-items: center; gap: var(--space-md);
+            margin-bottom: var(--space-xl); flex-wrap: wrap;
+        }
+        .chips { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+        .chip {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            background: var(--dark); border: 1px solid rgba(255, 109, 14, 0.15);
+            color: var(--gray); padding: var(--space-sm) var(--space-md);
+            cursor: pointer; transition: all var(--transition-fast); letter-spacing: 0.5px;
+        }
+        .chip:hover { border-color: var(--orange); color: var(--light); }
+        .chip.active { background: var(--orange); color: var(--black); border-color: var(--orange); }
+        .search {
+            flex: 1; min-width: 180px; background: var(--dark);
+            border: 1px solid rgba(255, 109, 14, 0.15); color: var(--light);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+            padding: var(--space-sm) var(--space-md);
+        }
+        .search::placeholder { color: var(--gray); }
+        .search:focus { outline: none; border-color: var(--orange); }
+
+        /* The grid matrix */
+        .matrix-wrap { margin-bottom: var(--space-3xl); }
+        .matrix-head {
+            display: grid; grid-template-columns: 64px repeat(4, 1fr);
+            gap: var(--space-sm); margin-bottom: var(--space-sm);
+        }
+        .matrix-head div {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: lowercase; letter-spacing: 1px; color: var(--gray);
+            text-align: center; padding: var(--space-xs) 0;
+        }
+        .matrix-row {
+            display: grid; grid-template-columns: 64px repeat(4, 1fr);
+            gap: var(--space-sm); margin-bottom: var(--space-sm); align-items: stretch;
+        }
+        .year-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+            color: var(--gray-light); display: flex; align-items: center;
+            justify-content: flex-end; padding-right: var(--space-sm);
+        }
+        .cell {
+            position: relative; min-height: 54px; border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.015); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            color: #2a2a2a; transition: all var(--transition-base); cursor: default;
+        }
+        .cell.filled { cursor: pointer; color: var(--gray-light); }
+        .cell.filled::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+            background: var(--cell-accent, var(--orange)); border-radius: 6px 0 0 6px;
+            opacity: 0.8; transition: width var(--transition-base);
+        }
+        .cell.filled:hover {
+            background: rgba(255, 109, 14, 0.06); color: var(--light);
+            border-color: rgba(255, 109, 14, 0.3); transform: translateY(-1px);
+        }
+        .cell.filled:hover::before { width: 5px; }
+        .cell.active {
+            background: rgba(255, 109, 14, 0.12); border-color: var(--orange);
+            color: var(--light);
+        }
+        .cell.active::before { width: 5px; opacity: 1; }
+        .cell.dim { opacity: 0.25; }
+        .cell .play-icon { opacity: 0; margin-left: 6px; font-size: 0.6rem; transition: opacity var(--transition-fast); position: relative; z-index: 2; }
+        .cell.filled:hover .play-icon { opacity: 0.7; }
+
+        /* Cover-art cells */
+        .cell.has-cover {
+            background-size: cover; background-position: center;
+            border: 1px solid rgba(255, 255, 255, 0.1); color: var(--light);
+        }
+        .cell.has-cover::before { display: none; }
+        .cell.has-cover::after {
+            content: ''; position: absolute; inset: 0; border-radius: 6px;
+            background: linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.8) 100%);
+            transition: background var(--transition-base);
+        }
+        .cell.has-cover:hover::after { background: linear-gradient(180deg, rgba(10,10,10,0.05) 0%, rgba(10,10,10,0.6) 100%); }
+        .cell.has-cover:hover { border-color: rgba(255, 109, 14, 0.5); }
+        .cell.has-cover .cell-label { position: relative; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+        .cell.has-cover.active { outline: 2px solid var(--orange); outline-offset: -2px; }
+
+        /* Section bits */
+        section { padding: var(--space-2xl) 0; }
+        .section-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            letter-spacing: 1px; color: var(--orange); margin-bottom: var(--space-sm);
+        }
+        .section-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700;
+            letter-spacing: -1.5px; margin-bottom: var(--space-lg);
+        }
+
+        .player-controls { display: flex; gap: var(--space-sm); }
+        .nav-btn {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+            background: none; border: 1px solid rgba(255, 109, 14, 0.3); color: var(--gray-light);
+            padding: var(--space-sm) var(--space-md); cursor: pointer; transition: all var(--transition-fast);
+        }
+        .nav-btn:hover:not(:disabled) { border-color: var(--orange); color: var(--orange); }
+        .nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+        .timemachine {
+            background: var(--darker); border: 1px solid rgba(255, 109, 14, 0.15);
+            border-radius: 12px; padding: var(--space-xl); margin-bottom: var(--space-2xl);
+            display: flex; gap: var(--space-xl); align-items: center; flex-wrap: wrap;
+        }
+        .tm-spotlight {
+            width: 120px; height: 120px; border-radius: 10px; flex-shrink: 0;
+            background: var(--dark) center/cover no-repeat;
+            border: 1px solid rgba(255, 109, 14, 0.2);
+            position: relative; overflow: hidden; display: flex; align-items: flex-end;
+        }
+        .tm-spotlight::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 35%, rgba(10,10,10,0.9) 100%);
+        }
+        .tm-spotlight-label {
+            position: relative; z-index: 2; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem; font-weight: 600; padding: var(--space-sm); color: var(--light);
+        }
+        .tm-controls { flex: 1; min-width: 240px; }
+        .tm-eyebrow {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            color: var(--orange); letter-spacing: 1px; margin-bottom: var(--space-sm);
+        }
+        .tm-range {
+            width: 100%; -webkit-appearance: none; appearance: none; height: 4px;
+            background: rgba(255, 109, 14, 0.2); border-radius: 2px; margin: var(--space-sm) 0; cursor: pointer;
+        }
+        .tm-range::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+            background: var(--orange); cursor: pointer; border: 2px solid var(--darker);
+        }
+        .tm-range::-moz-range-thumb {
+            width: 16px; height: 16px; border-radius: 50%; background: var(--orange);
+            border: 2px solid var(--darker); cursor: pointer;
+        }
+        .tm-labels {
+            display: flex; justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gray);
+        }
+        .tm-play-btn {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; margin-top: var(--space-md);
+            background: var(--orange); color: var(--black); border: none;
+            padding: var(--space-sm) var(--space-lg); cursor: pointer; font-weight: 700;
+            letter-spacing: 0.5px; border-radius: 4px; transition: background var(--transition-fast);
+        }
+        .tm-play-btn:hover { background: var(--orange-hover); }
+
+        .note {
+            background: var(--darker); border: 1px dashed rgba(255, 109, 14, 0.3);
+            border-radius: 8px; padding: var(--space-lg); margin-top: var(--space-2xl);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+            color: var(--gray-light); line-height: 1.7;
+        }
+        .note strong { color: var(--orange); }
+
+        footer {
+            padding: var(--space-xl) 0; border-top: 1px solid rgba(255, 109, 14, 0.1);
+            text-align: center; margin-top: var(--space-2xl);
+        }
+        footer p {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gray);
+        }
+        footer span { color: var(--orange); }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .data-banner {
+            background: rgba(255, 109, 14, 0.06); border: 1px dashed rgba(255, 109, 14, 0.4);
+            border-radius: 8px; padding: var(--space-md) var(--space-lg);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.6;
+            color: var(--gray-light); margin-bottom: var(--space-xl);
+        }
+        .data-banner strong { color: var(--orange); }
+        #deep-stats { margin-bottom: var(--space-3xl); }
+        .data-block { margin-bottom: var(--space-3xl); }
+        .data-h {
+            font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600;
+            color: var(--light); margin-bottom: var(--space-xs); letter-spacing: 0;
+        }
+        .data-cap {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray);
+            margin-bottom: var(--space-lg); line-height: 1.5;
+        }
+        .data-empty { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--gray); }
+        .data-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3xl); }
+
+        .now {
+            display: inline-flex; align-items: center; gap: var(--space-md);
+            margin-bottom: var(--space-xl); padding: var(--space-sm) var(--space-lg) var(--space-sm) var(--space-sm);
+            border: 1px solid rgba(255, 109, 14, 0.2); border-radius: 10px;
+            background: var(--darker); text-decoration: none; max-width: 100%;
+            transition: border-color var(--transition-fast), background var(--transition-fast);
+        }
+        .now:hover { border-color: rgba(255, 109, 14, 0.5); background: #141414; }
+        .now-art {
+            width: 52px; height: 52px; border-radius: 6px; flex-shrink: 0;
+            background: var(--dark) center/cover no-repeat;
+        }
+        .now-body { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+        .now-label {
+            display: flex; align-items: center; gap: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+            letter-spacing: 1px; text-transform: uppercase; color: var(--orange);
+        }
+        .now-track {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600;
+            color: var(--light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .now-artist {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray);
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        /* Bars only animate while something is actually playing. */
+        .eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 9px; }
+        .eq i { width: 2px; height: 3px; background: var(--orange); border-radius: 1px; }
+        .now.is-playing .eq i { animation: eq 900ms ease-in-out infinite; }
+        .now.is-playing .eq i:nth-child(2) { animation-delay: 150ms; }
+        .now.is-playing .eq i:nth-child(3) { animation-delay: 300ms; }
+        @keyframes eq { 0%, 100% { height: 3px; } 50% { height: 9px; } }
+        @media (prefers-reduced-motion: reduce) {
+            .now.is-playing .eq i { animation: none; height: 6px; }
+        }
+
+        .genre-legend { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-lg); }
+        .genre-key {
+            display: flex; align-items: center; gap: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--gray-light);
+        }
+        .genre-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+        .stack-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: 6px; }
+        .stack-year {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+            color: var(--gray); width: 38px; flex-shrink: 0;
+        }
+        .stack-track {
+            display: flex; flex: 1; height: 14px; border-radius: 3px;
+            overflow: hidden; background: rgba(255, 255, 255, 0.04);
+        }
+        .stack-seg { height: 100%; }
+        .footer-credit { margin-top: var(--space-sm); color: var(--gray); }
+        .footer-credit a { color: var(--gray-light); text-decoration: underline; }
+        .footer-credit a:hover { color: var(--orange); }
+
+        #fatal-error, #noscript-error {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+            background: #3a0d0d; color: #ffd8d8;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--orange);
+        }
+
+        .drift-svg { width: 100%; height: auto; display: block; }
+        .drift-svg .grid { stroke: rgba(255, 255, 255, 0.06); stroke-width: 1; }
+        .drift-svg .axis { fill: var(--gray); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+        .drift-svg .area { fill: rgba(255, 109, 14, 0.10); }
+        .drift-svg .line { fill: none; stroke: var(--orange); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+        .drift-svg .dot { fill: var(--orange); stroke: var(--black); stroke-width: 1.5; }
+        .drift-svg .dot:hover { r: 5; }
+
+        .bar-row {
+            display: grid; grid-template-columns: 130px 1fr 64px; align-items: center;
+            gap: var(--space-md); margin-bottom: var(--space-sm);
+        }
+        .bar-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--gray-light);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .bar-track { height: 10px; background: rgba(255, 255, 255, 0.04); border-radius: 5px; overflow: hidden; }
+        .bar-fill { display: block; height: 100%; background: var(--orange); border-radius: 5px; transition: width var(--transition-slow); }
+        .bar-tail { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray); text-align: right; }
+
+        .list-row {
+            display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md);
+            padding: var(--space-sm) 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .list-label { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--gray-light); }
+        .list-tail { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--orange); flex-shrink: 0; }
+
+        @media (max-width: 700px) {
+            .nav-actions { gap: var(--space-md); }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .matrix-head, .matrix-row { grid-template-columns: 44px repeat(4, 1fr); gap: 5px; }
+            .year-label { font-size: 0.7rem; }
+            .cell { min-height: 46px; font-size: 0.6rem; }
+            .timemachine { flex-direction: column; align-items: stretch; padding: var(--space-lg); }
+            .tm-spotlight { width: 100%; height: 110px; }
+            .data-cols { grid-template-columns: 1fr; gap: var(--space-2xl); }
+            .bar-row { grid-template-columns: 100px 1fr 52px; }
+        }
+    </style>
+    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://genuinejack.xyz/public/farcaster/og-image.svg","button":{"title":"Browse Seasons","action":{"type":"launch_miniapp","name":"Seasons · Genuine Jack","url":"https://genuinejack.xyz/seasons","splashImageUrl":"https://genuinejack.xyz/public/farcaster/icon.svg","splashBackgroundColor":"#0a0a0a"}}}' />
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div id="fatal-error" class="hidden"></div>
+    <noscript><div id="noscript-error">// JavaScript is disabled for this site — the archive stats, matrix, and player all need it. Check your browser's site settings (often a padlock/shield icon in the address bar) and enable JavaScript for genuinejack.xyz.</div></noscript>
+
+    <nav role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a href="/" class="logo" aria-label="Genuine Jack - Home">GENUINE<span>JACK</span></a>
+            <div class="nav-actions">
+                <a href="/seasons/explorer/" class="nav-back">explore yours →</a>
+                <a href="/" class="nav-back">home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main">
+        <header class="hero">
+            <div class="container">
+                <p class="hero-tagline">// seasonal playlists, fall 2011 → now</p>
+                <h1 class="hero-title">EVERY<br><span>SEASON</span></h1>
+                <p class="hero-sub">One every quarter since the leaves turned in 2011, and I've never skipped one. Pick a season below and press play.</p>
+
+                <a class="now hidden" id="np-card" href="#" target="_blank" rel="noopener">
+                    <span class="now-art" id="np-art" aria-hidden="true"></span>
+                    <span class="now-body">
+                        <span class="now-label">
+                            <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+                            <span id="np-label-text"></span>
+                        </span>
+                        <span class="now-track" id="np-track"></span>
+                        <span class="now-artist" id="np-artist"></span>
+                    </span>
+                </a>
+
+                <div class="stats" id="stats"></div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="player">
+                <div class="player-head">
+                    <div class="player-now"><span class="dot"></span>now playing &middot; <strong id="now-label">—</strong></div>
+                    <div class="player-controls">
+                        <button class="nav-btn" id="prev-season" aria-label="Previous season" title="Previous season">←</button>
+                        <button class="nav-btn" id="next-season" aria-label="Next season" title="Next season">→</button>
+                        <button class="shuffle-btn" id="shuffle">↻ surprise me</button>
+                    </div>
+                </div>
+                <iframe id="embed" src="" width="100%" height="352" frameborder="0"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy" title="Spotify player"></iframe>
+            </div>
+
+            <div class="filters">
+                <div class="chips" id="chips"></div>
+                <input class="search" id="search" type="search" placeholder="find a season... try 'winter 2019'" aria-label="Search seasons">
+            </div>
+
+            <div class="timemachine">
+                <div class="tm-spotlight" id="tm-spotlight">
+                    <span class="tm-spotlight-label" id="tm-spotlight-label">—</span>
+                </div>
+                <div class="tm-controls">
+                    <p class="tm-eyebrow">// time machine</p>
+                    <input type="range" class="tm-range" id="tm-range" min="0" max="0" value="0" aria-label="Scrub through every season">
+                    <div class="tm-labels">
+                        <span id="tm-start">—</span>
+                        <span id="tm-end">—</span>
+                    </div>
+                    <button class="tm-play-btn" id="tm-play">▶ play this one</button>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <div class="container">
+                <p class="section-label">// the archive</p>
+                <h2 class="section-title">The full run, oldest to newest</h2>
+                <div class="matrix-wrap" id="matrix"></div>
+            </div>
+        </section>
+
+        <section id="in-data">
+            <div class="container">
+                <p class="section-label">// fifteen years in data</p>
+                <h2 class="section-title">What the archive knows</h2>
+
+                <div class="data-banner hidden" id="data-banner"></div>
+                <div class="stats" id="deep-stats"></div>
+
+                <div class="data-block">
+                    <h3 class="data-h">nostalgia drift — how far back you reach</h3>
+                    <p class="data-cap">each point is a season, oldest to newest. higher means the music skews older than the season it lived in.</p>
+                    <div id="drift-chart"></div>
+                </div>
+
+                <div class="data-cols">
+                    <div class="data-block">
+                        <h3 class="data-h">who follows you the whole way</h3>
+                        <p class="data-cap">artists ranked by how many different seasons they turn up in.</p>
+                        <div id="top-artists"></div>
+                    </div>
+                    <div class="data-block">
+                        <h3 class="data-h">songs that keep coming back</h3>
+                        <p class="data-cap">tracks that showed up in more than one season.</p>
+                        <div id="repeat-songs"></div>
+                    </div>
+                </div>
+
+                <div class="data-block">
+                    <h3 class="data-h">how vintage the crates get</h3>
+                    <p class="data-cap">every track bucketed by the decade it was released.</p>
+                    <div id="decade-mix"></div>
+                </div>
+
+                <div class="data-block hidden" id="genre-block">
+                    <h3 class="data-h">the sounds you keep</h3>
+                    <p class="data-cap">genres come from each track's primary artist. most artists carry a few at once, so a track can land in several.</p>
+                    <div id="top-genres"></div>
+                </div>
+
+                <div class="data-block hidden" id="genre-era-block">
+                    <h3 class="data-h">how the mix drifts</h3>
+                    <p class="data-cap">each year split across your most-played genres. anything outside the top eight is grouped as other.</p>
+                    <div class="genre-legend" id="genre-legend"></div>
+                    <div id="genre-eras"></div>
+                </div>
+
+                <div class="data-block hidden" id="tempo-block">
+                    <h3 class="data-h">tempo curve — how fast each season runs</h3>
+                    <p class="data-cap">average bpm per season. <span id="tempo-coverage"></span></p>
+                    <div id="tempo-chart"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>© <span id="year"></span> <span>GenuineJack.xyz</span> &middot; still going</p>
+            <p class="footer-credit">tempo &amp; key data by <a href="https://getsongbpm.com" target="_blank" rel="noopener">GetSongBPM</a></p>
+        </div>
+    </footer>
+
+    <script>
+    /* Surface any runtime error visibly instead of leaving a silent blank page. */
+    (function () {
+        const el = document.getElementById('fatal-error');
+        const show = message => { el.textContent = '// something broke: ' + message + ' \u2014 please screenshot this banner.'; el.classList.remove('hidden'); };
+        window.addEventListener('error', event => show(event.message || String(event.error)));
+        window.addEventListener('unhandledrejection', event => show(event.reason?.message || String(event.reason)));
+    })();
+    </script>
+    <script>
+    /* ============================================================
+       SEASON ARCHIVE DATA
+       Add a line for each playlist: { season, year, id }
+       - season: 'Spring' | 'Summer' | 'Fall' | 'Winter'
+       - year:   the calendar year (Winter 2012 = the winter that starts Dec 2012)
+       - id:     the Spotify playlist ID (the part after /playlist/ in the URL)
+       Order doesn't matter — the grid sorts itself.
+       ============================================================ */
+    const PLAYLISTS = [
+        { season: 'Fall',   year: 2011, id: '5wkv11CBSWffCPxSlmjFrm' },
+        { season: 'Winter', year: 2011, id: '0uffa0ij52lKItCT1mb0e3' },
+
+        { season: 'Spring', year: 2012, id: '6JAdNM4Jx8tZaaeHLhtBhx' },
+        { season: 'Summer', year: 2012, id: '4gxLwaN1z1wQlKXs7v9k7U' },
+        { season: 'Fall',   year: 2012, id: '3iCUFWzBucminmnMY4a1db' },
+        { season: 'Winter', year: 2012, id: '0pvrzhK3FJIsdkKQG8imF8' },
+
+        { season: 'Spring', year: 2013, id: '6zMs8v7MZ5j0UtOCV5MiBC' },
+        { season: 'Summer', year: 2013, id: '4sRg33XW5HJP9HtBzQmq3N' },
+        { season: 'Fall',   year: 2013, id: '41hKSL2bBoU5mG7CCnCNx9' },
+        { season: 'Winter', year: 2013, id: '7hCn4W8HuCJI4DLSWCZfVI' },
+
+        { season: 'Spring', year: 2014, id: '73PgN6KZaaUarmSi9xUYwU' },
+        { season: 'Summer', year: 2014, id: '1TXhfMe8aIUet3RIHbrF3u' },
+        { season: 'Fall',   year: 2014, id: '17EAkVWcc7ePwqwbmkOxRT' },
+        { season: 'Winter', year: 2014, id: '5L6OjPmlqD4kPpjCGhezzc' },
+
+        { season: 'Spring', year: 2015, id: '54lnhZxgXBQfCQWjJ59JTv' },
+        { season: 'Summer', year: 2015, id: '2ruxkGLijjlONpGxX69Dpp' },
+        { season: 'Fall',   year: 2015, id: '4OXyGepBUFaonEriAPGk39' },
+        { season: 'Winter', year: 2015, id: '25ejfMmlChJLvsAm1RsVVL' },
+
+        { season: 'Spring', year: 2016, id: '5GzUocM5hM3jyxZj7el58e' },
+        { season: 'Summer', year: 2016, id: '6TfSbAgQ4aXv5ncameTgGt' },
+        { season: 'Fall',   year: 2016, id: '2VCpvOwfRXaXNmNAuuUNnR' },
+        { season: 'Winter', year: 2016, id: '1Pirv0DkTWfCZldNPgvA7R' },
+
+        { season: 'Spring', year: 2017, id: '04moCSJfuZjofSIGQw5OxZ' },
+        { season: 'Summer', year: 2017, id: '7G96fwgseT18ZIKnvdCIQz' },
+        { season: 'Fall',   year: 2017, id: '2bPMg8g3PpbfDUqAh38Ims' },
+        { season: 'Winter', year: 2017, id: '3EIcxi1XQyxOa2y6h9L6Jz' },
+
+        { season: 'Spring', year: 2018, id: '3vs9ee42tbNkg1ZpjAP4ah' },
+        { season: 'Summer', year: 2018, id: '0GzRb3EcvOZYKTja7JnKUs' },
+        { season: 'Fall',   year: 2018, id: '63NxD6r948F6WN7FKCPJZ9' },
+        { season: 'Winter', year: 2018, id: '0AQaGnMY4PQeQEVmrBM7H9' },
+
+        { season: 'Spring', year: 2019, id: '3MqSGtsrxvX1BZ3pQPuX1Y' },
+        { season: 'Summer', year: 2019, id: '5Me25nOyHbEIK3GwytrSlN' },
+        { season: 'Fall',   year: 2019, id: '6eh9jT4ACAsF3e1yayHZHe' },
+        { season: 'Winter', year: 2019, id: '3fF5aLdvWYGt7Y0XpnRQeI' },
+
+        { season: 'Spring', year: 2020, id: '4eynm41wEY7KfzZ2B4QhCW' },
+        { season: 'Summer', year: 2020, id: '6KKUycI4JBZEYUSOECnx6K' },
+        { season: 'Fall',   year: 2020, id: '45fHyjB4l3m1bQeV1UrEwz' },
+        { season: 'Winter', year: 2020, id: '3osvLVuhNtuWJhc1iIQq6j' },
+
+        { season: 'Spring', year: 2021, id: '6SBWtDuGnBFVCVHdZrmenp' },
+        { season: 'Summer', year: 2021, id: '6mbD8Tkqvpa0iZlQpJMmR2' },
+        { season: 'Fall',   year: 2021, id: '54V2ayQiVmZ3deUYBkei4A' },
+        { season: 'Winter', year: 2021, id: '0HAREzZTmiUISlUAUuYJLw' },
+
+        { season: 'Spring', year: 2022, id: '79usfWZaKTLhAaiObjRrkW' },
+        { season: 'Summer', year: 2022, id: '5zGFPRiksctWQU2k5gskNQ' },
+        { season: 'Fall',   year: 2022, id: '6bojseXbCFR8YrAcQbLEXl' },
+        { season: 'Winter', year: 2022, id: '3vys1Oq5HFkvIsDu2anFTt' },
+
+        { season: 'Spring', year: 2023, id: '1f1X3zUsv4CAgevHR6hDO4' },
+        { season: 'Summer', year: 2023, id: '6RpHmjOSaQvPAkMK8wZwxa' },
+        { season: 'Fall',   year: 2023, id: '19eKq0jBuuNT6DKdUThLO3' },
+        { season: 'Winter', year: 2023, id: '3U5YromjgGtsNM4CcstnQK' },
+
+        { season: 'Spring', year: 2024, id: '2EKl0jmbX7Xqz0b3qvnr8J' },
+        { season: 'Summer', year: 2024, id: '4vL01VOXqWeu9OwBq2DWUa' },
+        { season: 'Fall',   year: 2024, id: '3T9dYu5nFqASmhzQ3wvg98' },
+        { season: 'Winter', year: 2024, id: '2YWEQ8CbYLYoeRpE4I3UT6' },
+
+        { season: 'Spring', year: 2025, id: '4b0n2eJxzwgWIYO8YkRoMf' },
+        { season: 'Summer', year: 2025, id: '1MWYo2ohgTteRAA8cbbqsU' },
+        { season: 'Fall',   year: 2025, id: '2cNDAxPUFPFud0gOxgOFEg' },
+        { season: 'Winter', year: 2025, id: '2xsb8t6f9Zbl9k1ZkqCSSg' },
+
+        { season: 'Spring', year: 2026, id: '0Q0vYgP2PyBtqLq2EonVS0' },
+        { season: 'Summer', year: 2026, id: '2H7WgezNfuDizPqDX7lmMb' },
+    ];
+
+    /* ---- config ---- */
+    const SEASON_ORDER = ['Spring', 'Summer', 'Fall', 'Winter'];
+    const SEASON_ACCENT = { Spring: 'var(--spring)', Summer: 'var(--summer)', Fall: 'var(--fall)', Winter: 'var(--winter)' };
+    const START_YEAR = Math.min(...PLAYLISTS.map(p => p.year));
+    const END_YEAR = Math.max(new Date().getFullYear(), ...PLAYLISTS.map(p => p.year));
+
+    /* ---- helpers ---- */
+    const key = (s, y) => `${s}-${y}`;
+    const byKey = {};
+    PLAYLISTS.forEach(p => { byKey[key(p.season, p.year)] = p; });
+    const rank = p => p.year * 10 + SEASON_ORDER.indexOf(p.season);
+    const sorted = [...PLAYLISTS].sort((a, b) => rank(a) - rank(b));
+    const latest = sorted[sorted.length - 1];
+
+    let activeKey = latest ? key(latest.season, latest.year) : null;
+    let seasonFilter = null;       // e.g. 'Winter' or null
+    let searchTerm = '';
+
+    /* ---- stats ---- */
+    function renderStats(metrics = null) {
+        const yearsRunning = END_YEAR - START_YEAR;
+        const seasonsArchived = PLAYLISTS.length;
+        const last = sorted[sorted.length - 1];
+        const stats = [
+            { num: seasonsArchived, label: 'seasons logged' },
+            { num: yearsRunning + '+', label: 'years deep' },
+            { num: metrics ? metrics.totalTracks.toLocaleString() : '—', label: 'tracks, all in' },
+            { num: last ? `${last.season} ${last.year}` : '—', label: 'the latest' },
+        ];
+        document.getElementById('stats').innerHTML = stats.map(s =>
+            `<div class="stat"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`
+        ).join('');
+    }
+
+    /* ---- songs database ---- */
+    const SEASON_RANK = { Spring: 0, Summer: 1, Fall: 2, Winter: 3 };
+    let SONGS = [];
+    let usingSampleData = false;
+
+    const songRank = song => song.year * 10 + (SEASON_RANK[song.season] ?? 0);
+    const seasonLabel = song => `${song.season} ${song.year}`;
+
+    function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    /* No external CSV library — parse RFC4180-style quoted CSV (with "" escapes) inline. */
+    function parseCsv(text) {
+        const rows = [];
+        let row = [];
+        let field = '';
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (inQuotes) {
+                if (char === '"') {
+                    if (text[i + 1] === '"') { field += '"'; i++; }
+                    else inQuotes = false;
+                } else field += char;
+            } else if (char === '"') {
+                inQuotes = true;
+            } else if (char === ',') {
+                row.push(field); field = '';
+            } else if (char === '\r') {
+                /* handled by the following \n, or ignored at end of file */
+            } else if (char === '\n') {
+                row.push(field); field = '';
+                rows.push(row); row = [];
+            } else field += char;
+        }
+        if (field !== '' || row.length) { row.push(field); rows.push(row); }
+
+        const header = rows.shift() || [];
+        return rows.filter(cells => cells.some(cell => cell !== '')).map(cells => {
+            const record = {};
+            header.forEach((name, index) => { record[name] = cells[index] ?? ''; });
+            return record;
+        });
+    }
+
+    async function loadSongs(attempts = 3) {
+        for (let attempt = 0; attempt < attempts; attempt++) {
+            try {
+                /* Root-absolute: a relative path breaks when the page is served at
+                   /seasons (no trailing slash), resolving to /songs_data.csv → 404. */
+                const response = await fetch('/seasons/songs_data.csv', { cache: 'no-store' });
+                if (response.ok) {
+                    const text = await response.text();
+                    const rows = parseCsv(text).map(normalizeCsvRow).filter(Boolean);
+                    if (rows.length) {
+                        SONGS = rows;
+                        return;
+                    }
+                }
+            } catch (error) { /* retry below, report failure once attempts are exhausted */ }
+            if (attempt < attempts - 1) await wait(500 * 2 ** attempt);
+        }
+
+        SONGS = [];
+        usingSampleData = true;
+    }
+
+    function normalizeCsvRow(row) {
+        const season = (row['Season'] || '').trim();
+        const year = parseInt(row['Year'], 10);
+        const song = (row['Song'] || '').trim();
+        const artist = (row['Artist'] || '').trim();
+        if (!season || !year) return null;
+        const releaseYear = parseInt(row['Release Year'], 10);
+        const durationSec = parseInt(row['Duration (sec)'], 10);
+        /* Enrichment columns are optional: a CSV predating the tempo/genre pull
+           still parses, and the sections that need them stay hidden. */
+        const tempo = parseFloat(row['Tempo (BPM)']);
+        return {
+            season, year, song, artist,
+            releaseYear: Number.isNaN(releaseYear) ? null : releaseYear,
+            durationSec: Number.isNaN(durationSec) ? 0 : durationSec,
+            genres: (row['Genres'] || '').split(';').map(genre => genre.trim()).filter(Boolean),
+            primaryGenre: (row['Primary Genre'] || '').trim(),
+            tempo: Number.isFinite(tempo) && tempo > 0 ? tempo : null,
+            musicalKey: (row['Key'] || '').trim(),
+        };
+    }
+
+    function computeMetrics(rows) {
+        const artistSeasons = {};
+        const songSeasons = {};
+        const seasonAges = {};
+        const decades = {};
+        const genreCounts = {};
+        const genreByYear = {};
+        const seasonTempos = {};
+        let totalDuration = 0;
+        let ageSum = 0;
+        let ageCount = 0;
+        let tempoSum = 0;
+        let tempoCount = 0;
+
+        rows.forEach(row => {
+            const label = seasonLabel(row);
+            totalDuration += row.durationSec;
+
+            row.genres.forEach(genre => { genreCounts[genre] = (genreCounts[genre] || 0) + 1; });
+            if (row.primaryGenre) {
+                const year = genreByYear[row.year] = genreByYear[row.year] || {};
+                year[row.primaryGenre] = (year[row.primaryGenre] || 0) + 1;
+            }
+            if (row.tempo) {
+                tempoSum += row.tempo;
+                tempoCount++;
+                const bucket = seasonTempos[label] = seasonTempos[label] || { sum: 0, count: 0, rank: songRank(row) };
+                bucket.sum += row.tempo;
+                bucket.count++;
+            }
+            if (row.artist) {
+                (artistSeasons[row.artist] = artistSeasons[row.artist] || new Set()).add(label);
+            }
+            if (row.song) {
+                const songKey = `${row.song} — ${row.artist}`;
+                (songSeasons[songKey] = songSeasons[songKey] || new Set()).add(label);
+            }
+
+            if (row.releaseYear) {
+                const age = row.year - row.releaseYear;
+                ageSum += age;
+                ageCount++;
+                const seasonAge = seasonAges[label] = seasonAges[label] || { sum: 0, count: 0, rank: songRank(row) };
+                seasonAge.sum += age;
+                seasonAge.count++;
+                const decade = Math.floor(row.releaseYear / 10) * 10;
+                decades[decade] = (decades[decade] || 0) + 1;
+            }
+        });
+
+        const topArtists = Object.entries(artistSeasons)
+            .map(([name, seasons]) => ({ name, count: seasons.size }))
+            .sort((a, b) => b.count - a.count).slice(0, 8);
+        const repeatSongs = Object.entries(songSeasons)
+            .map(([name, seasons]) => ({ name, count: seasons.size }))
+            .filter(song => song.count > 1)
+            .sort((a, b) => b.count - a.count).slice(0, 8);
+        const drift = Object.entries(seasonAges)
+            .map(([label, value]) => ({ label, avg: value.sum / value.count, rank: value.rank }))
+            .sort((a, b) => a.rank - b.rank);
+        const decadeList = Object.entries(decades)
+            .map(([decade, count]) => ({ decade: parseInt(decade, 10), count }))
+            .sort((a, b) => a.decade - b.decade);
+
+        const topGenres = Object.entries(genreCounts)
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count).slice(0, 10);
+
+        /* Stack each year against the eight genres that lead the whole archive,
+           so the bands stay comparable from one year to the next. */
+        const stackGenres = topGenres.slice(0, 8).map(genre => genre.name);
+        const genreEras = Object.entries(genreByYear)
+            .map(([year, counts]) => {
+                const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
+                const segments = stackGenres.map(name => ({ name, count: counts[name] || 0 }));
+                const other = total - segments.reduce((sum, segment) => sum + segment.count, 0);
+                if (other > 0) segments.push({ name: 'other', count: other });
+                return { year: parseInt(year, 10), total, segments: segments.filter(segment => segment.count > 0) };
+            })
+            .filter(era => era.total > 0)
+            .sort((a, b) => a.year - b.year);
+
+        const tempoCurve = Object.entries(seasonTempos)
+            .map(([label, value]) => ({ label, avg: value.sum / value.count, rank: value.rank }))
+            .sort((a, b) => a.rank - b.rank);
+
+        return {
+            totalTracks: rows.length,
+            totalDuration,
+            uniqueArtists: Object.keys(artistSeasons).length,
+            avgAge: ageCount ? ageSum / ageCount : 0,
+            topArtists, repeatSongs, drift, decadeList,
+            topGenres, genreEras, stackGenres,
+            tempoCurve,
+            avgTempo: tempoCount ? tempoSum / tempoCount : 0,
+            tempoCoverage: tempoCount,
+        };
+    }
+
+    function renderDataSection() {
+        const banner = document.getElementById('data-banner');
+        if (usingSampleData) {
+            renderStats(null);
+            banner.classList.remove('hidden');
+            banner.innerHTML = '<strong>// archive unavailable.</strong> The track data could not be loaded. <a href="javascript:location.reload()" style="color:inherit;text-decoration:underline;">Reload the page</a> to try again.';
+            document.getElementById('deep-stats').innerHTML = ['tracks, all in', 'of music', 'different artists', 'avg nostalgia drift'].map(label =>
+                `<div class="stat"><div class="stat-num">\u2014</div><div class="stat-label">${label}</div></div>`
+            ).join('');
+            renderDrift([]);
+            renderBars('top-artists', []);
+            renderList('repeat-songs', []);
+            renderBars('decade-mix', []);
+            return;
+        }
+        banner.classList.add('hidden');
+
+        const metrics = computeMetrics(SONGS);
+        renderStats(metrics);
+        const hours = Math.round(metrics.totalDuration / 3600);
+        const stats = [
+            { num: metrics.totalTracks.toLocaleString(), label: 'tracks, all in' },
+            { num: hours.toLocaleString() + 'h', label: 'of music' },
+            { num: metrics.uniqueArtists.toLocaleString(), label: 'different artists' },
+            { num: metrics.avgAge.toFixed(1) + ' yrs', label: 'avg nostalgia drift' },
+        ];
+        document.getElementById('deep-stats').innerHTML = stats.map(stat =>
+            `<div class="stat"><div class="stat-num">${stat.num}</div><div class="stat-label">${stat.label}</div></div>`
+        ).join('');
+
+        renderDrift(metrics.drift);
+        renderBars('top-artists', metrics.topArtists.map(artist => ({ label: artist.name, value: artist.count, tail: `${artist.count} seasons` })));
+        renderList('repeat-songs', metrics.repeatSongs.map(song => ({ label: song.name, tail: `${song.count}×` })));
+        renderBars('decade-mix', metrics.decadeList.map(decade => ({ label: `${decade.decade}s`, value: decade.count, tail: `${decade.count}` })));
+
+        /* These three only exist once the CSV carries the enrichment columns. */
+        const hasGenres = metrics.topGenres.length > 0;
+        document.getElementById('genre-block').classList.toggle('hidden', !hasGenres);
+        document.getElementById('genre-era-block').classList.toggle('hidden', !metrics.genreEras.length);
+        if (hasGenres) {
+            renderBars('top-genres', metrics.topGenres.map(genre => ({ label: genre.name, value: genre.count, tail: `${genre.count}` })));
+        }
+        if (metrics.genreEras.length) renderGenreEras(metrics.genreEras, metrics.stackGenres);
+
+        const hasTempo = metrics.tempoCurve.length > 0;
+        document.getElementById('tempo-block').classList.toggle('hidden', !hasTempo);
+        if (hasTempo) {
+            const percent = Math.round(metrics.tempoCoverage / metrics.totalTracks * 100);
+            document.getElementById('tempo-coverage').textContent =
+                `averaging ${Math.round(metrics.avgTempo)} bpm across the ${percent}% of tracks with a tempo match.`;
+            renderDrift(metrics.tempoCurve, 'tempo-chart', {
+                axisSuffix: '', tooltipSuffix: 'bpm', floor: 0, zeroBaseline: false,
+                emptyText: 'no tempo data yet', ariaLabel: 'Average tempo by season',
+            });
+        }
+    }
+
+    /* Round a rough tick interval up to a readable 1/2/5×10ⁿ value. */
+    function niceStep(rough) {
+        const magnitude = 10 ** Math.floor(Math.log10(Math.max(rough, 1e-6)));
+        const normalized = rough / magnitude;
+        const nice = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+        return nice * magnitude;
+    }
+
+    function renderDrift(drift, id = 'drift-chart', options = {}) {
+        const { axisSuffix = 'y', tooltipSuffix = 'yrs older', emptyText = 'no release-year data yet', floor = 5 } = options;
+        const element = document.getElementById(id);
+        if (!drift.length) { element.innerHTML = `<p class="data-empty">${emptyText}</p>`; return; }
+        const width = 1000, height = 260, padLeft = 44, padRight = 16, padTop = 20, padBottom = 34;
+        const values = drift.map(point => point.avg);
+        const rawMax = Math.max(...values, floor);
+        const rawMin = Math.min(...values);
+
+        /* Tempo clusters in a narrow band well above zero, so a zero baseline
+           would flatten the whole curve. Those charts opt out and get an axis
+           that starts just below the data instead. */
+        const domainMin = options.zeroBaseline === false
+            ? Math.max(0, Math.floor((rawMin - Math.max(rawMax - rawMin, 1) * 0.4) / 10) * 10)
+            : 0;
+        const tickStep = niceStep(Math.max(rawMax - domainMin, 1) / 4);
+        const domainMax = domainMin + Math.max(Math.ceil((rawMax - domainMin) / tickStep), 1) * tickStep;
+
+        const x = index => padLeft + (drift.length === 1 ? 0 : (index / (drift.length - 1)) * (width - padLeft - padRight));
+        const y = value => padTop + (1 - (value - domainMin) / (domainMax - domainMin)) * (height - padTop - padBottom);
+        const points = drift.map((point, index) => [x(index), y(point.avg)]);
+        const line = points.map((point, index) => `${index ? 'L' : 'M'}${point[0].toFixed(1)} ${point[1].toFixed(1)}`).join(' ');
+        const lastPoint = points[points.length - 1];
+        const area = `${line} L ${lastPoint[0].toFixed(1)} ${height-padBottom} L ${points[0][0].toFixed(1)} ${height-padBottom} Z`;
+        let grid = '';
+        for (let tick = domainMin; tick <= domainMax + 1e-9; tick += tickStep) {
+            const gridY = y(tick);
+            grid += `<line x1="${padLeft}" y1="${gridY}" x2="${width-padRight}" y2="${gridY}" class="grid"/>`;
+            grid += `<text x="${padLeft-8}" y="${gridY+3}" class="axis" text-anchor="end">${Math.round(tick)}${axisSuffix}</text>`;
+        }
+        let labels = '';
+        const step = Math.max(1, Math.round(drift.length / 7));
+        drift.forEach((point, index) => {
+            if (index % step === 0 || index === drift.length - 1) {
+                labels += `<text x="${x(index)}" y="${height-12}" class="axis" text-anchor="middle">${point.label.split(' ')[1]}</text>`;
+            }
+        });
+        const dots = points.map((point, index) =>
+            `<circle cx="${point[0].toFixed(1)}" cy="${point[1].toFixed(1)}" r="3" class="dot"><title>${drift[index].label}: ${drift[index].avg.toFixed(1)} ${tooltipSuffix}</title></circle>`
+        ).join('');
+        element.innerHTML = `<svg viewBox="0 0 ${width} ${height}" class="drift-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${options.ariaLabel || 'Nostalgia drift over time'}">${grid}<path d="${area}" class="area"/><path d="${line}" class="line"/>${dots}${labels}</svg>`;
+    }
+
+    /* Categorical palette, checked against the near-black page background. */
+    const GENRE_COLORS = ['#ff6d0e', '#ffb347', '#4ade80', '#38bdf8', '#a78bfa', '#f472b6', '#facc15', '#2dd4bf'];
+    const OTHER_COLOR = '#5b6472';
+    const genreColor = (name, stackGenres) => {
+        const index = stackGenres.indexOf(name);
+        return index === -1 ? OTHER_COLOR : GENRE_COLORS[index % GENRE_COLORS.length];
+    };
+
+    function renderGenreEras(eras, stackGenres) {
+        const legend = document.getElementById('genre-legend');
+        const element = document.getElementById('genre-eras');
+        if (!eras.length) {
+            legend.innerHTML = '';
+            element.innerHTML = '<p class="data-empty">no genre data yet</p>';
+            return;
+        }
+        const keys = [...stackGenres, 'other'];
+        legend.innerHTML = keys.map(name =>
+            `<span class="genre-key"><span class="genre-swatch" style="background:${genreColor(name, stackGenres)}"></span>${name}</span>`
+        ).join('');
+        element.innerHTML = eras.map(era => {
+            const segments = era.segments.map(segment => {
+                const percent = segment.count / era.total * 100;
+                return `<span class="stack-seg" style="width:${percent.toFixed(2)}%;background:${genreColor(segment.name, stackGenres)}" title="${era.year} · ${segment.name}: ${segment.count} track${segment.count === 1 ? '' : 's'} (${Math.round(percent)}%)"></span>`;
+            }).join('');
+            return `<div class="stack-row"><span class="stack-year">${era.year}</span><span class="stack-track">${segments}</span></div>`;
+        }).join('');
+    }
+
+    function renderBars(id, items) {
+        const element = document.getElementById(id);
+        if (!items.length) { element.innerHTML = '<p class="data-empty">nothing here yet</p>'; return; }
+        const max = Math.max(...items.map(item => item.value));
+        element.innerHTML = items.map(item => `<div class="bar-row"><span class="bar-label">${item.label}</span><span class="bar-track"><span class="bar-fill" style="width:${max ? item.value / max * 100 : 0}%"></span></span><span class="bar-tail">${item.tail}</span></div>`).join('');
+    }
+
+    function renderList(id, items) {
+        const element = document.getElementById(id);
+        if (!items.length) { element.innerHTML = '<p class="data-empty">no repeats yet — every song is a one-time thing</p>'; return; }
+        element.innerHTML = items.map(item => `<div class="list-row"><span class="list-label">${item.label}</span><span class="list-tail">${item.tail}</span></div>`).join('');
+    }
+
+    /* ---- player ---- */
+    function currentIndex() {
+        return sorted.findIndex(playlist => key(playlist.season, playlist.year) === activeKey);
+    }
+
+    function updateSpotlight(index) {
+        const playlist = sorted[index];
+        if (!playlist) return;
+        document.getElementById('tm-spotlight').style.backgroundImage = playlist.cover ? `url('${playlist.cover}')` : 'none';
+        document.getElementById('tm-spotlight-label').textContent = `${playlist.season} ${playlist.year}`;
+        document.getElementById('tm-range').value = index;
+    }
+
+    function updateNavButtons() {
+        const index = currentIndex();
+        document.getElementById('prev-season').disabled = index <= 0;
+        document.getElementById('next-season').disabled = index === -1 || index >= sorted.length - 1;
+    }
+
+    function loadPlaylist(k) {
+        const p = byKey[k];
+        if (!p) return;
+        activeKey = k;
+        document.getElementById('embed').src =
+            `https://open.spotify.com/embed/playlist/${p.id}?utm_source=generator&theme=0`;
+        document.getElementById('now-label').textContent = `${p.season} ${p.year}`;
+        renderMatrix();
+        const index = currentIndex();
+        if (index > -1) updateSpotlight(index);
+        updateNavButtons();
+    }
+
+    function stepSeason(delta) {
+        const nextIndex = currentIndex() + delta;
+        if (nextIndex < 0 || nextIndex >= sorted.length) return;
+        const playlist = sorted[nextIndex];
+        loadPlaylist(key(playlist.season, playlist.year));
+    }
+
+    /* ---- chips ---- */
+    function renderChips() {
+        const chips = ['All', ...SEASON_ORDER];
+        document.getElementById('chips').innerHTML = chips.map(c => {
+            const val = c === 'All' ? '' : c;
+            const isActive = (seasonFilter || '') === val;
+            return `<button class="chip ${isActive ? 'active' : ''}" data-season="${val}">${c.toLowerCase()}</button>`;
+        }).join('');
+        document.querySelectorAll('.chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const v = btn.getAttribute('data-season');
+                seasonFilter = v === '' ? null : v;
+                renderChips(); renderMatrix();
+            });
+        });
+    }
+
+    /* ---- matrix ---- */
+    function matches(season, year) {
+        if (seasonFilter && season !== seasonFilter) return false;
+        if (searchTerm) {
+            const hay = `${season} ${year}`.toLowerCase();
+            if (!hay.includes(searchTerm)) return false;
+        }
+        return true;
+    }
+
+    function renderMatrix() {
+        const head = `<div class="matrix-head"><div></div>${
+            SEASON_ORDER.map(s => `<div>${s.toLowerCase()}</div>`).join('')
+        }</div>`;
+
+        let rows = '';
+        for (let y = START_YEAR; y <= END_YEAR; y++) {
+            let cells = '';
+            SEASON_ORDER.forEach(s => {
+                const k = key(s, y);
+                const p = byKey[k];
+                const filled = !!p;
+                const hasCover = filled && !!p.cover;
+                const isActive = k === activeKey;
+                const dim = filled && !matches(s, y);
+                const cls = ['cell'];
+                if (filled) cls.push('filled');
+                if (hasCover) cls.push('has-cover');
+                if (isActive) cls.push('active');
+                if (dim) cls.push('dim');
+                const styles = [];
+                if (filled) styles.push(`--cell-accent:${SEASON_ACCENT[s]}`);
+                if (hasCover) styles.push(`background-image:url('${p.cover}')`);
+                const style = styles.length ? `style="${styles.join(';')}"` : '';
+                const inner = filled
+                    ? `<span class="cell-label">${s} ${y}</span><span class="play-icon">▶</span>`
+                    : '·';
+                cells += `<div class="${cls.join(' ')}" ${style} ${filled ? `data-key="${k}" role="button" tabindex="0"` : ''}>${inner}</div>`;
+            });
+            rows += `<div class="matrix-row"><div class="year-label">${y}</div>${cells}</div>`;
+        }
+        document.getElementById('matrix').innerHTML = head + rows;
+
+        document.querySelectorAll('.cell.filled').forEach(cell => {
+            const k = cell.getAttribute('data-key');
+            cell.addEventListener('click', () => loadPlaylist(k));
+            cell.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadPlaylist(k); }
+            });
+        });
+    }
+
+    /* ---- search ---- */
+    document.getElementById('search').addEventListener('input', e => {
+        searchTerm = e.target.value.trim().toLowerCase();
+        renderMatrix();
+    });
+
+    document.getElementById('prev-season').addEventListener('click', () => stepSeason(-1));
+    document.getElementById('next-season').addEventListener('click', () => stepSeason(1));
+
+    const timeMachineRange = document.getElementById('tm-range');
+    timeMachineRange.max = Math.max(sorted.length - 1, 0);
+    timeMachineRange.addEventListener('input', event => updateSpotlight(parseInt(event.target.value, 10)));
+    document.getElementById('tm-play').addEventListener('click', () => {
+        const playlist = sorted[parseInt(timeMachineRange.value, 10)];
+        if (!playlist) return;
+        loadPlaylist(key(playlist.season, playlist.year));
+        document.querySelector('.player').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    if (sorted[0]) document.getElementById('tm-start').textContent = `${sorted[0].season} ${sorted[0].year}`;
+    if (sorted[sorted.length - 1]) document.getElementById('tm-end').textContent = `${sorted[sorted.length - 1].season} ${sorted[sorted.length - 1].year}`;
+
+    /* ---- shuffle ---- */
+    document.getElementById('shuffle').addEventListener('click', () => {
+        if (!PLAYLISTS.length) return;
+        const pick = PLAYLISTS[Math.floor(Math.random() * PLAYLISTS.length)];
+        loadPlaylist(key(pick.season, pick.year));
+        document.querySelector('.player').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    /* ---- init ---- */
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderStats();
+    renderChips();
+    renderMatrix();
+    if (activeKey) loadPlaylist(activeKey);
+
+    loadSongs(5).then(renderDataSection);
+
+    /* ---- now playing ----
+       /api/now-playing holds the Spotify credential server-side and answers
+       with just enough to draw the card. Anything other than a live track —
+       unconfigured, expired auth, Spotify down — leaves the card hidden
+       rather than showing the page's plumbing to a visitor. */
+    const NOW_LABELS = { playing: 'now playing', paused: 'paused', recent: 'last played' };
+
+    function relativeTime(iso) {
+        const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+        if (!Number.isFinite(seconds) || seconds < 0) return '';
+        if (seconds < 90) return 'just now';
+        const minutes = Math.round(seconds / 60);
+        if (minutes < 60) return `${minutes}m ago`;
+        const hours = Math.round(minutes / 60);
+        if (hours < 24) return `${hours}h ago`;
+        return `${Math.round(hours / 24)}d ago`;
+    }
+
+    async function refreshNowPlaying() {
+        const card = document.getElementById('np-card');
+        try {
+            const response = await fetch('/api/now-playing', { cache: 'no-store' });
+            if (!response.ok) throw new Error('unavailable');
+            const data = await response.json();
+            const label = NOW_LABELS[data.state];
+            if (!label || !data.track) { card.classList.add('hidden'); return; }
+
+            document.getElementById('np-label-text').textContent =
+                data.state === 'recent' && data.playedAt
+                    ? `${label} · ${relativeTime(data.playedAt)}`.replace(/ · $/, '')
+                    : label;
+            document.getElementById('np-track').textContent = data.track;
+            document.getElementById('np-artist').textContent = data.artist || '';
+            const art = document.getElementById('np-art');
+            art.style.backgroundImage = data.albumArt ? `url('${data.albumArt}')` : '';
+            card.href = data.url || 'https://open.spotify.com';
+            card.classList.toggle('is-playing', data.state === 'playing');
+            card.setAttribute('aria-label', `${label}: ${data.track}${data.artist ? ` by ${data.artist}` : ''}`);
+            card.classList.remove('hidden');
+        } catch (error) {
+            card.classList.add('hidden');
+        }
+    }
+
+    refreshNowPlaying();
+    /* Poll only while the tab is visible — a backgrounded tab has no one
+       looking at it, and the endpoint is edge-cached for 20s anyway. */
+    let nowTimer = setInterval(refreshNowPlaying, 30000);
+    document.addEventListener('visibilitychange', () => {
+        clearInterval(nowTimer);
+        if (!document.hidden) { refreshNowPlaying(); nowTimer = setInterval(refreshNowPlaying, 30000); }
+    });
+
+    /* nav scroll */
+    window.addEventListener('scroll', () => {
+        document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 100);
+    });
+    </script>
+
+    <script type="module">
+        import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk'
+        sdk.actions.ready()
+    </script>
+</body>
+</html>
