@@ -88,7 +88,7 @@ h1 { max-width:720px; font:800 clamp(2.8rem,8vw,6.3rem)/.92 'JetBrains Mono',mon
 </style>
 </head>
 <body>
-<nav><div class="container"><a class="logo" href="/">GENUINE<span>JACK</span></a><div class="nav-links"><a href="/seasons/">my archive</a><a href="/">home</a></div></div></nav>
+<nav><div class="container"><a class="logo" href="https://genuinejack.xyz">GENUINE<span>JACK</span></a><div class="nav-links"><a href="/">my archive</a><a href="https://genuinejack.xyz">home</a></div></div></nav>
 <main class="container">
 <section class="hero">
 <div><p class="eyebrow">// your listening history, by season</p><h1>FIND YOUR<br><span class="accent">SEASONS</span></h1><p class="hero-copy">Connect Spotify to surface the artists, eras, and songs that keep returning across playlists named Spring, Summer, Fall, or Winter.</p></div>
@@ -128,8 +128,8 @@ async function loadConfig() {
 }
 
 async function connect() {
-    if (location.origin !== 'https://genuinejack.xyz') {
-        setStatus('auth-status', 'Sign-in is available on the deployed genuinejack.xyz page.', 'error');
+    if (location.origin !== 'https://www.jackslisteningto.com') {
+        setStatus('auth-status', 'Sign-in is available on the deployed jackslisteningto.com page.', 'error');
         return;
     }
     const verifier = randomString();
@@ -281,7 +281,7 @@ function downloadCsv() {
     const link = document.createElement('a'); link.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); link.download='songs_data.csv'; link.click(); URL.revokeObjectURL(link.href);
 }
 
-function disconnect() { Object.values(STORAGE).forEach(key=>sessionStorage.removeItem(key)); location.replace('/seasons/explorer/'); }
+function disconnect() { Object.values(STORAGE).forEach(key=>sessionStorage.removeItem(key)); location.replace('/explorer/'); }
 
 async function init() {
     byId('connect').disabled = true;
@@ -292,7 +292,7 @@ async function init() {
         if (params.get('code')) { setStatus('auth-status','Completing Spotify sign-in…'); await exchangeCode(params.get('code'),params.get('state')); history.replaceState({},'',location.pathname); }
         const stored = sessionStorage.getItem(STORAGE.token); if (!session && stored) session=JSON.parse(stored);
         if (session) await loadLibrary();
-        else { byId('connect').disabled=false; if (location.origin !== 'https://genuinejack.xyz') setStatus('auth-status','Production sign-in becomes available after deployment.'); }
+        else { byId('connect').disabled=false; if (location.origin !== 'https://www.jackslisteningto.com') setStatus('auth-status','Production sign-in becomes available after deployment.'); }
     } catch (error) { setStatus('auth-status',error.message || 'Spotify could not be initialized.','error'); byId('connect').disabled=false; }
 }
 

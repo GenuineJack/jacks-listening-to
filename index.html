@@ -9,7 +9,7 @@
     <meta property="og:title" content="Seasons · Genuine Jack">
     <meta property="og:description" content="A new playlist every season since fall 2011. Sixty so far, never a gap.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://genuinejack.xyz/seasons">
+    <meta property="og:url" content="https://www.jackslisteningto.com/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="@GenuineJack">
 
@@ -485,19 +485,19 @@
             .bar-row { grid-template-columns: 100px 1fr 52px; }
         }
     </style>
-    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://genuinejack.xyz/public/farcaster/og-image.svg","button":{"title":"Browse Seasons","action":{"type":"launch_miniapp","name":"Seasons · Genuine Jack","url":"https://genuinejack.xyz/seasons","splashImageUrl":"https://genuinejack.xyz/public/farcaster/icon.svg","splashBackgroundColor":"#0a0a0a"}}}' />
+    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://genuinejack.xyz/public/farcaster/og-image.svg","button":{"title":"Browse Seasons","action":{"type":"launch_miniapp","name":"Seasons · Genuine Jack","url":"https://www.jackslisteningto.com/","splashImageUrl":"https://genuinejack.xyz/public/farcaster/icon.svg","splashBackgroundColor":"#0a0a0a"}}}' />
 </head>
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
     <div class="grid-bg" aria-hidden="true"></div>
     <div id="fatal-error" class="hidden"></div>
-    <noscript><div id="noscript-error">// JavaScript is disabled for this site — the archive stats, matrix, and player all need it. Check your browser's site settings (often a padlock/shield icon in the address bar) and enable JavaScript for genuinejack.xyz.</div></noscript>
+    <noscript><div id="noscript-error">// JavaScript is disabled for this site — the archive stats, matrix, and player all need it. Check your browser's site settings (often a padlock/shield icon in the address bar) and enable JavaScript for jackslisteningto.com.</div></noscript>
 
     <nav role="navigation" aria-label="Main navigation">
         <div class="container">
-            <a href="/" class="logo" aria-label="Genuine Jack - Home">GENUINE<span>JACK</span></a>
+            <a href="https://genuinejack.xyz" class="logo" aria-label="Genuine Jack - Home">GENUINE<span>JACK</span></a>
             <div class="nav-actions">
-                <a href="/seasons/explorer/" class="nav-back">explore yours →</a>
+                <a href="/explorer/" class="nav-back">explore yours →</a>
                 <a href="/" class="nav-back">home</a>
             </div>
         </div>
@@ -809,9 +809,8 @@
     async function loadSongs(attempts = 3) {
         for (let attempt = 0; attempt < attempts; attempt++) {
             try {
-                /* Root-absolute: a relative path breaks when the page is served at
-                   /seasons (no trailing slash), resolving to /songs_data.csv → 404. */
-                const response = await fetch('/seasons/songs_data.csv', { cache: 'no-store' });
+                /* Root-absolute so it resolves the same from any path. */
+                const response = await fetch('/songs_data.csv', { cache: 'no-store' });
                 if (response.ok) {
                     const text = await response.text();
                     const rows = parseCsv(text).map(normalizeCsvRow).filter(Boolean);
