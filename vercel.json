@@ -1,0 +1,20 @@
+{
+  "outputDirectory": ".",
+  "redirects": [
+    { "source": "/seasons", "destination": "/", "permanent": true },
+    { "source": "/seasons/", "destination": "/", "permanent": true },
+    { "source": "/seasons/explorer", "destination": "/explorer/", "permanent": true },
+    { "source": "/seasons/explorer/", "destination": "/explorer/", "permanent": true },
+    { "source": "/seasons/season-puller.html", "destination": "/season-puller.html", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/assets/fonts/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/songs_data.csv",
+      "headers": [{ "key": "Content-Type", "value": "text/csv; charset=utf-8" }]
+    }
+  ]
+}
