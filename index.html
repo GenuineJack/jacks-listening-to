@@ -3,782 +3,572 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seasons · Genuine Jack</title>
+    <title>Jack’s Listening To</title>
 
-    <meta name="description" content="A new playlist every season since fall 2011. Sixty-one so far, never a gap. Press play on any of them.">
-    <meta property="og:title" content="Seasons · Genuine Jack">
-    <meta property="og:description" content="A new playlist every season since fall 2011. Sixty-one so far, never a gap.">
+    <meta name="description" content="A new playlist every season since fall 2011, and never a gap. Pull one from the crates and press play.">
+    <link rel="canonical" href="https://www.jackslisteningto.com/">
+    <meta name="theme-color" content="#120d0a">
+    <meta name="color-scheme" content="dark">
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta property="og:site_name" content="Jack’s Listening To">
+    <meta property="og:title" content="Jack’s Listening To">
+    <meta property="og:description" content="A new playlist every season since fall 2011, and never a gap.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.jackslisteningto.com/">
+    <meta property="og:image" content="https://www.jackslisteningto.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Jack’s Listening To: a record on a turntable, every season since 2011">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content="@GenuineJack">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="/assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/lounge.css">
 
     <style>
-        :root {
-            --orange: #ff6d0e;
-            --orange-hover: #ff8534;
-            --orange-glow: rgba(255, 109, 14, 0.3);
-            --black: #0a0a0a;
-            --dark: #111111;
-            --darker: #0d0d0d;
-            --gray: #888888;
-            --gray-light: #a0a0a0;
-            --light: #f5f5f5;
-            --green: #4ade80;
-            --purple: #a78bfa;
-
-            /* Per-season accents */
-            --spring: #4ade80;
-            --summer: #ff6d0e;
-            --fall: #f59e0b;
-            --winter: #60a5fa;
-
-            --space-xs: 4px;
-            --space-sm: 8px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-2xl: 48px;
-            --space-3xl: 64px;
-            --space-4xl: 120px;
-
-            --transition-fast: 0.15s ease;
-            --transition-base: 0.3s ease;
-            --transition-slow: 0.4s ease;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        .hidden { display: none !important; }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            html { scroll-behavior: auto; }
-        }
-
-        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
-
-        body {
-            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--black);
-            color: var(--light);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        :focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
-        a:focus:not(:focus-visible) { outline: none; }
-        ::selection { background: var(--orange); color: var(--black); }
-
-        .grid-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image:
-                linear-gradient(rgba(255, 109, 14, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 109, 14, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px; pointer-events: none; z-index: -1;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg); }
-
-        .skip-link {
-            position: absolute; top: -100%; left: 50%; transform: translateX(-50%);
-            background: var(--orange); color: var(--black);
-            padding: var(--space-sm) var(--space-md);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
-            text-decoration: none; z-index: 200; border-radius: 4px;
-        }
-        .skip-link:focus { top: var(--space-md); }
-
-        /* Nav */
-        nav {
-            position: fixed; top: 0; left: 0; right: 0; padding: var(--space-md) 0;
-            background: rgba(10, 10, 10, 0.95);
-            -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-            z-index: 100; border-bottom: 1px solid rgba(255, 109, 14, 0.1);
-            transition: padding var(--transition-base), background var(--transition-base);
-        }
-        nav.scrolled { padding: var(--space-sm) 0; background: rgba(10, 10, 10, 0.98); }
-        nav .container { display: flex; justify-content: space-between; align-items: center; }
-        .nav-actions { display: flex; align-items: center; gap: var(--space-lg); }
-        .logo {
-            font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem;
-            color: var(--light); text-decoration: none; letter-spacing: -0.5px;
-            transition: color var(--transition-fast);
-        }
-        .logo:hover { color: var(--orange); }
-        .logo span { color: var(--orange); }
-        .nav-back {
-            font-family: 'JetBrains Mono', monospace; color: var(--gray);
-            text-decoration: none; font-size: 0.75rem; text-transform: lowercase;
-            letter-spacing: 0.5px; transition: color var(--transition-fast);
-        }
-        .nav-back:hover { color: var(--orange); }
-
-        /* Hero */
-        .hero { padding-top: 140px; padding-bottom: var(--space-2xl); }
-        .hero-tagline {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-            color: var(--orange); letter-spacing: 1px; margin-bottom: var(--space-lg);
+        /* ---------- Hero ---------- */
+        .hero { padding: 72px 0 56px; }
+        .hero-grid {
+            display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+            gap: 56px; align-items: center;
         }
         .hero-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(3rem, 11vw, 7rem); font-weight: 800; line-height: 0.9;
-            margin-bottom: var(--space-xl); letter-spacing: -4px;
+            font-size: clamp(3rem, 7.4vw, 6.2rem); line-height: 0.95;
+            margin: 18px 0 24px;
         }
-        .hero-title span { color: var(--orange); }
-        .hero-sub {
-            font-size: 1.15rem; color: var(--gray-light);
-            max-width: 620px; margin-bottom: var(--space-2xl);
-        }
+        .hero-sub { font-size: 1.15rem; color: var(--text-soft); max-width: 34ch; margin-bottom: 32px; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; }
+        .hero-actions .btn { min-height: 46px; padding: 10px 22px; font-size: 0.95rem; }
 
-        /* Stats strip */
-        .stats {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-md); margin-bottom: var(--space-2xl);
-        }
-        .stat {
-            background: var(--dark); border: 1px solid rgba(255, 109, 14, 0.15);
-            padding: var(--space-lg); transition: border-color var(--transition-base);
-        }
-        .stat:hover { border-color: rgba(255, 109, 14, 0.4); }
+        /* Liner-note stats */
+        .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+        .stat { padding: 18px 16px 4px 0; }
+        .stat + .stat { padding-left: 16px; border-left: 1px solid var(--line); }
         .stat-num {
-            font-family: 'JetBrains Mono', monospace; font-size: 2rem;
-            font-weight: 700; color: var(--orange); letter-spacing: -1px; line-height: 1;
+            font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 500;
+            line-height: 1.1; color: var(--text); font-variant-numeric: lining-nums tabular-nums;
+            font-variation-settings: 'opsz' 72;
         }
-        .stat-label {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-            text-transform: lowercase; letter-spacing: 1px; color: var(--gray);
-            margin-top: var(--space-sm);
-        }
+        .stat-label { margin-top: 4px; font-size: 0.78rem; color: var(--text-dim); }
 
-        /* Player */
-        .player {
-            background: var(--darker); border: 1px solid rgba(255, 109, 14, 0.2);
-            border-radius: 12px; padding: var(--space-md);
-            margin-bottom: var(--space-xl);
-        }
-        .player-head {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: var(--space-md); gap: var(--space-md); flex-wrap: wrap;
-        }
-        .player-now {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gray);
-        }
-        .player-now strong { color: var(--light); }
-        .player-now .dot {
-            display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-            background: var(--orange); margin-right: var(--space-sm);
-            animation: pulse 2s infinite; vertical-align: middle;
-        }
-        .shuffle-btn {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-            background: none; border: 1px solid rgba(255, 109, 14, 0.3);
-            color: var(--orange); padding: var(--space-sm) var(--space-md);
-            cursor: pointer; transition: all var(--transition-fast); letter-spacing: 0.5px;
-        }
-        .shuffle-btn:hover { background: var(--orange); color: var(--black); border-color: var(--orange); }
-        .player iframe { display: block; border-radius: 10px; }
-
-        /* Filters */
-        .filters {
-            display: flex; align-items: center; gap: var(--space-md);
-            margin-bottom: var(--space-xl); flex-wrap: wrap;
-        }
-        .chips { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
-        .chip {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-            background: var(--dark); border: 1px solid rgba(255, 109, 14, 0.15);
-            color: var(--gray); padding: var(--space-sm) var(--space-md);
-            cursor: pointer; transition: all var(--transition-fast); letter-spacing: 0.5px;
-        }
-        .chip:hover { border-color: var(--orange); color: var(--light); }
-        .chip.active { background: var(--orange); color: var(--black); border-color: var(--orange); }
-        .search {
-            flex: 1; min-width: 180px; background: var(--dark);
-            border: 1px solid rgba(255, 109, 14, 0.15); color: var(--light);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-            padding: var(--space-sm) var(--space-md);
-        }
-        .search::placeholder { color: var(--gray); }
-        .search:focus { outline: none; border-color: var(--orange); }
-
-        /* The grid matrix */
-        .matrix-wrap { margin-bottom: var(--space-3xl); }
-        .matrix-head {
-            display: grid; grid-template-columns: 64px repeat(4, 1fr);
-            gap: var(--space-sm); margin-bottom: var(--space-sm);
-        }
-        .matrix-head div {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-            text-transform: lowercase; letter-spacing: 1px; color: var(--gray);
-            text-align: center; padding: var(--space-xs) 0;
-        }
-        .matrix-row {
-            display: grid; grid-template-columns: 64px repeat(4, 1fr);
-            gap: var(--space-sm); margin-bottom: var(--space-sm); align-items: stretch;
-        }
-        .year-label {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-            color: var(--gray-light); display: flex; align-items: center;
-            justify-content: flex-end; padding-right: var(--space-sm);
-        }
-        .cell {
-            position: relative; min-height: 54px; border: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.015); border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-            color: #2a2a2a; transition: all var(--transition-base); cursor: default;
-        }
-        .cell.filled { cursor: pointer; color: var(--gray-light); }
-        .cell.filled::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-            background: var(--cell-accent, var(--orange)); border-radius: 6px 0 0 6px;
-            opacity: 0.8; transition: width var(--transition-base);
-        }
-        .cell.filled:hover {
-            background: rgba(255, 109, 14, 0.06); color: var(--light);
-            border-color: rgba(255, 109, 14, 0.3); transform: translateY(-1px);
-        }
-        .cell.filled:hover::before { width: 5px; }
-        .cell.active {
-            background: rgba(255, 109, 14, 0.12); border-color: var(--orange);
-            color: var(--light);
-        }
-        .cell.active::before { width: 5px; opacity: 1; }
-        .cell.dim { opacity: 0.25; }
-        .cell .play-icon { opacity: 0; margin-left: 6px; font-size: 0.6rem; transition: opacity var(--transition-fast); position: relative; z-index: 2; }
-        .cell.filled:hover .play-icon { opacity: 0.7; }
-
-        /* Cover-art cells */
-        .cell.has-cover {
-            background-size: cover; background-position: center;
-            border: 1px solid rgba(255, 255, 255, 0.1); color: var(--light);
-        }
-        .cell.has-cover::before { display: none; }
-        .cell.has-cover::after {
-            content: ''; position: absolute; inset: 0; border-radius: 6px;
-            background: linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.8) 100%);
-            transition: background var(--transition-base);
-        }
-        .cell.has-cover:hover::after { background: linear-gradient(180deg, rgba(10,10,10,0.05) 0%, rgba(10,10,10,0.6) 100%); }
-        .cell.has-cover:hover { border-color: rgba(255, 109, 14, 0.5); }
-        .cell.has-cover .cell-label { position: relative; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
-        .cell.has-cover.active { outline: 2px solid var(--orange); outline-offset: -2px; }
-
-        /* Section bits */
-        section { padding: var(--space-2xl) 0; }
-        .section-label {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-            letter-spacing: 1px; color: var(--orange); margin-bottom: var(--space-sm);
-        }
-        .section-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700;
-            letter-spacing: -1.5px; margin-bottom: var(--space-lg);
-        }
-
-        .player-controls { display: flex; gap: var(--space-sm); }
-        .nav-btn {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-            background: none; border: 1px solid rgba(255, 109, 14, 0.3); color: var(--gray-light);
-            padding: var(--space-sm) var(--space-md); cursor: pointer; transition: all var(--transition-fast);
-        }
-        .nav-btn:hover:not(:disabled) { border-color: var(--orange); color: var(--orange); }
-        .nav-btn:disabled { opacity: 0.25; cursor: default; }
-
-        .timemachine {
-            background: var(--darker); border: 1px solid rgba(255, 109, 14, 0.15);
-            border-radius: 12px; padding: var(--space-xl); margin-bottom: var(--space-2xl);
-            display: flex; gap: var(--space-xl); align-items: center; flex-wrap: wrap;
-        }
-        .tm-spotlight {
-            width: 120px; height: 120px; border-radius: 10px; flex-shrink: 0;
-            background: var(--dark) center/cover no-repeat;
-            border: 1px solid rgba(255, 109, 14, 0.2);
-            position: relative; overflow: hidden; display: flex; align-items: flex-end;
-        }
-        .tm-spotlight::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(180deg, transparent 35%, rgba(10,10,10,0.9) 100%);
-        }
-        .tm-spotlight-label {
-            position: relative; z-index: 2; font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem; font-weight: 600; padding: var(--space-sm); color: var(--light);
-        }
-        .tm-controls { flex: 1; min-width: 240px; }
-        .tm-eyebrow {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-            color: var(--orange); letter-spacing: 1px; margin-bottom: var(--space-sm);
-        }
-        .tm-range {
-            width: 100%; -webkit-appearance: none; appearance: none; height: 4px;
-            background: rgba(255, 109, 14, 0.2); border-radius: 2px; margin: var(--space-sm) 0; cursor: pointer;
-        }
-        .tm-range::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
-            background: var(--orange); cursor: pointer; border: 2px solid var(--darker);
-        }
-        .tm-range::-moz-range-thumb {
-            width: 16px; height: 16px; border-radius: 50%; background: var(--orange);
-            border: 2px solid var(--darker); cursor: pointer;
-        }
-        .tm-labels {
-            display: flex; justify-content: space-between;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gray);
-        }
-        .tm-play-btn {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; margin-top: var(--space-md);
-            background: var(--orange); color: var(--black); border: none;
-            padding: var(--space-sm) var(--space-lg); cursor: pointer; font-weight: 700;
-            letter-spacing: 0.5px; border-radius: 4px; transition: background var(--transition-fast);
-        }
-        .tm-play-btn:hover { background: var(--orange-hover); }
-
-        .note {
-            background: var(--darker); border: 1px dashed rgba(255, 109, 14, 0.3);
-            border-radius: 8px; padding: var(--space-lg); margin-top: var(--space-2xl);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-            color: var(--gray-light); line-height: 1.7;
-        }
-        .note strong { color: var(--orange); }
-
-        footer {
-            padding: var(--space-xl) 0; border-top: 1px solid rgba(255, 109, 14, 0.1);
-            text-align: center; margin-top: var(--space-2xl);
-        }
-        footer p {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gray);
-        }
-        footer span { color: var(--orange); }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .data-banner {
-            background: rgba(255, 109, 14, 0.06); border: 1px dashed rgba(255, 109, 14, 0.4);
-            border-radius: 8px; padding: var(--space-md) var(--space-lg);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.6;
-            color: var(--gray-light); margin-bottom: var(--space-xl);
-        }
-        .data-banner strong { color: var(--orange); }
-        #deep-stats { margin-bottom: var(--space-3xl); }
-        .data-block { margin-bottom: var(--space-3xl); }
-        .data-h {
-            font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600;
-            color: var(--light); margin-bottom: var(--space-xs); letter-spacing: 0;
-        }
-        .data-cap {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray);
-            margin-bottom: var(--space-lg); line-height: 1.5;
-        }
-        .data-empty { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--gray); }
-        .data-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3xl); }
-
+        /* Now playing (only shows when /api/now-playing is configured) */
         .now {
-            display: inline-flex; align-items: center; gap: var(--space-md);
-            margin-bottom: var(--space-xl); padding: var(--space-sm) var(--space-lg) var(--space-sm) var(--space-sm);
-            border: 1px solid rgba(255, 109, 14, 0.2); border-radius: 10px;
-            background: var(--darker); text-decoration: none; max-width: 100%;
-            transition: border-color var(--transition-fast), background var(--transition-fast);
+            display: inline-flex; align-items: center; gap: 14px; max-width: 100%;
+            margin-bottom: 28px; padding: 8px 18px 8px 8px;
+            border: 1px solid var(--line-strong); border-radius: 999px;
+            background: rgba(26, 19, 16, 0.7); text-decoration: none;
+            transition: border-color var(--fast), background var(--fast);
         }
-        .now:hover { border-color: rgba(255, 109, 14, 0.5); background: #141414; }
-        .now-art {
-            width: 52px; height: 52px; border-radius: 6px; flex-shrink: 0;
-            background: var(--dark) center/cover no-repeat;
-        }
-        .now-body { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-        .now-label {
-            display: flex; align-items: center; gap: 6px;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
-            letter-spacing: 1px; text-transform: uppercase; color: var(--orange);
-        }
-        .now-track {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600;
-            color: var(--light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
-        .now-artist {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray);
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
-        /* Bars only animate while something is actually playing. */
+        .now:hover { border-color: var(--amber); background: var(--bg-panel); }
+        .now-art { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--bg-sunk) center/cover no-repeat; }
+        .now-body { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+        .now-label { display: flex; align-items: center; gap: 6px; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); }
+        .now-track { font-weight: 600; font-size: 0.92rem; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .now-artist { font-size: 0.8rem; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 9px; }
-        .eq i { width: 2px; height: 3px; background: var(--orange); border-radius: 1px; }
+        .eq i { width: 2px; height: 3px; background: var(--amber); border-radius: 1px; }
         .now.is-playing .eq i { animation: eq 900ms ease-in-out infinite; }
         .now.is-playing .eq i:nth-child(2) { animation-delay: 150ms; }
         .now.is-playing .eq i:nth-child(3) { animation-delay: 300ms; }
         @keyframes eq { 0%, 100% { height: 3px; } 50% { height: 9px; } }
-        @media (prefers-reduced-motion: reduce) {
-            .now.is-playing .eq i { animation: none; height: 6px; }
-        }
 
-        .genre-legend { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-lg); }
-        .genre-key {
-            display: flex; align-items: center; gap: 6px;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--gray-light);
+        /* ---------- The turntable ---------- */
+        .deck-wrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+        .deck { position: relative; width: min(430px, 100%); aspect-ratio: 1; }
+        .plinth {
+            position: absolute; inset: 0; border-radius: 28px;
+            background: linear-gradient(145deg, #2a1d15 0%, #1a120d 55%, #140e0a 100%);
+            box-shadow: 0 50px 90px -30px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 230, 190, 0.08), inset 0 0 0 1px rgba(240, 214, 170, 0.06);
         }
-        .genre-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-        .stack-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: 6px; }
-        .stack-year {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-            color: var(--gray); width: 38px; flex-shrink: 0;
+        .plinth::after { /* wood-grain whisper */
+            content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0.35;
+            background: repeating-linear-gradient(100deg, transparent 0 14px, rgba(255, 220, 170, 0.025) 14px 15px, transparent 15px 31px);
         }
-        .stack-track {
-            display: flex; flex: 1; height: 14px; border-radius: 3px;
-            overflow: hidden; background: rgba(255, 255, 255, 0.04);
+        .platter {
+            position: absolute; left: 7%; top: 7%; width: 76%; aspect-ratio: 1; border-radius: 50%;
+            background: #0a0706;
+            box-shadow: 0 0 0 6px #16100c, 0 0 0 7px rgba(240, 214, 170, 0.08), 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 90px color-mix(in srgb, var(--now) 22%, transparent);
+            transition: box-shadow var(--base);
         }
-        .stack-seg { height: 100%; }
-        .footer-credit { margin-top: var(--space-sm); color: var(--gray); }
-        .footer-credit a { color: var(--gray-light); text-decoration: underline; }
-        .footer-credit a:hover { color: var(--orange); }
+        .disc {
+            position: absolute; inset: 1.5%; border-radius: 50%;
+            background:
+                repeating-radial-gradient(circle at 50% 50%, transparent 0 2px, rgba(255, 240, 220, 0.035) 2.5px 3px),
+                radial-gradient(circle at 50% 50%, #1d1714 0 33%, #0f0b09 33.6% 97%, #1d1714 98% 100%);
+            animation: spin 9s linear infinite;
+        }
+        .disc-label {
+            position: absolute; inset: 32%; border-radius: 50%; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            background-color: var(--now);
+            background-image: var(--cover, none);
+            background-size: cover; background-position: center;
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+            transition: background-color var(--base);
+        }
+        .disc-label-text {
+            font-family: var(--serif); font-style: italic; font-weight: 600; line-height: 1.05;
+            font-size: clamp(0.8rem, 2.1vw, 1.15rem); color: var(--on-amber);
+        }
+        .disc-label.has-cover .disc-label-text { display: none; }
+        .sheen {
+            position: absolute; inset: 1.5%; border-radius: 50%; pointer-events: none;
+            background: conic-gradient(from 210deg, transparent 0 6%, rgba(255, 238, 210, 0.10) 12%, transparent 20% 52%, rgba(255, 238, 210, 0.07) 60%, transparent 68%);
+        }
+        .spindle {
+            position: absolute; left: 50%; top: 50%; width: 3%; aspect-ratio: 1; border-radius: 50%;
+            transform: translate(-50%, -50%); background: #d8c7ab; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        }
+        .tonearm { position: absolute; right: 2%; top: 3%; width: 30%; height: 82%; overflow: visible; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.55)); }
+        .knob { position: absolute; width: 7%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #4a3a2e, #1e1611); box-shadow: inset 0 0 0 1px rgba(240, 214, 170, 0.15); }
+        .knob.k1 { right: 8%; bottom: 7%; }
+        .knob.k2 { right: 18%; bottom: 7%; }
+        .pilot { position: absolute; left: 7%; bottom: 8.5%; width: 1.6%; aspect-ratio: 1; border-radius: 50%; background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+        .deck-caption { font-size: 0.9rem; color: var(--text-dim); text-align: center; }
+        .deck-caption strong { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.05rem; color: var(--text); }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        #fatal-error, #noscript-error {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 300;
-            background: #3a0d0d; color: #ffd8d8;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-            padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--orange);
+        /* ---------- Player ---------- */
+        .listen { padding: 24px 0 8px; }
+        .player {
+            padding: 28px; border-radius: var(--radius-lg);
+            background: linear-gradient(180deg, rgba(31, 23, 19, 0.92), rgba(22, 16, 13, 0.92));
+            border: 1px solid var(--line);
+            box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 0, 0, 0.3);
         }
+        .player-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; margin-bottom: 20px; }
+        .player-title { font-size: clamp(2rem, 4.6vw, 3rem); line-height: 1; margin-top: 8px; }
+        .player-title em { color: var(--now); transition: color var(--base); }
+        .player-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+        .embed-wrap { border-radius: 14px; overflow: hidden; background: var(--bg-sunk); min-height: 352px; }
+        .embed-wrap iframe { display: block; width: 100%; border: 0; }
+
+        .dig {
+            display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 20px; align-items: center;
+            margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line);
+        }
+        .dig-thumb {
+            width: 64px; height: 64px; border-radius: 10px;
+            background: var(--bg-sunk) center/cover no-repeat;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45), inset 0 0 0 1px var(--line);
+        }
+        .dig-top { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; }
+        .dig-label { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--text); white-space: nowrap; }
+        .tm-range { width: 100%; height: 22px; margin: 4px 0 2px; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; }
+        .tm-range::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--line-strong), var(--amber)); }
+        .tm-range::-moz-range-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--line-strong), var(--amber)); }
+        .tm-range::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -7px; border-radius: 50%; background: var(--amber-bright); border: 3px solid var(--bg-panel); box-shadow: 0 0 0 1px var(--amber); }
+        .tm-range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--amber-bright); border: 3px solid var(--bg-panel); box-shadow: 0 0 0 1px var(--amber); }
+        .tm-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-faint); }
+
+        /* ---------- Sections ---------- */
+        section.block { padding: 88px 0 0; }
+        .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
+        .section-title { font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.02; margin-top: 10px; }
+        .section-cap { margin-top: 10px; color: var(--text-dim); max-width: 52ch; }
+
+        .filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+        .chip {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 6px 14px; border-radius: 999px; cursor: pointer;
+            border: 1px solid var(--line-strong); background: transparent;
+            font-size: 0.85rem; color: var(--text-soft);
+            transition: all var(--fast);
+        }
+        .chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent, var(--text-dim)); }
+        .chip:hover { color: var(--text); border-color: var(--accent, var(--amber)); }
+        .chip[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--on-amber); }
+        .search {
+            width: 220px; max-width: 100%; padding: 7px 16px; border-radius: 999px;
+            border: 1px solid var(--line-strong); background: rgba(13, 9, 7, 0.6);
+            color: var(--text); font-size: 0.88rem;
+        }
+        .search::placeholder { color: var(--text-faint); }
+        .search:focus { outline: none; border-color: var(--amber); }
+
+        /* ---------- The crates (archive matrix) ---------- */
+        .matrix { display: grid; grid-template-columns: 52px repeat(4, minmax(0, 1fr)); gap: 8px; }
+        .matrix-colhead {
+            display: flex; align-items: center; gap: 8px; padding: 0 4px 4px;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim);
+        }
+        .matrix-colhead::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+        .year-label {
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 6px;
+            font-family: var(--serif); font-size: 1rem; color: var(--text-dim); font-variant-numeric: lining-nums tabular-nums;
+        }
+        .cell {
+            position: relative; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px;
+            border-radius: 12px; border: 1px solid var(--line); background: rgba(240, 214, 170, 0.02);
+            text-align: left; transition: transform var(--fast), border-color var(--fast), background var(--fast), opacity var(--base);
+        }
+        .cell.empty { border-style: dashed; border-color: rgba(240, 214, 170, 0.06); background: transparent; }
+        .cell.filled { cursor: pointer; }
+        .cell.filled:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 70%, transparent); background: rgba(240, 214, 170, 0.05); }
+        .cell.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: inset 0 0 0 1px var(--accent); }
+        .cell.dim { opacity: 0.22; }
+        .sleeve {
+            width: 46px; aspect-ratio: 1; flex-shrink: 0; border-radius: 6px;
+            background-image: var(--cover, none), radial-gradient(circle at 50% 50%, #0d0907 0 5%, var(--accent) 6% 27%, #15100d 28% 70%, #1d1714 71% 100%);
+            background-size: cover; background-position: center;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(240, 214, 170, 0.06);
+        }
+        .cell-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+        .cell-season { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+        .cell-year { font-size: 0.78rem; color: var(--text-dim); }
+        .cell.active .cell-year { color: var(--accent); }
+        .cell.active .cell-year::before { content: '● '; }
+
+        /* ---------- In data ---------- */
+        .data-banner {
+            margin-bottom: 24px; padding: 16px 20px; border-radius: var(--radius);
+            border: 1px dashed color-mix(in srgb, var(--ember) 60%, transparent);
+            background: color-mix(in srgb, var(--ember) 8%, transparent); color: var(--text-soft);
+        }
+        .data-banner strong { color: var(--text); }
+        .data-banner button { background: none; border: 0; color: var(--amber); text-decoration: underline; cursor: pointer; }
+        .data-stats { margin-bottom: 32px; }
+        .data-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+        .panel {
+            padding: 26px; border-radius: var(--radius-lg);
+            background: rgba(26, 19, 16, 0.75); border: 1px solid var(--line);
+        }
+        .panel.wide { grid-column: 1 / -1; }
+        .panel-h { font-family: var(--serif); font-size: 1.35rem; font-weight: 500; line-height: 1.2; color: var(--text); font-variation-settings: 'opsz' 36; }
+        .panel-cap { margin: 6px 0 20px; font-size: 0.88rem; color: var(--text-dim); }
+        .data-empty { font-size: 0.9rem; color: var(--text-dim); }
 
         .drift-svg { width: 100%; height: auto; display: block; }
-        .drift-svg .grid { stroke: rgba(255, 255, 255, 0.06); stroke-width: 1; }
-        .drift-svg .axis { fill: var(--gray); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-        .drift-svg .area { fill: rgba(255, 109, 14, 0.10); }
-        .drift-svg .line { fill: none; stroke: var(--orange); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
-        .drift-svg .dot { fill: var(--orange); stroke: var(--black); stroke-width: 1.5; }
-        .drift-svg .dot:hover { r: 5; }
+        .drift-svg .grid { stroke: rgba(240, 214, 170, 0.07); stroke-width: 1; }
+        .drift-svg .axis { fill: var(--text-faint); font-family: var(--sans); font-size: 13px; }
+        .drift-svg .area { fill: url(#drift-fill); }
+        .drift-svg .line { fill: none; stroke: var(--amber); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+        .drift-svg .dot { fill: var(--amber); stroke: var(--bg-panel); stroke-width: 1.5; }
+        .drift-svg .dot:hover { r: 6; }
 
-        .bar-row {
-            display: grid; grid-template-columns: 130px 1fr 64px; align-items: center;
-            gap: var(--space-md); margin-bottom: var(--space-sm);
-        }
-        .bar-label {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--gray-light);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .bar-track { height: 10px; background: rgba(255, 255, 255, 0.04); border-radius: 5px; overflow: hidden; }
-        .bar-fill { display: block; height: 100%; background: var(--orange); border-radius: 5px; transition: width var(--transition-slow); }
-        .bar-tail { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gray); text-align: right; }
+        .bar-row { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 72px; align-items: center; gap: 14px; margin-bottom: 10px; }
+        .bar-label { font-size: 0.88rem; color: var(--text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bar-track { height: 8px; border-radius: 4px; overflow: hidden; background: rgba(240, 214, 170, 0.06); }
+        .bar-fill { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #b97c33, var(--amber-bright)); transition: width 0.6s var(--ease); }
+        .bar-tail { font-size: 0.8rem; color: var(--text-dim); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-        .list-row {
-            display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md);
-            padding: var(--space-sm) 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .list-label { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--gray-light); }
-        .list-tail { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--orange); flex-shrink: 0; }
+        .list-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+        .list-row:last-child { border-bottom: 0; }
+        .list-label { font-size: 0.9rem; color: var(--text-soft); min-width: 0; }
+        .list-label b { font-weight: 600; color: var(--text); }
+        .list-tail { font-family: var(--serif); font-style: italic; color: var(--amber); flex-shrink: 0; }
 
-        @media (max-width: 700px) {
-            .nav-actions { gap: var(--space-md); }
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .matrix-head, .matrix-row { grid-template-columns: 44px repeat(4, 1fr); gap: 5px; }
-            .year-label { font-size: 0.7rem; }
-            .cell { min-height: 46px; font-size: 0.6rem; }
-            .timemachine { flex-direction: column; align-items: stretch; padding: var(--space-lg); }
-            .tm-spotlight { width: 100%; height: 110px; }
-            .data-cols { grid-template-columns: 1fr; gap: var(--space-2xl); }
-            .bar-row { grid-template-columns: 100px 1fr 52px; }
+        .genre-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 18px; }
+        .genre-key { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-soft); }
+        .genre-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+        .stack-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+        .stack-year { width: 40px; flex-shrink: 0; font-size: 0.8rem; color: var(--text-dim); }
+        .stack-track { display: flex; flex: 1; height: 14px; border-radius: 4px; overflow: hidden; background: rgba(240, 214, 170, 0.05); }
+        .stack-seg { height: 100%; }
+
+        #fatal-error, #noscript-error {
+            position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 300;
+            padding: 12px 16px; border-radius: var(--radius);
+            background: #3a140e; border: 1px solid var(--ember); color: #ffd9cc; font-size: 0.85rem;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .hero { padding-top: 40px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .deck { width: min(300px, 80%); }
+            .data-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .hero-title { font-size: clamp(2.6rem, 13vw, 3.4rem); }
+            .hero-sub { font-size: 1.02rem; }
+            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .stat:nth-child(3) { padding-left: 0; border-left: 0; }
+            .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+            .player { padding: 18px; border-radius: var(--radius); }
+            .player-controls { width: 100%; }
+            .player-controls .btn:not(.btn-icon) { flex: 1; }
+            .dig { grid-template-columns: 52px minmax(0, 1fr); gap: 14px; }
+            .dig-thumb { width: 52px; height: 52px; }
+            .dig .btn { grid-column: 1 / -1; }
+            section.block { padding-top: 64px; }
+            .filters, .search { width: 100%; }
+            .matrix { grid-template-columns: 34px repeat(4, minmax(0, 1fr)); gap: 6px; }
+            .matrix-colhead { font-size: 0.62rem; letter-spacing: 0.08em; gap: 5px; padding: 0 0 2px; }
+            .year-label { font-size: 0.78rem; padding-right: 2px; }
+            .cell { padding: 4px; min-height: 0; border-radius: 9px; }
+            .cell-text { display: none; }
+            .sleeve { width: 100%; border-radius: 6px; }
+            .cell.empty { aspect-ratio: 1; }
+            .panel { padding: 20px; }
+            .bar-row { grid-template-columns: minmax(0, 96px) minmax(0, 1fr) auto; gap: 10px; }
         }
     </style>
-    <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://genuinejack.xyz/public/farcaster/og-image.svg","button":{"title":"Browse Seasons","action":{"type":"launch_miniapp","name":"Seasons · Genuine Jack","url":"https://www.jackslisteningto.com/","splashImageUrl":"https://genuinejack.xyz/public/farcaster/icon.svg","splashBackgroundColor":"#0a0a0a"}}}' />
 </head>
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
-    <div class="grid-bg" aria-hidden="true"></div>
-    <div id="fatal-error" class="hidden"></div>
-    <noscript><div id="noscript-error">// JavaScript is disabled for this site — the archive stats, matrix, and player all need it. Check your browser's site settings (often a padlock/shield icon in the address bar) and enable JavaScript for jackslisteningto.com.</div></noscript>
+    <div id="fatal-error" class="hidden" role="alert"></div>
+    <noscript><div id="noscript-error">JavaScript is off for this site. The player, the crates and the stats all need it. Turn it on in your browser’s site settings for jackslisteningto.com and reload.</div></noscript>
 
-    <nav role="navigation" aria-label="Main navigation">
+    <nav class="site-nav" aria-label="Main">
         <div class="container">
-            <a href="https://genuinejack.xyz" class="logo" aria-label="Genuine Jack - Home">GENUINE<span>JACK</span></a>
-            <div class="nav-actions">
-                <a href="/explorer/" class="nav-back">explore yours →</a>
-                <a href="/" class="nav-back">home</a>
+            <a href="/" class="wordmark" aria-label="Jack’s Listening To, home">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#0d0907" stroke="rgba(240,214,170,.28)"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="rgba(240,214,170,.12)"/><circle cx="16" cy="16" r="9" fill="none" stroke="rgba(240,214,170,.1)"/><circle cx="16" cy="16" r="5.6" style="fill:var(--amber)"/><circle cx="16" cy="16" r="1.3" fill="#120d0a"/></svg>
+                <span>Jack’s <em>Listening</em> To</span>
+            </a>
+            <div class="nav-links">
+                <a href="#archive" class="nav-optional">The crates</a>
+                <a href="#in-data" class="nav-optional">By the numbers</a>
+                <a href="/explorer/">Explore yours</a>
             </div>
         </div>
     </nav>
 
     <main id="main">
         <header class="hero">
-            <div class="container">
-                <p class="hero-tagline">// seasonal playlists, fall 2011 → now</p>
-                <h1 class="hero-title">EVERY<br><span>SEASON</span></h1>
-                <p class="hero-sub">One every quarter since the leaves turned in 2011, and I've never skipped one. Pick a season below and press play.</p>
+            <div class="container hero-grid">
+                <div>
+                    <p class="eyebrow" id="hero-eyebrow">Seasonal playlists · since fall 2011</p>
+                    <h1 class="hero-title display">Every season,<br><em>on the record.</em></h1>
+                    <p class="hero-sub">One every quarter since the leaves turned in 2011, and I’ve never skipped one. Pull a season from the crates and press play.</p>
 
-                <a class="now hidden" id="np-card" href="#" target="_blank" rel="noopener">
-                    <span class="now-art" id="np-art" aria-hidden="true"></span>
-                    <span class="now-body">
-                        <span class="now-label">
-                            <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
-                            <span id="np-label-text"></span>
+                    <a class="now hidden" id="np-card" href="#" target="_blank" rel="noopener">
+                        <span class="now-art" id="np-art" aria-hidden="true"></span>
+                        <span class="now-body">
+                            <span class="now-label"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="np-label-text"></span></span>
+                            <span class="now-track" id="np-track"></span>
+                            <span class="now-artist" id="np-artist"></span>
                         </span>
-                        <span class="now-track" id="np-track"></span>
-                        <span class="now-artist" id="np-artist"></span>
-                    </span>
-                </a>
+                    </a>
 
-                <div class="stats" id="stats"></div>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#listen" id="hero-play">▶&nbsp; Play the latest</a>
+                        <a class="btn" href="#archive">Browse the crates</a>
+                    </div>
+
+                    <div class="stats" id="stats"></div>
+                </div>
+
+                <div class="deck-wrap">
+                    <div class="deck" aria-hidden="true">
+                        <div class="plinth"></div>
+                        <div class="platter">
+                            <div class="disc">
+                                <div class="disc-label" id="disc-label"><span class="disc-label-text" id="disc-label-text"></span></div>
+                            </div>
+                            <div class="sheen"></div>
+                            <div class="spindle"></div>
+                        </div>
+                        <svg class="tonearm" viewBox="0 0 100 280" preserveAspectRatio="xMidYMin meet">
+                            <rect x="60" y="2" width="20" height="22" rx="4" fill="#3a2d24" stroke="rgba(240,214,170,.18)"/>
+                            <line x1="70" y1="20" x2="70" y2="40" stroke="#b9a68a" stroke-width="4"/>
+                            <circle cx="70" cy="46" r="19" fill="#241a14" stroke="rgba(240,214,170,.18)"/>
+                            <circle cx="70" cy="46" r="8" fill="#3a2d24" stroke="rgba(240,214,170,.3)"/>
+                            <path d="M70 46 L66 178 Q64 204 45 226" fill="none" stroke="#d8c7ab" stroke-width="4" stroke-linecap="round"/>
+                            <rect x="30" y="218" width="20" height="32" rx="3" transform="rotate(42 40 234)" fill="#d8c7ab"/>
+                            <circle cx="70" cy="46" r="2.6" style="fill:var(--amber)"/>
+                        </svg>
+                        <span class="knob k1"></span><span class="knob k2"></span><span class="pilot"></span>
+                    </div>
+                    <p class="deck-caption">on the turntable · <strong id="deck-season">…</strong></p>
+                </div>
             </div>
         </header>
 
-        <div class="container">
-            <div class="player">
-                <div class="player-head">
-                    <div class="player-now"><span class="dot"></span>now playing &middot; <strong id="now-label">—</strong></div>
-                    <div class="player-controls">
-                        <button class="nav-btn" id="prev-season" aria-label="Previous season" title="Previous season">←</button>
-                        <button class="nav-btn" id="next-season" aria-label="Next season" title="Next season">→</button>
-                        <button class="shuffle-btn" id="shuffle">↻ surprise me</button>
-                    </div>
-                </div>
-                <iframe id="embed" src="" width="100%" height="352" frameborder="0"
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy" title="Spotify player"></iframe>
-            </div>
-
-            <div class="filters">
-                <div class="chips" id="chips"></div>
-                <input class="search" id="search" type="search" placeholder="find a season... try 'winter 2019'" aria-label="Search seasons">
-            </div>
-
-            <div class="timemachine">
-                <div class="tm-spotlight" id="tm-spotlight">
-                    <span class="tm-spotlight-label" id="tm-spotlight-label">—</span>
-                </div>
-                <div class="tm-controls">
-                    <p class="tm-eyebrow">// time machine</p>
-                    <input type="range" class="tm-range" id="tm-range" min="0" max="0" value="0" aria-label="Scrub through every season">
-                    <div class="tm-labels">
-                        <span id="tm-start">—</span>
-                        <span id="tm-end">—</span>
-                    </div>
-                    <button class="tm-play-btn" id="tm-play">▶ play this one</button>
-                </div>
-            </div>
-        </div>
-
-        <section>
+        <section class="listen" id="listen" aria-labelledby="listen-title">
             <div class="container">
-                <p class="section-label">// the archive</p>
-                <h2 class="section-title">The full run, oldest to newest</h2>
-                <div class="matrix-wrap" id="matrix"></div>
+                <div class="player">
+                    <div class="player-head">
+                        <div>
+                            <p class="eyebrow">Now spinning</p>
+                            <h2 class="player-title display" id="listen-title"><em id="now-label">…</em></h2>
+                        </div>
+                        <div class="player-controls">
+                            <button class="btn btn-icon" id="prev-season" type="button" aria-label="Previous season" title="Previous season">←</button>
+                            <button class="btn btn-icon" id="next-season" type="button" aria-label="Next season" title="Next season">→</button>
+                            <button class="btn" id="shuffle" type="button">↻&nbsp; Surprise me</button>
+                            <a class="btn" id="open-spotify" href="#" target="_blank" rel="noopener">Open in Spotify ↗</a>
+                        </div>
+                    </div>
+                    <div class="embed-wrap">
+                        <iframe id="embed" title="Spotify player" height="352"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    </div>
+
+                    <div class="dig">
+                        <div class="dig-thumb" id="tm-spotlight" aria-hidden="true"></div>
+                        <div>
+                            <div class="dig-top">
+                                <label class="eyebrow" for="tm-range">Dig through the years</label>
+                                <span class="dig-label" id="tm-spotlight-label">…</span>
+                            </div>
+                            <input type="range" class="tm-range" id="tm-range" min="0" max="0" value="0">
+                            <div class="tm-labels"><span id="tm-start"></span><span id="tm-end"></span></div>
+                        </div>
+                        <button class="btn btn-primary" id="tm-play" type="button">▶&nbsp; Play this one</button>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="in-data">
+        <section class="block" id="archive" aria-labelledby="archive-title">
             <div class="container">
-                <p class="section-label">// fifteen years in data</p>
-                <h2 class="section-title">What the archive knows</h2>
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow">The crates</p>
+                        <h2 class="section-title display" id="archive-title">Every season, <em>oldest to newest</em></h2>
+                    </div>
+                    <div class="filters">
+                        <div class="chips" id="chips" role="group" aria-label="Filter by season"></div>
+                        <input class="search" id="search" type="search" placeholder="Find a season, e.g. winter 2019" aria-label="Search seasons">
+                    </div>
+                </div>
+                <div class="matrix" id="matrix"></div>
+            </div>
+        </section>
+
+        <section class="block" id="in-data" aria-labelledby="data-title">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow" id="data-eyebrow">By the numbers</p>
+                        <h2 class="section-title display" id="data-title">What the archive <em>knows</em></h2>
+                        <p class="section-cap" id="data-coverage"></p>
+                    </div>
+                </div>
 
                 <div class="data-banner hidden" id="data-banner"></div>
-                <div class="stats" id="deep-stats"></div>
+                <div class="stats data-stats" id="deep-stats"></div>
 
-                <div class="data-block">
-                    <h3 class="data-h">nostalgia drift — how far back you reach</h3>
-                    <p class="data-cap">each point is a season, oldest to newest. higher means the music skews older than the season it lived in.</p>
-                    <div id="drift-chart"></div>
-                </div>
-
-                <div class="data-cols">
-                    <div class="data-block">
-                        <h3 class="data-h">who follows you the whole way</h3>
-                        <p class="data-cap">artists ranked by how many different seasons they turn up in.</p>
+                <div class="data-grid">
+                    <div class="panel wide">
+                        <h3 class="panel-h">Nostalgia drift: how far back the crates reach</h3>
+                        <p class="panel-cap">Each point is a season, oldest to newest. Higher means the music skews older than the season it lived in.</p>
+                        <div id="drift-chart"></div>
+                    </div>
+                    <div class="panel">
+                        <h3 class="panel-h">Who follows me the whole way</h3>
+                        <p class="panel-cap">Artists ranked by how many different seasons they turn up in.</p>
                         <div id="top-artists"></div>
                     </div>
-                    <div class="data-block">
-                        <h3 class="data-h">songs that keep coming back</h3>
-                        <p class="data-cap">tracks that showed up in more than one season.</p>
+                    <div class="panel">
+                        <h3 class="panel-h">Songs that keep coming back</h3>
+                        <p class="panel-cap">Tracks that showed up in more than one season.</p>
                         <div id="repeat-songs"></div>
                     </div>
-                </div>
-
-                <div class="data-block">
-                    <h3 class="data-h">how vintage the crates get</h3>
-                    <p class="data-cap">every track bucketed by the decade it was released.</p>
-                    <div id="decade-mix"></div>
-                </div>
-
-                <div class="data-block hidden" id="genre-block">
-                    <h3 class="data-h">the sounds you keep</h3>
-                    <p class="data-cap">genres come from each track's primary artist. most artists carry a few at once, so a track can land in several.</p>
-                    <div id="top-genres"></div>
-                </div>
-
-                <div class="data-block hidden" id="genre-era-block">
-                    <h3 class="data-h">how the mix drifts</h3>
-                    <p class="data-cap">each year split across your most-played genres. anything outside the top eight is grouped as other.</p>
-                    <div class="genre-legend" id="genre-legend"></div>
-                    <div id="genre-eras"></div>
-                </div>
-
-                <div class="data-block hidden" id="tempo-block">
-                    <h3 class="data-h">tempo curve — how fast each season runs</h3>
-                    <p class="data-cap">average bpm per season. <span id="tempo-coverage"></span></p>
-                    <div id="tempo-chart"></div>
+                    <div class="panel wide">
+                        <h3 class="panel-h">How vintage the crates get</h3>
+                        <p class="panel-cap">Every track, bucketed by the decade it came out.</p>
+                        <div id="decade-mix"></div>
+                    </div>
+                    <div class="panel wide hidden" id="genre-block">
+                        <h3 class="panel-h">The sounds I keep</h3>
+                        <p class="panel-cap">Genres come from each track’s primary artist. Most artists carry a few at once, so a track can land in several.</p>
+                        <div id="top-genres"></div>
+                    </div>
+                    <div class="panel wide hidden" id="genre-era-block">
+                        <h3 class="panel-h">How the mix drifts</h3>
+                        <p class="panel-cap">Each year split across the most-played genres. Anything outside the top eight is grouped as other.</p>
+                        <div class="genre-legend" id="genre-legend"></div>
+                        <div id="genre-eras"></div>
+                    </div>
+                    <div class="panel wide hidden" id="tempo-block">
+                        <h3 class="panel-h">Tempo curve: how fast each season runs</h3>
+                        <p class="panel-cap">Average BPM per season. <span id="tempo-coverage"></span></p>
+                        <div id="tempo-chart"></div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer role="contentinfo">
+    <footer class="site-footer">
         <div class="container">
-            <p>© <span id="year"></span> <span>GenuineJack.xyz</span> &middot; still going</p>
-            <p class="footer-credit">tempo &amp; key data by <a href="https://getsongbpm.com" target="_blank" rel="noopener">GetSongBPM</a></p>
+            <p class="sign-off">© <span id="year"></span> Jack’s Listening To · still going</p>
+            <p><a href="/explorer/">Find your own seasons →</a><span id="bpm-credit" class="hidden"> · tempo &amp; key data by <a href="https://getsongbpm.com" target="_blank" rel="noopener">GetSongBPM</a></span></p>
         </div>
     </footer>
 
     <script>
-    /* Surface any runtime error visibly instead of leaving a silent blank page. */
+    /* Surface our own runtime errors instead of leaving a silent blank page.
+       Errors from browser extensions or other origins are ignored. */
     (function () {
         const el = document.getElementById('fatal-error');
-        const show = message => { el.textContent = '// something broke: ' + message + ' \u2014 please screenshot this banner.'; el.classList.remove('hidden'); };
-        window.addEventListener('error', event => show(event.message || String(event.error)));
-        window.addEventListener('unhandledrejection', event => show(event.reason?.message || String(event.reason)));
+        const show = message => { el.textContent = 'Something broke: ' + message + '. Reloading usually fixes it.'; el.classList.remove('hidden'); };
+        window.addEventListener('error', event => {
+            if (!event.filename || !event.filename.startsWith(location.origin)) return;
+            show(event.message || String(event.error));
+        });
     })();
     </script>
+    <script src="/playlists.js"></script>
     <script>
-    /* ============================================================
-       SEASON ARCHIVE DATA
-       Add a line for each playlist: { season, year, id }
-       - season: 'Spring' | 'Summer' | 'Fall' | 'Winter'
-       - year:   the calendar year (Winter 2012 = the winter that starts Dec 2012)
-       - id:     the Spotify playlist ID (the part after /playlist/ in the URL)
-       Order doesn't matter — the grid sorts itself.
-       ============================================================ */
-    const PLAYLISTS = [
-        { season: 'Fall',   year: 2011, id: '5wkv11CBSWffCPxSlmjFrm' },
-        { season: 'Winter', year: 2011, id: '0uffa0ij52lKItCT1mb0e3' },
-
-        { season: 'Spring', year: 2012, id: '6JAdNM4Jx8tZaaeHLhtBhx' },
-        { season: 'Summer', year: 2012, id: '4gxLwaN1z1wQlKXs7v9k7U' },
-        { season: 'Fall',   year: 2012, id: '3iCUFWzBucminmnMY4a1db' },
-        { season: 'Winter', year: 2012, id: '0pvrzhK3FJIsdkKQG8imF8' },
-
-        { season: 'Spring', year: 2013, id: '6zMs8v7MZ5j0UtOCV5MiBC' },
-        { season: 'Summer', year: 2013, id: '4sRg33XW5HJP9HtBzQmq3N' },
-        { season: 'Fall',   year: 2013, id: '41hKSL2bBoU5mG7CCnCNx9' },
-        { season: 'Winter', year: 2013, id: '7hCn4W8HuCJI4DLSWCZfVI' },
-
-        { season: 'Spring', year: 2014, id: '73PgN6KZaaUarmSi9xUYwU' },
-        { season: 'Summer', year: 2014, id: '1TXhfMe8aIUet3RIHbrF3u' },
-        { season: 'Fall',   year: 2014, id: '17EAkVWcc7ePwqwbmkOxRT' },
-        { season: 'Winter', year: 2014, id: '5L6OjPmlqD4kPpjCGhezzc' },
-
-        { season: 'Spring', year: 2015, id: '54lnhZxgXBQfCQWjJ59JTv' },
-        { season: 'Summer', year: 2015, id: '2ruxkGLijjlONpGxX69Dpp' },
-        { season: 'Fall',   year: 2015, id: '4OXyGepBUFaonEriAPGk39' },
-        { season: 'Winter', year: 2015, id: '25ejfMmlChJLvsAm1RsVVL' },
-
-        { season: 'Spring', year: 2016, id: '5GzUocM5hM3jyxZj7el58e' },
-        { season: 'Summer', year: 2016, id: '6TfSbAgQ4aXv5ncameTgGt' },
-        { season: 'Fall',   year: 2016, id: '2VCpvOwfRXaXNmNAuuUNnR' },
-        { season: 'Winter', year: 2016, id: '1Pirv0DkTWfCZldNPgvA7R' },
-
-        { season: 'Spring', year: 2017, id: '04moCSJfuZjofSIGQw5OxZ' },
-        { season: 'Summer', year: 2017, id: '7G96fwgseT18ZIKnvdCIQz' },
-        { season: 'Fall',   year: 2017, id: '2bPMg8g3PpbfDUqAh38Ims' },
-        { season: 'Winter', year: 2017, id: '3EIcxi1XQyxOa2y6h9L6Jz' },
-
-        { season: 'Spring', year: 2018, id: '3vs9ee42tbNkg1ZpjAP4ah' },
-        { season: 'Summer', year: 2018, id: '0GzRb3EcvOZYKTja7JnKUs' },
-        { season: 'Fall',   year: 2018, id: '63NxD6r948F6WN7FKCPJZ9' },
-        { season: 'Winter', year: 2018, id: '0AQaGnMY4PQeQEVmrBM7H9' },
-
-        { season: 'Spring', year: 2019, id: '3MqSGtsrxvX1BZ3pQPuX1Y' },
-        { season: 'Summer', year: 2019, id: '5Me25nOyHbEIK3GwytrSlN' },
-        { season: 'Fall',   year: 2019, id: '6eh9jT4ACAsF3e1yayHZHe' },
-        { season: 'Winter', year: 2019, id: '3fF5aLdvWYGt7Y0XpnRQeI' },
-
-        { season: 'Spring', year: 2020, id: '4eynm41wEY7KfzZ2B4QhCW' },
-        { season: 'Summer', year: 2020, id: '6KKUycI4JBZEYUSOECnx6K' },
-        { season: 'Fall',   year: 2020, id: '45fHyjB4l3m1bQeV1UrEwz' },
-        { season: 'Winter', year: 2020, id: '3osvLVuhNtuWJhc1iIQq6j' },
-
-        { season: 'Spring', year: 2021, id: '6SBWtDuGnBFVCVHdZrmenp' },
-        { season: 'Summer', year: 2021, id: '6mbD8Tkqvpa0iZlQpJMmR2' },
-        { season: 'Fall',   year: 2021, id: '54V2ayQiVmZ3deUYBkei4A' },
-        { season: 'Winter', year: 2021, id: '0HAREzZTmiUISlUAUuYJLw' },
-
-        { season: 'Spring', year: 2022, id: '79usfWZaKTLhAaiObjRrkW' },
-        { season: 'Summer', year: 2022, id: '5zGFPRiksctWQU2k5gskNQ' },
-        { season: 'Fall',   year: 2022, id: '6bojseXbCFR8YrAcQbLEXl' },
-        { season: 'Winter', year: 2022, id: '3vys1Oq5HFkvIsDu2anFTt' },
-
-        { season: 'Spring', year: 2023, id: '1f1X3zUsv4CAgevHR6hDO4' },
-        { season: 'Summer', year: 2023, id: '6RpHmjOSaQvPAkMK8wZwxa' },
-        { season: 'Fall',   year: 2023, id: '19eKq0jBuuNT6DKdUThLO3' },
-        { season: 'Winter', year: 2023, id: '3U5YromjgGtsNM4CcstnQK' },
-
-        { season: 'Spring', year: 2024, id: '2EKl0jmbX7Xqz0b3qvnr8J' },
-        { season: 'Summer', year: 2024, id: '4vL01VOXqWeu9OwBq2DWUa' },
-        { season: 'Fall',   year: 2024, id: '3T9dYu5nFqASmhzQ3wvg98' },
-        { season: 'Winter', year: 2024, id: '2YWEQ8CbYLYoeRpE4I3UT6' },
-
-        { season: 'Spring', year: 2025, id: '4b0n2eJxzwgWIYO8YkRoMf' },
-        { season: 'Summer', year: 2025, id: '1MWYo2ohgTteRAA8cbbqsU' },
-        { season: 'Fall',   year: 2025, id: '2cNDAxPUFPFud0gOxgOFEg' },
-        { season: 'Winter', year: 2025, id: '2xsb8t6f9Zbl9k1ZkqCSSg' },
-
-        { season: 'Spring', year: 2026, id: '0Q0vYgP2PyBtqLq2EonVS0' },
-        { season: 'Summer', year: 2026, id: '2H7WgezNfuDizPqDX7lmMb' },
-        { season: 'Fall',   year: 2026, id: '2w3QJpOhUv0K28TsMM1WnG' },
-    ];
-
     /* ---- config ---- */
+    const PLAYLISTS = (window.SEASON_PLAYLISTS || []).map(p => ({ ...p }));
     const SEASON_ORDER = ['Spring', 'Summer', 'Fall', 'Winter'];
+    const SEASON_RANK = { Spring: 0, Summer: 1, Fall: 2, Winter: 3 };
     const SEASON_ACCENT = { Spring: 'var(--spring)', Summer: 'var(--summer)', Fall: 'var(--fall)', Winter: 'var(--winter)' };
     const START_YEAR = Math.min(...PLAYLISTS.map(p => p.year));
-    const END_YEAR = Math.max(new Date().getFullYear(), ...PLAYLISTS.map(p => p.year));
+    const END_YEAR = Math.max(...PLAYLISTS.map(p => p.year));
 
     /* ---- helpers ---- */
+    const $ = id => document.getElementById(id);
     const key = (s, y) => `${s}-${y}`;
+    const rank = p => p.year * 10 + SEASON_RANK[p.season];
+    const label = p => `${p.season} ${p.year}`;
     const byKey = {};
     PLAYLISTS.forEach(p => { byKey[key(p.season, p.year)] = p; });
-    const rank = p => p.year * 10 + SEASON_ORDER.indexOf(p.season);
     const sorted = [...PLAYLISTS].sort((a, b) => rank(a) - rank(b));
+    const first = sorted[0];
     const latest = sorted[sorted.length - 1];
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+    const safeImage = url => (typeof url === 'string' && /^https:\/\/[^\s'"()\\]+$/.test(url)) ? url : '';
+    const spotifyUrl = p => `https://open.spotify.com/playlist/${p.id}`;
 
     let activeKey = latest ? key(latest.season, latest.year) : null;
-    let seasonFilter = null;       // e.g. 'Winter' or null
+    let seasonFilter = null;
     let searchTerm = '';
 
-    /* ---- stats ---- */
+    /* Seasons between the first and the latest that have no playlist. */
+    function missingSeasons() {
+        if (!first || !latest) return 0;
+        let missing = 0;
+        for (let r = rank(first); r <= rank(latest); r++) {
+            const year = Math.floor(r / 10), season = SEASON_ORDER[r % 10];
+            if (season && !byKey[key(season, year)]) missing++;
+        }
+        return missing;
+    }
+
+    function statHtml(items) {
+        return items.map(s => `<div class="stat"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
+    }
+
     function renderStats(metrics = null) {
-        const yearsRunning = END_YEAR - START_YEAR;
-        const seasonsArchived = PLAYLISTS.length;
-        const last = sorted[sorted.length - 1];
-        const stats = [
-            { num: seasonsArchived, label: 'seasons logged' },
-            { num: yearsRunning + '+', label: 'years deep' },
+        $('stats').innerHTML = statHtml([
+            { num: PLAYLISTS.length, label: 'seasons logged' },
+            { num: END_YEAR - START_YEAR, label: 'years running' },
             { num: metrics ? metrics.totalTracks.toLocaleString() : '—', label: 'tracks, all in' },
-            { num: last ? `${last.season} ${last.year}` : '—', label: 'the latest' },
-        ];
-        document.getElementById('stats').innerHTML = stats.map(s =>
-            `<div class="stat"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`
-        ).join('');
+            { num: missingSeasons(), label: 'seasons skipped' },
+        ]);
     }
 
     /* ---- songs database ---- */
-    const SEASON_RANK = { Spring: 0, Summer: 1, Fall: 2, Winter: 3 };
     let SONGS = [];
-    let usingSampleData = false;
+    let dataUnavailable = false;
+    const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    const songRank = song => song.year * 10 + (SEASON_RANK[song.season] ?? 0);
-    const seasonLabel = song => `${song.season} ${song.year}`;
-
-    function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-    /* No external CSV library — parse RFC4180-style quoted CSV (with "" escapes) inline. */
+    /* RFC 4180-style quoted CSV (with "" escapes), no library needed. */
     function parseCsv(text) {
         const rows = [];
-        let row = [];
-        let field = '';
-        let inQuotes = false;
+        let row = [], field = '', inQuotes = false;
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
             if (inQuotes) {
@@ -786,19 +576,13 @@
                     if (text[i + 1] === '"') { field += '"'; i++; }
                     else inQuotes = false;
                 } else field += char;
-            } else if (char === '"') {
-                inQuotes = true;
-            } else if (char === ',') {
-                row.push(field); field = '';
-            } else if (char === '\r') {
-                /* handled by the following \n, or ignored at end of file */
-            } else if (char === '\n') {
-                row.push(field); field = '';
-                rows.push(row); row = [];
-            } else field += char;
+            } else if (char === '"') inQuotes = true;
+            else if (char === ',') { row.push(field); field = ''; }
+            else if (char === '\r') { /* the following \n ends the row */ }
+            else if (char === '\n') { row.push(field); field = ''; rows.push(row); row = []; }
+            else field += char;
         }
         if (field !== '' || row.length) { row.push(field); rows.push(row); }
-
         const header = rows.shift() || [];
         return rows.filter(cells => cells.some(cell => cell !== '')).map(cells => {
             const record = {};
@@ -807,65 +591,51 @@
         });
     }
 
-    async function loadSongs(attempts = 3) {
-        for (let attempt = 0; attempt < attempts; attempt++) {
-            try {
-                /* Root-absolute so it resolves the same from any path. */
-                const response = await fetch('/songs_data.csv', { cache: 'no-store' });
-                if (response.ok) {
-                    const text = await response.text();
-                    const rows = parseCsv(text).map(normalizeCsvRow).filter(Boolean);
-                    if (rows.length) {
-                        SONGS = rows;
-                        return;
-                    }
-                }
-            } catch (error) { /* retry below, report failure once attempts are exhausted */ }
-            if (attempt < attempts - 1) await wait(500 * 2 ** attempt);
-        }
-
-        SONGS = [];
-        usingSampleData = true;
-    }
-
     function normalizeCsvRow(row) {
         const season = (row['Season'] || '').trim();
         const year = parseInt(row['Year'], 10);
-        const song = (row['Song'] || '').trim();
-        const artist = (row['Artist'] || '').trim();
-        if (!season || !year) return null;
+        if (!SEASON_ORDER.includes(season) || !year) return null;
         const releaseYear = parseInt(row['Release Year'], 10);
         const durationSec = parseInt(row['Duration (sec)'], 10);
-        /* Enrichment columns are optional: a CSV predating the tempo/genre pull
-           still parses, and the sections that need them stay hidden. */
+        /* Enrichment columns are optional: a CSV without the tempo/genre pull
+           still parses, and the panels that need them stay hidden. */
         const tempo = parseFloat(row['Tempo (BPM)']);
         return {
-            season, year, song, artist,
+            season, year,
+            song: (row['Song'] || '').trim(),
+            artist: (row['Artist'] || '').trim(),
             releaseYear: Number.isNaN(releaseYear) ? null : releaseYear,
             durationSec: Number.isNaN(durationSec) ? 0 : durationSec,
-            genres: (row['Genres'] || '').split(';').map(genre => genre.trim()).filter(Boolean),
+            genres: (row['Genres'] || '').split(';').map(g => g.trim()).filter(Boolean),
             primaryGenre: (row['Primary Genre'] || '').trim(),
             tempo: Number.isFinite(tempo) && tempo > 0 ? tempo : null,
-            musicalKey: (row['Key'] || '').trim(),
         };
     }
 
+    async function loadSongs(attempts = 3) {
+        for (let attempt = 0; attempt < attempts; attempt++) {
+            try {
+                /* no-cache = revalidate with the server (cheap 304 when unchanged). */
+                const response = await fetch('/songs_data.csv', { cache: 'no-cache' });
+                if (response.ok) {
+                    const rows = parseCsv(await response.text()).map(normalizeCsvRow).filter(Boolean);
+                    if (rows.length) { SONGS = rows; return; }
+                }
+            } catch (error) { /* retry below */ }
+            if (attempt < attempts - 1) await wait(500 * 2 ** attempt);
+        }
+        dataUnavailable = true;
+    }
+
     function computeMetrics(rows) {
-        const artistSeasons = {};
-        const songSeasons = {};
-        const seasonAges = {};
-        const decades = {};
-        const genreCounts = {};
-        const genreByYear = {};
-        const seasonTempos = {};
-        let totalDuration = 0;
-        let ageSum = 0;
-        let ageCount = 0;
-        let tempoSum = 0;
-        let tempoCount = 0;
+        const artistSeasons = {}, songSeasons = {}, seasonAges = {}, decades = {};
+        const genreCounts = {}, genreByYear = {}, seasonTempos = {}, seasonsSeen = {};
+        let totalDuration = 0, ageSum = 0, ageCount = 0, tempoSum = 0, tempoCount = 0;
 
         rows.forEach(row => {
-            const label = seasonLabel(row);
+            const seasonLabel = label(row);
+            const seasonRank = rank(row);
+            seasonsSeen[seasonLabel] = seasonRank;
             totalDuration += row.durationSec;
 
             row.genres.forEach(genre => { genreCounts[genre] = (genreCounts[genre] || 0) + 1; });
@@ -874,27 +644,20 @@
                 year[row.primaryGenre] = (year[row.primaryGenre] || 0) + 1;
             }
             if (row.tempo) {
-                tempoSum += row.tempo;
-                tempoCount++;
-                const bucket = seasonTempos[label] = seasonTempos[label] || { sum: 0, count: 0, rank: songRank(row) };
-                bucket.sum += row.tempo;
-                bucket.count++;
+                tempoSum += row.tempo; tempoCount++;
+                const bucket = seasonTempos[seasonLabel] = seasonTempos[seasonLabel] || { sum: 0, count: 0, rank: seasonRank };
+                bucket.sum += row.tempo; bucket.count++;
             }
-            if (row.artist) {
-                (artistSeasons[row.artist] = artistSeasons[row.artist] || new Set()).add(label);
-            }
+            if (row.artist) (artistSeasons[row.artist] = artistSeasons[row.artist] || new Set()).add(seasonLabel);
             if (row.song) {
-                const songKey = `${row.song} — ${row.artist}`;
-                (songSeasons[songKey] = songSeasons[songKey] || new Set()).add(label);
+                const songKey = JSON.stringify([row.song, row.artist]);
+                (songSeasons[songKey] = songSeasons[songKey] || new Set()).add(seasonLabel);
             }
-
             if (row.releaseYear) {
                 const age = row.year - row.releaseYear;
-                ageSum += age;
-                ageCount++;
-                const seasonAge = seasonAges[label] = seasonAges[label] || { sum: 0, count: 0, rank: songRank(row) };
-                seasonAge.sum += age;
-                seasonAge.count++;
+                ageSum += age; ageCount++;
+                const seasonAge = seasonAges[seasonLabel] = seasonAges[seasonLabel] || { sum: 0, count: 0, rank: seasonRank };
+                seasonAge.sum += age; seasonAge.count++;
                 const decade = Math.floor(row.releaseYear / 10) * 10;
                 decades[decade] = (decades[decade] || 0) + 1;
             }
@@ -902,18 +665,17 @@
 
         const topArtists = Object.entries(artistSeasons)
             .map(([name, seasons]) => ({ name, count: seasons.size }))
-            .sort((a, b) => b.count - a.count).slice(0, 8);
+            .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)).slice(0, 8);
         const repeatSongs = Object.entries(songSeasons)
-            .map(([name, seasons]) => ({ name, count: seasons.size }))
+            .map(([songKey, seasons]) => { const [song, artist] = JSON.parse(songKey); return { song, artist, count: seasons.size }; })
             .filter(song => song.count > 1)
-            .sort((a, b) => b.count - a.count).slice(0, 8);
+            .sort((a, b) => b.count - a.count || a.song.localeCompare(b.song)).slice(0, 8);
         const drift = Object.entries(seasonAges)
-            .map(([label, value]) => ({ label, avg: value.sum / value.count, rank: value.rank }))
+            .map(([name, value]) => ({ label: name, avg: value.sum / value.count, rank: value.rank }))
             .sort((a, b) => a.rank - b.rank);
         const decadeList = Object.entries(decades)
             .map(([decade, count]) => ({ decade: parseInt(decade, 10), count }))
             .sort((a, b) => a.decade - b.decade);
-
         const topGenres = Object.entries(genreCounts)
             .map(([name, count]) => ({ name, count }))
             .sort((a, b) => b.count - a.count).slice(0, 10);
@@ -931,33 +693,29 @@
             })
             .filter(era => era.total > 0)
             .sort((a, b) => a.year - b.year);
-
         const tempoCurve = Object.entries(seasonTempos)
-            .map(([label, value]) => ({ label, avg: value.sum / value.count, rank: value.rank }))
+            .map(([name, value]) => ({ label: name, avg: value.sum / value.count, rank: value.rank }))
             .sort((a, b) => a.rank - b.rank);
+        const seasonCount = Object.keys(seasonsSeen).length;
+        const lastSeasonLabel = Object.entries(seasonsSeen).sort((a, b) => b[1] - a[1])[0]?.[0] || '';
 
         return {
-            totalTracks: rows.length,
-            totalDuration,
+            totalTracks: rows.length, totalDuration, seasonCount, lastSeasonLabel,
             uniqueArtists: Object.keys(artistSeasons).length,
             avgAge: ageCount ? ageSum / ageCount : 0,
-            topArtists, repeatSongs, drift, decadeList,
-            topGenres, genreEras, stackGenres,
-            tempoCurve,
+            topArtists, repeatSongs, drift, decadeList, topGenres, genreEras, stackGenres, tempoCurve,
             avgTempo: tempoCount ? tempoSum / tempoCount : 0,
             tempoCoverage: tempoCount,
         };
     }
 
     function renderDataSection() {
-        const banner = document.getElementById('data-banner');
-        if (usingSampleData) {
+        const banner = $('data-banner');
+        if (dataUnavailable) {
             renderStats(null);
             banner.classList.remove('hidden');
-            banner.innerHTML = '<strong>// archive unavailable.</strong> The track data could not be loaded. <a href="javascript:location.reload()" style="color:inherit;text-decoration:underline;">Reload the page</a> to try again.';
-            document.getElementById('deep-stats').innerHTML = ['tracks, all in', 'of music', 'different artists', 'avg nostalgia drift'].map(label =>
-                `<div class="stat"><div class="stat-num">\u2014</div><div class="stat-label">${label}</div></div>`
-            ).join('');
+            banner.innerHTML = '<strong>The track data didn’t load.</strong> The player and the crates still work. <button type="button" onclick="location.reload()">Reload to try again</button>.';
+            $('deep-stats').innerHTML = statHtml(['hours of music', 'different artists', 'years of nostalgia drift', 'songs per season'].map(l => ({ num: '—', label: l })));
             renderDrift([]);
             renderBars('top-artists', []);
             renderList('repeat-songs', []);
@@ -968,40 +726,39 @@
 
         const metrics = computeMetrics(SONGS);
         renderStats(metrics);
-        const hours = Math.round(metrics.totalDuration / 3600);
-        const stats = [
-            { num: metrics.totalTracks.toLocaleString(), label: 'tracks, all in' },
-            { num: hours.toLocaleString() + 'h', label: 'of music' },
+        $('data-eyebrow').textContent = `${END_YEAR - START_YEAR} years in data`;
+        if (latest && metrics.lastSeasonLabel && metrics.lastSeasonLabel !== label(latest)) {
+            $('data-coverage').textContent = `Track data runs through ${metrics.lastSeasonLabel}. ${label(latest)} joins the numbers at the next data pull.`;
+        }
+
+        $('deep-stats').innerHTML = statHtml([
+            { num: Math.round(metrics.totalDuration / 3600).toLocaleString(), label: 'hours of music' },
             { num: metrics.uniqueArtists.toLocaleString(), label: 'different artists' },
-            { num: metrics.avgAge.toFixed(1) + ' yrs', label: 'avg nostalgia drift' },
-        ];
-        document.getElementById('deep-stats').innerHTML = stats.map(stat =>
-            `<div class="stat"><div class="stat-num">${stat.num}</div><div class="stat-label">${stat.label}</div></div>`
-        ).join('');
+            { num: metrics.avgAge.toFixed(1), label: 'years of nostalgia drift' },
+            { num: metrics.seasonCount ? Math.round(metrics.totalTracks / metrics.seasonCount) : '—', label: 'songs per season' },
+        ]);
 
         renderDrift(metrics.drift);
-        renderBars('top-artists', metrics.topArtists.map(artist => ({ label: artist.name, value: artist.count, tail: `${artist.count} seasons` })));
-        renderList('repeat-songs', metrics.repeatSongs.map(song => ({ label: song.name, tail: `${song.count}×` })));
-        renderBars('decade-mix', metrics.decadeList.map(decade => ({ label: `${decade.decade}s`, value: decade.count, tail: `${decade.count}` })));
+        renderBars('top-artists', metrics.topArtists.map(a => ({ label: a.name, value: a.count, tail: `${a.count} seasons` })));
+        renderList('repeat-songs', metrics.repeatSongs.map(s => ({ html: `<b>${escapeHtml(s.song)}</b> · ${escapeHtml(s.artist)}`, tail: `${s.count}×` })));
+        renderBars('decade-mix', metrics.decadeList.map(d => ({ label: `${d.decade}s`, value: d.count, tail: d.count.toLocaleString() })));
 
         /* These three only exist once the CSV carries the enrichment columns. */
         const hasGenres = metrics.topGenres.length > 0;
-        document.getElementById('genre-block').classList.toggle('hidden', !hasGenres);
-        document.getElementById('genre-era-block').classList.toggle('hidden', !metrics.genreEras.length);
-        if (hasGenres) {
-            renderBars('top-genres', metrics.topGenres.map(genre => ({ label: genre.name, value: genre.count, tail: `${genre.count}` })));
-        }
+        $('genre-block').classList.toggle('hidden', !hasGenres);
+        $('genre-era-block').classList.toggle('hidden', !metrics.genreEras.length);
+        if (hasGenres) renderBars('top-genres', metrics.topGenres.map(g => ({ label: g.name, value: g.count, tail: g.count.toLocaleString() })));
         if (metrics.genreEras.length) renderGenreEras(metrics.genreEras, metrics.stackGenres);
 
         const hasTempo = metrics.tempoCurve.length > 0;
-        document.getElementById('tempo-block').classList.toggle('hidden', !hasTempo);
+        $('tempo-block').classList.toggle('hidden', !hasTempo);
+        $('bpm-credit').classList.toggle('hidden', !hasTempo);
         if (hasTempo) {
             const percent = Math.round(metrics.tempoCoverage / metrics.totalTracks * 100);
-            document.getElementById('tempo-coverage').textContent =
-                `averaging ${Math.round(metrics.avgTempo)} bpm across the ${percent}% of tracks with a tempo match.`;
+            $('tempo-coverage').textContent = `Averaging ${Math.round(metrics.avgTempo)} BPM across the ${percent}% of tracks with a tempo match.`;
             renderDrift(metrics.tempoCurve, 'tempo-chart', {
                 axisSuffix: '', tooltipSuffix: 'bpm', floor: 0, zeroBaseline: false,
-                emptyText: 'no tempo data yet', ariaLabel: 'Average tempo by season',
+                emptyText: 'No tempo data yet.', ariaLabel: 'Average tempo by season',
             });
         }
     }
@@ -1015,8 +772,8 @@
     }
 
     function renderDrift(drift, id = 'drift-chart', options = {}) {
-        const { axisSuffix = 'y', tooltipSuffix = 'yrs older', emptyText = 'no release-year data yet', floor = 5 } = options;
-        const element = document.getElementById(id);
+        const { axisSuffix = 'y', tooltipSuffix = 'years older', emptyText = 'No release-year data yet.', floor = 5 } = options;
+        const element = $(id);
         if (!drift.length) { element.innerHTML = `<p class="data-empty">${emptyText}</p>`; return; }
         const width = 1000, height = 260, padLeft = 44, padRight = 16, padTop = 20, padBottom = 34;
         const values = drift.map(point => point.avg);
@@ -1024,8 +781,7 @@
         const rawMin = Math.min(...values);
 
         /* Tempo clusters in a narrow band well above zero, so a zero baseline
-           would flatten the whole curve. Those charts opt out and get an axis
-           that starts just below the data instead. */
+           would flatten it. Those charts start the axis just below the data. */
         const domainMin = options.zeroBaseline === false
             ? Math.max(0, Math.floor((rawMin - Math.max(rawMax - rawMin, 1) * 0.4) / 10) * 10)
             : 0;
@@ -1037,220 +793,234 @@
         const points = drift.map((point, index) => [x(index), y(point.avg)]);
         const line = points.map((point, index) => `${index ? 'L' : 'M'}${point[0].toFixed(1)} ${point[1].toFixed(1)}`).join(' ');
         const lastPoint = points[points.length - 1];
-        const area = `${line} L ${lastPoint[0].toFixed(1)} ${height-padBottom} L ${points[0][0].toFixed(1)} ${height-padBottom} Z`;
+        const area = `${line} L ${lastPoint[0].toFixed(1)} ${height - padBottom} L ${points[0][0].toFixed(1)} ${height - padBottom} Z`;
         let grid = '';
         for (let tick = domainMin; tick <= domainMax + 1e-9; tick += tickStep) {
             const gridY = y(tick);
-            grid += `<line x1="${padLeft}" y1="${gridY}" x2="${width-padRight}" y2="${gridY}" class="grid"/>`;
-            grid += `<text x="${padLeft-8}" y="${gridY+3}" class="axis" text-anchor="end">${Math.round(tick)}${axisSuffix}</text>`;
+            grid += `<line x1="${padLeft}" y1="${gridY}" x2="${width - padRight}" y2="${gridY}" class="grid"/>`;
+            grid += `<text x="${padLeft - 8}" y="${gridY + 4}" class="axis" text-anchor="end">${Math.round(tick)}${axisSuffix}</text>`;
         }
         let labels = '';
         const step = Math.max(1, Math.round(drift.length / 7));
         drift.forEach((point, index) => {
             if (index % step === 0 || index === drift.length - 1) {
-                labels += `<text x="${x(index)}" y="${height-12}" class="axis" text-anchor="middle">${point.label.split(' ')[1]}</text>`;
+                labels += `<text x="${x(index)}" y="${height - 10}" class="axis" text-anchor="middle">${point.label.split(' ')[1]}</text>`;
             }
         });
         const dots = points.map((point, index) =>
-            `<circle cx="${point[0].toFixed(1)}" cy="${point[1].toFixed(1)}" r="3" class="dot"><title>${drift[index].label}: ${drift[index].avg.toFixed(1)} ${tooltipSuffix}</title></circle>`
+            `<circle cx="${point[0].toFixed(1)}" cy="${point[1].toFixed(1)}" r="3.5" class="dot"><title>${escapeHtml(drift[index].label)}: ${drift[index].avg.toFixed(1)} ${tooltipSuffix}</title></circle>`
         ).join('');
-        element.innerHTML = `<svg viewBox="0 0 ${width} ${height}" class="drift-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${options.ariaLabel || 'Nostalgia drift over time'}">${grid}<path d="${area}" class="area"/><path d="${line}" class="line"/>${dots}${labels}</svg>`;
+        const gradient = `<defs><linearGradient id="drift-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9a84c" stop-opacity=".28"/><stop offset="1" stop-color="#e9a84c" stop-opacity="0"/></linearGradient></defs>`;
+        element.innerHTML = `<svg viewBox="0 0 ${width} ${height}" class="drift-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${options.ariaLabel || 'Nostalgia drift over time'}">${gradient}${grid}<path d="${area}" class="area"/><path d="${line}" class="line"/>${dots}${labels}</svg>`;
     }
 
-    /* Categorical palette, checked against the near-black page background. */
-    const GENRE_COLORS = ['#ff6d0e', '#ffb347', '#4ade80', '#38bdf8', '#a78bfa', '#f472b6', '#facc15', '#2dd4bf'];
-    const OTHER_COLOR = '#5b6472';
+    /* Categorical palette tuned for the warm dark background. */
+    const GENRE_COLORS = ['#e9a84c', '#c8553d', '#a9c48f', '#8fb3d1', '#d9a3c7', '#f0c35b', '#6fb7a8', '#b08ad8'];
+    const OTHER_COLOR = '#5c4f43';
     const genreColor = (name, stackGenres) => {
         const index = stackGenres.indexOf(name);
         return index === -1 ? OTHER_COLOR : GENRE_COLORS[index % GENRE_COLORS.length];
     };
 
     function renderGenreEras(eras, stackGenres) {
-        const legend = document.getElementById('genre-legend');
-        const element = document.getElementById('genre-eras');
-        if (!eras.length) {
-            legend.innerHTML = '';
-            element.innerHTML = '<p class="data-empty">no genre data yet</p>';
-            return;
-        }
         const keys = [...stackGenres, 'other'];
-        legend.innerHTML = keys.map(name =>
-            `<span class="genre-key"><span class="genre-swatch" style="background:${genreColor(name, stackGenres)}"></span>${name}</span>`
+        $('genre-legend').innerHTML = keys.map(name =>
+            `<span class="genre-key"><span class="genre-swatch" style="background:${genreColor(name, stackGenres)}"></span>${escapeHtml(name)}</span>`
         ).join('');
-        element.innerHTML = eras.map(era => {
+        $('genre-eras').innerHTML = eras.map(era => {
             const segments = era.segments.map(segment => {
                 const percent = segment.count / era.total * 100;
-                return `<span class="stack-seg" style="width:${percent.toFixed(2)}%;background:${genreColor(segment.name, stackGenres)}" title="${era.year} · ${segment.name}: ${segment.count} track${segment.count === 1 ? '' : 's'} (${Math.round(percent)}%)"></span>`;
+                return `<span class="stack-seg" style="width:${percent.toFixed(2)}%;background:${genreColor(segment.name, stackGenres)}" title="${era.year} · ${escapeHtml(segment.name)}: ${segment.count} track${segment.count === 1 ? '' : 's'} (${Math.round(percent)}%)"></span>`;
             }).join('');
             return `<div class="stack-row"><span class="stack-year">${era.year}</span><span class="stack-track">${segments}</span></div>`;
         }).join('');
     }
 
     function renderBars(id, items) {
-        const element = document.getElementById(id);
-        if (!items.length) { element.innerHTML = '<p class="data-empty">nothing here yet</p>'; return; }
+        const element = $(id);
+        if (!items.length) { element.innerHTML = '<p class="data-empty">Nothing here yet.</p>'; return; }
         const max = Math.max(...items.map(item => item.value));
-        element.innerHTML = items.map(item => `<div class="bar-row"><span class="bar-label">${item.label}</span><span class="bar-track"><span class="bar-fill" style="width:${max ? item.value / max * 100 : 0}%"></span></span><span class="bar-tail">${item.tail}</span></div>`).join('');
+        element.innerHTML = items.map(item => `<div class="bar-row"><span class="bar-label" title="${escapeHtml(item.label)}">${escapeHtml(item.label)}</span><span class="bar-track"><span class="bar-fill" style="width:${max ? item.value / max * 100 : 0}%"></span></span><span class="bar-tail">${escapeHtml(item.tail)}</span></div>`).join('');
     }
 
     function renderList(id, items) {
-        const element = document.getElementById(id);
-        if (!items.length) { element.innerHTML = '<p class="data-empty">no repeats yet — every song is a one-time thing</p>'; return; }
-        element.innerHTML = items.map(item => `<div class="list-row"><span class="list-label">${item.label}</span><span class="list-tail">${item.tail}</span></div>`).join('');
+        const element = $(id);
+        if (!items.length) { element.innerHTML = '<p class="data-empty">No repeats yet. Every song is a one-time thing.</p>'; return; }
+        element.innerHTML = items.map(item => `<div class="list-row"><span class="list-label">${item.html}</span><span class="list-tail">${escapeHtml(item.tail)}</span></div>`).join('');
     }
 
     /* ---- player ---- */
-    function currentIndex() {
-        return sorted.findIndex(playlist => key(playlist.season, playlist.year) === activeKey);
-    }
+    const currentIndex = () => sorted.findIndex(p => key(p.season, p.year) === activeKey);
 
     function updateSpotlight(index) {
         const playlist = sorted[index];
         if (!playlist) return;
-        document.getElementById('tm-spotlight').style.backgroundImage = playlist.cover ? `url('${playlist.cover}')` : 'none';
-        document.getElementById('tm-spotlight-label').textContent = `${playlist.season} ${playlist.year}`;
-        document.getElementById('tm-range').value = index;
+        const cover = safeImage(playlist.cover);
+        const record = `radial-gradient(circle at 50% 50%, #0d0907 0 5%, ${SEASON_ACCENT[playlist.season]} 6% 27%, #15100d 28% 100%)`;
+        $('tm-spotlight').style.backgroundImage = cover ? `url("${cover}"), ${record}` : record;
+        $('tm-spotlight-label').textContent = label(playlist);
+        $('tm-range').value = index;
+        $('tm-range').setAttribute('aria-valuetext', label(playlist));
+    }
+
+    /* The record on the turntable, the player title and the page accent all follow the active season. */
+    function updateDeck(playlist) {
+        const cover = safeImage(playlist.cover);
+        const disc = $('disc-label');
+        disc.style.setProperty('--cover', cover ? `url("${cover}")` : 'none');
+        disc.classList.toggle('has-cover', !!cover);
+        $('disc-label-text').innerHTML = `${playlist.season}<br>${playlist.year}`;
+        $('deck-season').textContent = label(playlist);
+        document.documentElement.style.setProperty('--now', SEASON_ACCENT[playlist.season]);
     }
 
     function updateNavButtons() {
         const index = currentIndex();
-        document.getElementById('prev-season').disabled = index <= 0;
-        document.getElementById('next-season').disabled = index === -1 || index >= sorted.length - 1;
+        $('prev-season').disabled = index <= 0;
+        $('next-season').disabled = index === -1 || index >= sorted.length - 1;
     }
 
     function loadPlaylist(k) {
         const p = byKey[k];
         if (!p) return;
         activeKey = k;
-        document.getElementById('embed').src =
-            `https://open.spotify.com/embed/playlist/${p.id}?utm_source=generator&theme=0`;
-        document.getElementById('now-label').textContent = `${p.season} ${p.year}`;
+        $('embed').src = `https://open.spotify.com/embed/playlist/${p.id}?utm_source=generator&theme=0`;
+        $('now-label').textContent = label(p);
+        $('open-spotify').href = spotifyUrl(p);
+        updateDeck(p);
         renderMatrix();
         const index = currentIndex();
         if (index > -1) updateSpotlight(index);
         updateNavButtons();
     }
 
+    function playAndShow(k) {
+        loadPlaylist(k);
+        $('listen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     function stepSeason(delta) {
-        const nextIndex = currentIndex() + delta;
-        if (nextIndex < 0 || nextIndex >= sorted.length) return;
-        const playlist = sorted[nextIndex];
-        loadPlaylist(key(playlist.season, playlist.year));
+        const next = sorted[currentIndex() + delta];
+        if (next) loadPlaylist(key(next.season, next.year));
     }
 
     /* ---- chips ---- */
     function renderChips() {
-        const chips = ['All', ...SEASON_ORDER];
-        document.getElementById('chips').innerHTML = chips.map(c => {
-            const val = c === 'All' ? '' : c;
-            const isActive = (seasonFilter || '') === val;
-            return `<button class="chip ${isActive ? 'active' : ''}" data-season="${val}">${c.toLowerCase()}</button>`;
+        $('chips').innerHTML = ['All', ...SEASON_ORDER].map(name => {
+            const value = name === 'All' ? '' : name;
+            const pressed = (seasonFilter || '') === value;
+            const accent = value ? ` style="--accent:${SEASON_ACCENT[value]}"` : '';
+            return `<button type="button" class="chip" data-season="${value}" aria-pressed="${pressed}"${accent}>${value ? '<i></i>' : ''}${name}</button>`;
         }).join('');
-        document.querySelectorAll('.chip').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const v = btn.getAttribute('data-season');
-                seasonFilter = v === '' ? null : v;
-                renderChips(); renderMatrix();
-            });
-        });
     }
+    $('chips').addEventListener('click', event => {
+        const chip = event.target.closest('.chip');
+        if (!chip) return;
+        seasonFilter = chip.dataset.season || null;
+        renderChips();
+        renderMatrix();
+    });
 
-    /* ---- matrix ---- */
+    /* ---- the crates ---- */
     function matches(season, year) {
         if (seasonFilter && season !== seasonFilter) return false;
-        if (searchTerm) {
-            const hay = `${season} ${year}`.toLowerCase();
-            if (!hay.includes(searchTerm)) return false;
-        }
+        if (searchTerm && !`${season} ${year}`.toLowerCase().includes(searchTerm)) return false;
         return true;
     }
 
     function renderMatrix() {
-        const head = `<div class="matrix-head"><div></div>${
-            SEASON_ORDER.map(s => `<div>${s.toLowerCase()}</div>`).join('')
-        }</div>`;
-
-        let rows = '';
+        let html = '<div></div>' + SEASON_ORDER.map(s => `<div class="matrix-colhead" style="--accent:${SEASON_ACCENT[s]}">${s}</div>`).join('');
         for (let y = START_YEAR; y <= END_YEAR; y++) {
-            let cells = '';
+            html += `<div class="year-label">${y}</div>`;
             SEASON_ORDER.forEach(s => {
                 const k = key(s, y);
                 const p = byKey[k];
-                const filled = !!p;
-                const hasCover = filled && !!p.cover;
+                if (!p) { html += '<div class="cell empty" aria-hidden="true"></div>'; return; }
                 const isActive = k === activeKey;
-                const dim = filled && !matches(s, y);
-                const cls = ['cell'];
-                if (filled) cls.push('filled');
-                if (hasCover) cls.push('has-cover');
+                const cls = ['cell', 'filled'];
                 if (isActive) cls.push('active');
-                if (dim) cls.push('dim');
-                const styles = [];
-                if (filled) styles.push(`--cell-accent:${SEASON_ACCENT[s]}`);
-                if (hasCover) styles.push(`background-image:url('${p.cover}')`);
-                const style = styles.length ? `style="${styles.join(';')}"` : '';
-                const inner = filled
-                    ? `<span class="cell-label">${s} ${y}</span><span class="play-icon">▶</span>`
-                    : '·';
-                cells += `<div class="${cls.join(' ')}" ${style} ${filled ? `data-key="${k}" role="button" tabindex="0"` : ''}>${inner}</div>`;
+                if (!matches(s, y)) cls.push('dim');
+                const cover = safeImage(p.cover);
+                const sleeve = cover ? ` style="--cover:url(&quot;${cover}&quot;)"` : '';
+                html += `<button type="button" class="${cls.join(' ')}" style="--accent:${SEASON_ACCENT[s]}" data-key="${k}" aria-pressed="${isActive}" aria-label="Play ${s} ${y}">`
+                    + `<span class="sleeve"${sleeve}></span><span class="cell-text"><span class="cell-season">${s}</span><span class="cell-year">${isActive ? 'spinning' : y}</span></span></button>`;
             });
-            rows += `<div class="matrix-row"><div class="year-label">${y}</div>${cells}</div>`;
         }
-        document.getElementById('matrix').innerHTML = head + rows;
-
-        document.querySelectorAll('.cell.filled').forEach(cell => {
-            const k = cell.getAttribute('data-key');
-            cell.addEventListener('click', () => loadPlaylist(k));
-            cell.addEventListener('keydown', e => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadPlaylist(k); }
-            });
-        });
+        $('matrix').innerHTML = html;
     }
+    $('matrix').addEventListener('click', event => {
+        const cell = event.target.closest('.cell.filled');
+        if (cell) playAndShow(cell.dataset.key);
+    });
 
-    /* ---- search ---- */
-    document.getElementById('search').addEventListener('input', e => {
-        searchTerm = e.target.value.trim().toLowerCase();
+    $('search').addEventListener('input', event => {
+        searchTerm = event.target.value.trim().toLowerCase();
         renderMatrix();
     });
 
-    document.getElementById('prev-season').addEventListener('click', () => stepSeason(-1));
-    document.getElementById('next-season').addEventListener('click', () => stepSeason(1));
+    $('prev-season').addEventListener('click', () => stepSeason(-1));
+    $('next-season').addEventListener('click', () => stepSeason(1));
 
-    const timeMachineRange = document.getElementById('tm-range');
-    timeMachineRange.max = Math.max(sorted.length - 1, 0);
-    timeMachineRange.addEventListener('input', event => updateSpotlight(parseInt(event.target.value, 10)));
-    document.getElementById('tm-play').addEventListener('click', () => {
-        const playlist = sorted[parseInt(timeMachineRange.value, 10)];
-        if (!playlist) return;
-        loadPlaylist(key(playlist.season, playlist.year));
-        document.querySelector('.player').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const range = $('tm-range');
+    range.max = Math.max(sorted.length - 1, 0);
+    range.addEventListener('input', event => updateSpotlight(parseInt(event.target.value, 10)));
+    $('tm-play').addEventListener('click', () => {
+        const p = sorted[parseInt(range.value, 10)];
+        if (p) playAndShow(key(p.season, p.year));
     });
-    if (sorted[0]) document.getElementById('tm-start').textContent = `${sorted[0].season} ${sorted[0].year}`;
-    if (sorted[sorted.length - 1]) document.getElementById('tm-end').textContent = `${sorted[sorted.length - 1].season} ${sorted[sorted.length - 1].year}`;
+    if (first) $('tm-start').textContent = label(first);
+    if (latest) $('tm-end').textContent = label(latest);
 
-    /* ---- shuffle ---- */
-    document.getElementById('shuffle').addEventListener('click', () => {
-        if (!PLAYLISTS.length) return;
-        const pick = PLAYLISTS[Math.floor(Math.random() * PLAYLISTS.length)];
+    $('shuffle').addEventListener('click', () => {
+        const pool = PLAYLISTS.filter(p => key(p.season, p.year) !== activeKey);
+        if (!pool.length) return;
+        const pick = pool[Math.floor(Math.random() * pool.length)];
         loadPlaylist(key(pick.season, pick.year));
-        document.querySelector('.player').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
+    /* Hero button always means "the newest one". */
+    $('hero-play').addEventListener('click', event => {
+        if (!latest) return;
+        event.preventDefault();
+        playAndShow(key(latest.season, latest.year));
+    });
+
+    /* ---- cover art ----
+       /api/covers resolves every playlist's cover server-side (cached for a
+       day). If it's unavailable the crates keep their plain record sleeves. */
+    async function loadCovers() {
+        try {
+            const response = await fetch(`/api/covers?ids=${PLAYLISTS.map(p => p.id).join(',')}`);
+            if (!response.ok) return;
+            const { covers = {} } = await response.json();
+            let found = 0;
+            PLAYLISTS.forEach(p => { const url = safeImage(covers[p.id]); if (url) { p.cover = url; found++; } });
+            if (!found) return;
+            renderMatrix();
+            const active = byKey[activeKey];
+            if (active) updateDeck(active);
+            updateSpotlight(parseInt(range.value, 10));
+        } catch (error) { /* plain sleeves are fine */ }
+    }
 
     /* ---- init ---- */
-    document.getElementById('year').textContent = new Date().getFullYear();
+    $('year').textContent = new Date().getFullYear();
+    if (latest) {
+        $('hero-play').innerHTML = `▶&nbsp; Play ${escapeHtml(label(latest))}`;
+        $('hero-eyebrow').textContent = `Seasonal playlists · ${first.season.toLowerCase()} ${first.year} to now`;
+    }
     renderStats();
     renderChips();
     renderMatrix();
     if (activeKey) loadPlaylist(activeKey);
-
-    loadSongs(5).then(renderDataSection);
+    loadCovers();
+    loadSongs(4).then(renderDataSection);
 
     /* ---- now playing ----
-       /api/now-playing holds the Spotify credential server-side and answers
-       with just enough to draw the card. Anything other than a live track —
-       unconfigured, expired auth, Spotify down — leaves the card hidden
-       rather than showing the page's plumbing to a visitor. */
-    const NOW_LABELS = { playing: 'now playing', paused: 'paused', recent: 'last played' };
+       /api/now-playing keeps the Spotify credential server-side and answers
+       with just enough to draw the card. Anything other than a live or recent
+       track (unconfigured, expired auth, Spotify down) leaves it hidden. */
+    const NOW_LABELS = { playing: 'Now playing', paused: 'Paused', recent: 'Last played' };
 
     function relativeTime(iso) {
         const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
@@ -1263,50 +1033,43 @@
         return `${Math.round(hours / 24)}d ago`;
     }
 
+    let nowPlayingLive = true;
     async function refreshNowPlaying() {
-        const card = document.getElementById('np-card');
+        const card = $('np-card');
         try {
             const response = await fetch('/api/now-playing', { cache: 'no-store' });
             if (!response.ok) throw new Error('unavailable');
             const data = await response.json();
-            const label = NOW_LABELS[data.state];
-            if (!label || !data.track) { card.classList.add('hidden'); return; }
-
-            document.getElementById('np-label-text').textContent =
-                data.state === 'recent' && data.playedAt
-                    ? `${label} · ${relativeTime(data.playedAt)}`.replace(/ · $/, '')
-                    : label;
-            document.getElementById('np-track').textContent = data.track;
-            document.getElementById('np-artist').textContent = data.artist || '';
-            const art = document.getElementById('np-art');
-            art.style.backgroundImage = data.albumArt ? `url('${data.albumArt}')` : '';
-            card.href = data.url || 'https://open.spotify.com';
+            /* Not set up on this deployment: stop asking. */
+            if (data.state === 'unconfigured') nowPlayingLive = false;
+            const text = NOW_LABELS[data.state];
+            if (!text || !data.track) { card.classList.add('hidden'); return; }
+            const ago = data.state === 'recent' && data.playedAt ? relativeTime(data.playedAt) : '';
+            $('np-label-text').textContent = ago ? `${text} · ${ago}` : text;
+            $('np-track').textContent = data.track;
+            $('np-artist').textContent = data.artist || '';
+            const art = safeImage(data.albumArt);
+            $('np-art').style.backgroundImage = art ? `url("${art}")` : '';
+            card.href = /^https:\/\/open\.spotify\.com\//.test(data.url || '') ? data.url : 'https://open.spotify.com';
             card.classList.toggle('is-playing', data.state === 'playing');
-            card.setAttribute('aria-label', `${label}: ${data.track}${data.artist ? ` by ${data.artist}` : ''}`);
+            card.setAttribute('aria-label', `${text}: ${data.track}${data.artist ? ` by ${data.artist}` : ''}`);
             card.classList.remove('hidden');
         } catch (error) {
             card.classList.add('hidden');
+            if (error.message === 'unavailable') nowPlayingLive = false;
         }
     }
 
     refreshNowPlaying();
-    /* Poll only while the tab is visible — a backgrounded tab has no one
-       looking at it, and the endpoint is edge-cached for 20s anyway. */
-    let nowTimer = setInterval(refreshNowPlaying, 30000);
+    /* Poll only while the tab is visible and the endpoint exists. */
+    let nowTimer = setInterval(() => nowPlayingLive && refreshNowPlaying(), 30000);
     document.addEventListener('visibilitychange', () => {
         clearInterval(nowTimer);
-        if (!document.hidden) { refreshNowPlaying(); nowTimer = setInterval(refreshNowPlaying, 30000); }
+        if (!document.hidden && nowPlayingLive) {
+            refreshNowPlaying();
+            nowTimer = setInterval(() => nowPlayingLive && refreshNowPlaying(), 30000);
+        }
     });
-
-    /* nav scroll */
-    window.addEventListener('scroll', () => {
-        document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 100);
-    });
-    </script>
-
-    <script type="module">
-        import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk'
-        sdk.actions.ready()
     </script>
 </body>
 </html>

@@ -1,0 +1,207 @@
+/* ============================================================
+   Jack's Listening To: shared lounge styles.
+   Tokens, type, background, nav, buttons and footer used by every page.
+   Page-specific layout lives inline in each page.
+   ============================================================ */
+
+@font-face {
+    font-family: 'Fraunces';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/assets/fonts/fraunces.woff2') format('woff2-variations'), url('/assets/fonts/fraunces.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Fraunces';
+    font-style: italic;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/assets/fonts/fraunces-italic.woff2') format('woff2-variations'), url('/assets/fonts/fraunces-italic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 100 1000;
+    font-display: swap;
+    src: url('/assets/fonts/dm-sans.woff2') format('woff2-variations'), url('/assets/fonts/dm-sans.woff2') format('woff2');
+}
+
+:root {
+    color-scheme: dark;
+
+    /* Room: espresso walls, low lamp light */
+    --bg: #120d0a;
+    --bg-raised: #1a1310;
+    --bg-panel: #1f1713;
+    --bg-sunk: #0d0907;
+    --line: rgba(240, 214, 170, 0.09);
+    --line-strong: rgba(240, 214, 170, 0.2);
+
+    /* Paper and ink */
+    --text: #f3e9d8;
+    --text-soft: #cdbca3;
+    --text-dim: #9a8a74;
+    --text-faint: #6b5d4d;
+
+    /* Lamp brass, and the red of a record label */
+    --amber: #e9a84c;
+    --amber-bright: #f6c27a;
+    --amber-glow: rgba(233, 168, 76, 0.16);
+    --ember: #c8553d;
+    --on-amber: #1a1008;
+
+    /* Seasons, warmed to sit in the room */
+    --spring: #a9c48f;
+    --summer: #f0c35b;
+    --fall: #dc7a3e;
+    --winter: #8fb3d1;
+
+    /* Follows whichever season is on the turntable */
+    --now: var(--amber);
+
+    --serif: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    --sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 22px;
+
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --fast: 0.18s var(--ease);
+    --base: 0.35s var(--ease);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+.hidden { display: none !important; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-text-size-adjust: 100%; }
+
+body {
+    min-height: 100vh;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(ellipse 70% 55% at 12% -8%, rgba(233, 168, 76, 0.15), transparent 62%),
+        radial-gradient(ellipse 60% 45% at 105% 28%, rgba(168, 62, 44, 0.13), transparent 60%),
+        radial-gradient(ellipse 80% 50% at 50% 110%, rgba(233, 168, 76, 0.07), transparent 60%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Film grain: the room is never perfectly clean. */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection { background: var(--amber); color: var(--on-amber); }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 4px; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+img { max-width: 100%; display: block; }
+
+.container { width: min(1180px, 100% - 32px); margin: 0 auto; }
+
+.skip-link {
+    position: absolute; top: -100px; left: 16px; z-index: 300;
+    padding: 8px 14px; border-radius: 999px;
+    background: var(--amber); color: var(--on-amber);
+    font-weight: 600; font-size: 0.85rem; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+
+/* ---- Nav ---- */
+.site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(18, 13, 10, 0.78);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--line);
+}
+.site-nav .container {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; min-height: 64px;
+}
+.wordmark {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--serif); font-weight: 600; font-size: 1.15rem;
+    letter-spacing: -0.01em; color: var(--text); text-decoration: none;
+    font-variation-settings: 'opsz' 36;
+    white-space: nowrap;
+}
+.wordmark em { font-style: italic; font-weight: 500; color: var(--amber); }
+.wordmark svg { width: 26px; height: 26px; flex-shrink: 0; transition: transform 0.8s var(--ease); }
+.wordmark:hover svg { transform: rotate(180deg); }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links a {
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 0.85rem; color: var(--text-soft); text-decoration: none;
+    transition: color var(--fast), background var(--fast);
+}
+.nav-links a:hover { color: var(--text); background: rgba(240, 214, 170, 0.06); }
+.nav-links a[aria-current="page"] { color: var(--amber); }
+
+/* ---- Type helpers ---- */
+.eyebrow {
+    font-family: var(--sans); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber);
+}
+.display {
+    font-family: var(--serif); font-weight: 500; letter-spacing: -0.02em;
+    font-variation-settings: 'opsz' 144;
+}
+.display em { font-style: italic; font-weight: 400; color: var(--amber); }
+
+/* ---- Buttons ---- */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 40px; padding: 8px 18px; border-radius: 999px;
+    border: 1px solid var(--line-strong); background: rgba(240, 214, 170, 0.03);
+    color: var(--text-soft); font-size: 0.88rem; font-weight: 500;
+    text-decoration: none; cursor: pointer; white-space: nowrap;
+    transition: color var(--fast), background var(--fast), border-color var(--fast), transform var(--fast);
+}
+.btn:hover:not(:disabled) { color: var(--text); border-color: var(--amber); background: var(--amber-glow); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.35; cursor: default; }
+.btn-primary { background: var(--amber); border-color: var(--amber); color: var(--on-amber); font-weight: 600; }
+.btn-primary:hover:not(:disabled) { background: var(--amber-bright); border-color: var(--amber-bright); color: var(--on-amber); }
+.btn-icon { width: 40px; padding: 0; font-size: 1rem; }
+
+/* ---- Footer ---- */
+.site-footer {
+    margin-top: 96px; padding: 40px 0 56px;
+    border-top: 1px solid var(--line);
+    color: var(--text-dim); font-size: 0.85rem;
+}
+.site-footer .container { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: baseline; }
+.site-footer a { color: var(--text-soft); text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.site-footer a:hover { color: var(--amber); }
+.site-footer .sign-off { font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--text-soft); }
+
+@media (max-width: 640px) {
+    .site-nav .container { min-height: 56px; }
+    .wordmark { font-size: 1rem; }
+    .wordmark svg { width: 22px; height: 22px; }
+    .nav-links a { padding: 6px 8px; font-size: 0.8rem; }
+    .nav-links .nav-optional { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
+}

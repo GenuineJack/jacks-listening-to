@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 /*
- * What is playing right now, for the home page widget.
+ * What is playing right now, for the "now playing" card on the home page.
  *
  * Visitors call this; it calls Spotify. The refresh token never leaves the
  * server and no visitor ever sees a Spotify credential.
